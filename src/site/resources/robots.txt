@@ -1,0 +1,8 @@
+User-agent: *
+Sitemap: http://prefcount.curre.net/sitemap.xml.gz
+Disallow: /css
+Disallow: /ru/css
+Disallow: /javascript
+Disallow: /javascript/ru
+Disallow: /xref-test
+Disallow: /ru/xref-test

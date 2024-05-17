@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Загрузка программы</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>ПрефКаунт</author>
+    <author>Преферанс</author>
+    <author>карточные игры</author>
+    <author>преферанс посчитать</author>
+    <author>преферанс скачать</author>
+    <author>ПрефКаунт скачать</author>
+    <author>ПрефКаунт запустить</author>
+  </properties>
+  <body>
+
+    <!-- Rambler's Top100 counter -->
+    <div style="display: none;">
+      <img src="http://counter.rambler.ru/top100.cnt?1348433" alt="" width="1" height="1" border="0" />
+    </div>
+
+    <section name="Загрузка программы.">
+      <div style="float: left; margin: 5px 20px 20px 20px;"
+           onclick="window.location.href='http://prefcount.curre.net/prefcount.jnlp'">
+        <img src="images/webstart.jpg" />
+      </div>
+      <p>
+        Здесь Вы можете бесплатно загрузить программу PrefCount.<br />
+        Если Вы хотите запустить программу сейчас используя технологию
+        Java Web Start используйте линк слева:
+      </p>
+      <subsection name="Версия для Windows.">
+        <p>
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-win.zip?use_mirror=">prefcount-0.3-win.zip</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-win.rar?use_mirror=">prefcount-0.3-win.rar</a>
+          <br />
+        </p>
+      </subsection>
+      <subsection name="Версия для Mac OS.">
+        <p>
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-mac.dmg?use_mirror=">prefcount-0.3-mac.dmg</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-mac.zip?use_mirror=">prefcount-0.3-mac.zip</a>
+          <br />
+        </p>
+      </subsection>
+      <subsection name="Версия для Linux.">
+        <p>
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-linux.tar.gz?use_mirror=">prefcount-0.3-linux.tar.gz</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-linux.tar.bz2?use_mirror=">prefcount-0.3-linux.tar.bz2</a>
+          <br />
+        </p>
+      </subsection>
+      <subsection name="Исходный код программы.">
+        <p>
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-src.tar.gz?use_mirror=">prefcount-0.3-src.tar.gz</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-src.tar.bz2?use_mirror=">prefcount-0.3-src.tar.bz2</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-src.zip?use_mirror=">prefcount-0.3-src.zip</a>
+          <br />
+        </p>
+      </subsection>
+    </section>
+
+    <p>
+      Здесь Вы можете найти старые версии ПрефКаунта:
+      <b><a href="old-versions.html">Старые версии ПрефКаунта</a></b><br /><br />
+      Если у вас возникают проблемы при загрузке файлов используя вышеприведенные ссылки, попробуйте скачать программу
+      с сайта Sourceforge:
+      <b><a href="http://sourceforge.net/project/showfiles.php?group_id=220041&amp;package_id=265591&amp;release_id=649089">ПрефКаунт на Sourceforge</a></b>
+
+    </p>
+  </body>
+</document>
+    

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>About PrefCount</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>Russian card game</author>
+    <author>PrefCount download</author>
+    <author>PrefCount get</author>
+  </properties>
+  <body>
+    <section name="About PrefCount.">
+      <div style="float: right; margin: 10px 10px 20px 30px; cursor: pointer;"
+           onclick="toggleImageSize(this);"
+           title="Click to enlarge/shrink the image">
+        <img src="images/app-sample-t.jpg" alt="PrefCount" />
+      </div>
+      <p>
+        PrefCount is an application that assists with counting up
+        the results of a game of Preferance (also Preference, or Preferans).
+        If you don't play Preferance, this application will do no good for you.
+        By the way, Preferance is an old card game that originated in
+        Russia in the middle of the XIX century and is still
+        widely played across Central Europe and Russia.
+      </p>
+      <p>
+        PrefCount is written in Java 1.5 and runs perfectly on multiple
+        platforms: Windows
+        <img src="images/icon_windows.gif" alt="Windows logo" />, Mac
+        <img src="images/icon_mac.gif" alt="Mac logo" />, and Linux
+        <img src="images/icon_linux.gif" alt="Linux logo" />.
+      </p>
+      <p>
+        Please drop me a note if you have a question or a suggestion:<br />
+        y е v &lt;&lt;&lt; @ t &gt;&gt; c u r r e &lt;&lt; d 0 t &gt;&gt;&gt; n Е t.<br />
+        (without empty space and angle brackets, of course).
+      </p>
+
+      <div style="float: left; margin: 5px 20px 20px 20px;"
+           onclick="window.location.href='http://prefcount.curre.net/prefcount.jnlp'">
+        <img src="images/webstart.jpg" />
+      </div>
+      <p>
+        If you want to run PrefCount now using the Java Web Start technology
+        click on the button to your left:
+      </p>
+    </section>
+
+    <section name="Licensing.">
+      <p>
+        <div class="source">
+          This application is distributed under the terms of the
+          GNU General Public License version 3, a copy of which should
+          be included in the PrefCount distribution (if not, check it out
+          here:<a href="license.html">Project License</a>). Basically, this
+          license means that you can use or redistribute this application
+          at no charge. For more information about this license see:
+          <a href="http://www.gnu.org/licenses/">
+            http://www.gnu.org/licenses/
+          </a>.
+        </div>
+      </p>
+    </section>
+  </body>
+</document>
+    

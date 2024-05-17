@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Downloads</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>Russian card games</author>
+    <author>PrefCount download</author>
+    <author>PrefCount get</author>
+    <author>PrefCount run</author>
+  </properties>
+  <body>
+    <section name="Downloads.">
+      <div style="float: left; margin: 5px 20px 20px 20px;"
+           onclick="window.location.href='http://prefcount.curre.net/prefcount.jnlp'">
+        <img src="images/webstart.jpg" />
+      </div>
+      <p>
+        Below, you will find links to download PrefCount's latest release.<br />
+        If you want to run PrefCount now using the Java Web Start technology
+        click on the button to your left:
+      </p>
+      <subsection name="Windows downloads.">
+        <p>
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-win.zip?use_mirror=">prefcount-0.3-win.zip</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-win.rar?use_mirror=">prefcount-0.3-win.rar</a>
+          <br />
+        </p>
+      </subsection>
+      <subsection name="Mac OS X downloads.">
+        <p>
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-mac.dmg?use_mirror=">prefcount-0.3-mac.dmg</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-mac.zip?use_mirror=">prefcount-0.3-mac.zip</a>
+          <br />
+        </p>
+      </subsection>
+      <subsection name="Linux downloads.">
+        <p>
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-linux.tar.gz?use_mirror=">prefcount-0.3-linux.tar.gz</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-linux.tar.bz2?use_mirror=">prefcount-0.3-linux.tar.bz2</a>
+          <br />
+        </p>
+      </subsection>
+      <subsection name="Source code.">
+        <p>
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-src.tar.gz?use_mirror=">prefcount-0.3-src.tar.gz</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-src.tar.bz2?use_mirror=">prefcount-0.3-src.tar.bz2</a>
+          <br />
+          <a href="http://downloads.sourceforge.net/prefcount/prefcount-0.3-src.zip?use_mirror=">prefcount-0.3-src.zip</a>
+          <br />
+        </p>
+      </subsection>
+    </section>
+
+    <p>
+      Here, you will find PrefCount's old releases:
+      <b><a href="old-versions.html">Prefcount old releases</a></b><br /><br />
+      If you have trouble using the links above, try the Sourceforge download page:
+      <b><a href="http://sourceforge.net/project/showfiles.php?group_id=220041&amp;package_id=265591&amp;release_id=649089">Sourceforge downloads</a></b>
+    </p>
+  </body>
+</document>
+    

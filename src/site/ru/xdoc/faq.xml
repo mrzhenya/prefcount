@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Вопросы и ответы</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>ПрефКаунт</author>
+    <author>Преферанс</author>
+    <author>карточные игры</author>
+    <author>преферанс посчитать</author>
+  </properties>
+  <body>
+
+    <!-- Rambler's Top100 counter -->
+    <div style="display: none;">
+      <img src="http://counter.rambler.ru/top100.cnt?1348433" alt="" width="1" height="1" border="0"/>
+    </div>
+
+    <section name="Вопросы и ответы.">
+      <faq id="question1">
+        <question>Считает ли программа "Сочинку"?</question>
+        <answer>
+          <p>
+            Да, в программе ПрефКаунт предусмотрена возможность производить подсчет используя
+            конвенции как Сочинского (1 очко пули = 1 очко горы) так и Ленинградского преферанса
+            (1 очко пули = 2 очка горы).
+          </p>
+        </answer>
+      </faq>
+    </section>
+    <br /><br />
+    
+    <faq id="question2">
+      <question>Можно ли распечатать окончательный расчет?</question>
+      <answer>
+        <p>
+          Да, ПрефКаунт может распечатать таблицу итоговых результатов игроков, а также и игровое поле.
+        </p>
+      </answer>
+    </faq>
+  </body>
+</document>

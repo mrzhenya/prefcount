@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+###############################################################################
+#
+# @(#)prefcount.jnlp 07/06/2008
+#
+# JNLP File for PrefCount Application
+#
+###############################################################################
+ -->
+
+<jnlp spec="0.2 1.0"
+      codebase="http://prefcount.curre.net"
+      href="prefcount.jnlp">
+  <information>
+    <title>PrefCount</title>
+    <vendor>Yevgeny Nyden</vendor>
+    <homepage href="http://prefcount.curre.net/" />
+    <description>
+      PrefCount is an application that assists with counting up the
+      results of a game of Preferance. If you don't play Preferance
+      this application will do no good for you. By the way, Preferance
+      is an old card game that originated in Russia in the middle of
+      the XIX century and is still widely played across Central Europe
+      and Russia.
+    </description>
+    <description kind="short">
+      PrefCount assists with computing final scores in a Preferance card game.
+    </description>
+    <icon href="images/PrefCount.gif" />
+    <offline-allowed />
+  </information>
+  <resources>
+    <j2se version="1.5+" href="http://java.sun.com/products/autodl/j2se" />
+    <j2se version="1.5+" />
+    <jar href="http://downloads.curre.net/get.php?id=25"
+         main="true" download="eager" />
+  </resources>
+  <security>
+    <all-permissions />
+  </security>
+  <application-desc main-class="net.curre.prefcount.App" />
+</jnlp>

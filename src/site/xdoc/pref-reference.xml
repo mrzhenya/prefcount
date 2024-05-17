@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Game reference</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>Russian card game</author>
+    <author>PrefCount about</author>
+    <author>PrefCount information</author>
+  </properties>
+  <body>
+    <section name="Game reference.">
+      <subsection name="LENINGRADKA">
+        <div class="scoreTable">
+          <table>
+            <tr>
+              <th>-</th>
+              <th>PLAYER</th>
+              <th>PLAYER</th>
+              <th>WHIST-PLAYER</th>
+              <th>WHIST-PLAYER</th>
+            </tr>
+            <tr>
+              <th>GAME</th>
+              <th>pool</th>
+              <th>mount</th>
+              <th>whist</th>
+              <th>mount</th>
+            </tr>
+            <tr>
+              <th>6</th>
+              <td>2</td>
+              <td>4</td>
+              <td>4</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <th>7</th>
+              <td>4</td>
+              <td>8</td>
+              <td>8</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <th>8</th>
+              <td>6</td>
+              <td>12</td>
+              <td>12</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <th>9</th>
+              <td>8</td>
+              <td>16</td>
+              <td>16</td>
+              <td>8</td>
+            </tr>
+            <tr>
+              <th>10</th>
+              <td>10</td>
+              <td>20</td>
+              <td>20</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <th>мизер</th>
+              <td>10</td>
+              <td>20</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </table>
+        </div>
+      </subsection>
+
+      <subsection name="SOCHINKA">
+        <div class="scoreTable">
+          <table>
+            <tr>
+              <th>-</th>
+              <th>PLAYER</th>
+              <th>PLAYER</th>
+              <th>WHIST-PLAYER</th>
+              <th>WHIST-PLAYER</th>
+            </tr>
+            <tr>
+              <th>GAME</th>
+              <th>pool</th>
+              <th>mount</th>
+              <th>whist</th>
+              <th>mount</th>
+            </tr>
+            <tr>
+              <th>6</th>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <th>7</th>
+              <td>4</td>
+              <td>4</td>
+              <td>4</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <th>8</th>
+              <td>6</td>
+              <td>6</td>
+              <td>6</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <th>9</th>
+              <td>8</td>
+              <td>8</td>
+              <td>8</td>
+              <td>8</td>
+            </tr>
+            <tr>
+              <th>10</th>
+              <td>10</td>
+              <td>10</td>
+              <td>10</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <th>мизер</th>
+              <td>10</td>
+              <td>10</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </table>
+        </div>
+      </subsection>
+
+      <subsection name="ROSTOV">
+        <div class="scoreTable">
+          <table>
+            <tr>
+              <th>-</th>
+              <th>PLAYER</th>
+              <th>PLAYER</th>
+              <th>WHIST-PLAYER</th>
+              <th>WHIST-PLAYER</th>
+            </tr>
+            <tr>
+              <th>GAME</th>
+              <th>pool</th>
+              <th>mount</th>
+              <th>whist</th>
+              <th>mount</th>
+            </tr>
+            <tr>
+              <th>6</th>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <th>7</th>
+              <td>4</td>
+              <td>4</td>
+              <td>4</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <th>8</th>
+              <td>6</td>
+              <td>6</td>
+              <td>6</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <th>9</th>
+              <td>8</td>
+              <td>8</td>
+              <td>8</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <th>10</th>
+              <td>10</td>
+              <td>10</td>
+              <td>10</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <th>мизер</th>
+              <td>10</td>
+              <td>10</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </table>
+        </div>
+      </subsection>
+
+    </section>
+  </body>
+</document>

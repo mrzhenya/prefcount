@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>О программе</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>ПрефКаунт</author>
+    <author>Преферанс</author>
+    <author>Евгений Найден</author>
+    <author>карточные игры</author>
+    <author>преферанс посчитать</author>
+    <author>Расчет пули</author>
+    <author>Посчитать пулю</author>
+  </properties>
+  <body>
+
+    <!-- Rambler's Top100 counter -->
+    <div style="display: none;">
+      <img src="http://counter.rambler.ru/top100.cnt?1348433" alt="" width="1" height="1" border="0" />
+    </div>
+
+    <section name="О программе.">
+      <div style="float: right; margin: 10px 10px 20px 30px; cursor: pointer;"
+           onclick="toggleImageSize(this);"
+           title="Кликните для увеличения/уменьшения картинки">
+        <img src="images/app-sample-t.jpg" alt="PrefCount" />
+      </div>
+      <p>
+        PrefCount (ПрефКаунт) - это небольшая программа которая поможет Вам в подсчете
+        результатов игры в Преферанс - или по-просту, в расчете пули. Если Вы не знакомы с Преферансом или
+        просто не играете в эту благородную карточную игру, то эта программа будет Вам совершенно
+        бесполезна. Кстати, следует заметить для тех кто не знает что такое Преферанс,
+        что эта карточная игра зародилась в России в середине XIX века и до сих пор
+        практикуется в Центральной Европе и России.
+      </p>
+      <p>
+        PrefCount написан с использованием Java технологий и предусматривает использование
+        на различных платформах: Windows
+        <img src="images/icon_windows.gif" alt="Windows logo" />, Mac
+        <img src="images/icon_mac.gif" alt="Mac logo" />, и Linux
+        <img src="images/icon_linux.gif" alt="Linux logo" />.
+      </p>
+      <p>
+        Если у Вас вдруг появится какой-либо вопрос или предложение, пошлите мне записочку
+        какую что-ли:<br />
+        y е v &lt;&lt;&lt; c 0 б a к а &gt;&gt; c u r r e &lt;&lt; т 0 ч к @ &gt;&gt;&gt; n е t.<br />
+        (разумеется без пробелов и прочих ненужных знаков).
+      </p>
+
+      <div style="float: left; margin: 5px 20px 20px 20px;"
+           onclick="window.location.href='http://prefcount.curre.net/prefcount.jnlp'">
+        <img src="images/webstart.jpg" />
+      </div>
+      <p>
+        Если Вы хотите запустить праграмму сейчас используя технологию
+        Java Web Start используйте линк слева:
+      </p>
+    </section>
+
+    <section name="Лицензирование">
+      <p>
+        <div class="source">
+          Настоящая программа распространяется на условиях версии 3 лицензии
+          GNU General Public License (GPL), копию которой Вы должны получить вместе с
+          загрузочным/установочным файлом (также лиценцию можно найти и здесь:
+          <a href="license.html">Лицензия проекта</a>). В двух словах, эта лицензия
+          позволяет свободное (бесплатное) использование и распространение данной
+          программы. Получить больше информации об этой лицензии можно на сайте GNU:
+          <a href="http://www.gnu.org/licenses/">
+            http://www.gnu.org/licenses/
+          </a>.
+        </div>
+      </p>
+    </section>
+  </body>
+</document>

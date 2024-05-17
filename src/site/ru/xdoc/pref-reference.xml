@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Таблицы расчета</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>ПрефКаунт</author>
+    <author>ПрефКаунт информация</author>
+    <author>Преферанс</author>
+    <author>карточные игры</author>
+    <author>преферанс посчитать</author>
+    <author>расчет пули</author>
+    <author>преферанс таблица</author>
+  </properties>
+  <body>
+
+    <!-- Rambler's Top100 counter -->
+    <div style="display: none;">
+      <img src="http://counter.rambler.ru/top100.cnt?1348433" alt="" width="1" height="1" border="0"/>
+    </div>
+
+    <section name="Таблицы расчета.">
+      <subsection name="ЛЕНИНГРАДКА">
+        <div class="scoreTable">
+          <table>
+            <tr>
+              <th>-</th>
+              <th>ИГРАЮЩИЙ</th>
+              <th>ИГРАЮЩИЙ</th>
+              <th>ВИСТУЮЩИЙ</th>
+              <th>ВИСТУЮЩИЙ</th>
+            </tr>
+            <tr>
+              <th>ИГРА</th>
+              <th>пуля</th>
+              <th>гора</th>
+              <th>висты</th>
+              <th>гора</th>
+            </tr>
+            <tr>
+              <th>6</th>
+              <td>2</td>
+              <td>4</td>
+              <td>4</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <th>7</th>
+              <td>4</td>
+              <td>8</td>
+              <td>8</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <th>8</th>
+              <td>6</td>
+              <td>12</td>
+              <td>12</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <th>9</th>
+              <td>8</td>
+              <td>16</td>
+              <td>16</td>
+              <td>8</td>
+            </tr>
+            <tr>
+              <th>10</th>
+              <td>10</td>
+              <td>20</td>
+              <td>20</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <th>мизер</th>
+              <td>10</td>
+              <td>20</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </table>
+        </div>
+      </subsection>
+
+      <subsection name="СОЧИНКА">
+        <div class="scoreTable">
+          <table>
+            <tr>
+              <th>-</th>
+              <th>ИГРАЮЩИЙ</th>
+              <th>ИГРАЮЩИЙ</th>
+              <th>ВИСТУЮЩИЙ</th>
+              <th>ВИСТУЮЩИЙ</th>
+            </tr>
+            <tr>
+              <th>ИГРА</th>
+              <th>пуля</th>
+              <th>гора</th>
+              <th>висты</th>
+              <th>гора</th>
+            </tr>
+            <tr>
+              <th>6</th>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <th>7</th>
+              <td>4</td>
+              <td>4</td>
+              <td>4</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <th>8</th>
+              <td>6</td>
+              <td>6</td>
+              <td>6</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <th>9</th>
+              <td>8</td>
+              <td>8</td>
+              <td>8</td>
+              <td>8</td>
+            </tr>
+            <tr>
+              <th>10</th>
+              <td>10</td>
+              <td>10</td>
+              <td>10</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <th>мизер</th>
+              <td>10</td>
+              <td>10</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </table>
+        </div>
+      </subsection>
+
+      <subsection name="РОСТОВ">
+        <div class="scoreTable">
+          <table>
+            <tr>
+              <th>-</th>
+              <th>ИГРАЮЩИЙ</th>
+              <th>ИГРАЮЩИЙ</th>
+              <th>ВИСТУЮЩИЙ</th>
+              <th>ВИСТУЮЩИЙ</th>
+            </tr>
+            <tr>
+              <th>ИГРА</th>
+              <th>пуля</th>
+              <th>гора</th>
+              <th>висты</th>
+              <th>гора</th>
+            </tr>
+            <tr>
+              <th>6</th>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <th>7</th>
+              <td>4</td>
+              <td>4</td>
+              <td>4</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <th>8</th>
+              <td>6</td>
+              <td>6</td>
+              <td>6</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <th>9</th>
+              <td>8</td>
+              <td>8</td>
+              <td>8</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <th>10</th>
+              <td>10</td>
+              <td>10</td>
+              <td>10</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <th>мизер</th>
+              <td>10</td>
+              <td>10</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </table>
+        </div>
+      </subsection>
+
+    </section>
+  </body>
+</document>

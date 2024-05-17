@@ -1,0 +1,57 @@
+#banner-back {
+  height: 67px;
+  background: url( ../images/banner-back.jpg );
+}
+
+#langRussianId {
+  background: url( "../images/ru-dis.gif" ) no-repeat;
+  width: 16px;
+  height: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#langEnglishId {
+  background: url( "../images/us.gif" ) no-repeat;
+  width: 16px;
+  height: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.poweredBy img {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+div.screenshot {
+  float: left;
+  margin: 10px;
+  cursor: pointer;
+}
+
+div.lineBreaker {
+  clear: both;
+}
+
+div.scoreTable {
+  width: 600px;
+}
+
+div.scoreTable td {
+  text-align: center;
+}
+
+div.scoreTable table {
+  text-align: center;
+  border: thin solid grey;
+}
+
+div.scoreTable th {
+  text-align: center;
+  color: #334331;
+}

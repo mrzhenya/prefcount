@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Screenshots</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>Russian card game</author>
+    <author>PrefCount about</author>
+    <author>PrefCount information</author>
+  </properties>
+  <body>
+    <section name="Screenshots.">
+      <p>
+        Here you can see the application's screenshots. Note that PrefCount
+        has mutiple skins from which you can choose your favorite look and feel.
+        <br />
+        <br />
+        Click on the image to enlarge it, then click on the enlarged image again
+        to make it small again.
+      </p>
+      <subsection name="Windows.">
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Click to enlarge/shrink the image">
+          <img src="images/win-1-t.jpg" alt="Windows screenshot 1" />
+        </div>
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Click to enlarge/shrink the image">
+          <img src="images/win-2-t.jpg" alt="Windows screenshot 2" />
+        </div>
+        <div class="lineBreaker">
+          This is how the application looks on Windows (XP).
+        </div>
+      </subsection>
+      <subsection name="Mac.">
+      </subsection>
+      <div class="screenshot" onclick="toggleImageSize(this);"
+           title="Click to enlarge/shrink the image">
+        <img src="images/mac-osx-1-t.jpg" alt="Mac screenshot 1" />
+      </div>
+      <div class="screenshot" onclick="toggleImageSize(this);"
+           title="Click to enlarge/shrink the image">
+        <img src="images/mac-osx-2-t.jpg" alt="Mac screenshot 2" />
+      </div>
+      <div class="screenshot" onclick="toggleImageSize(this);"
+           title="Click to enlarge/shrink the image">
+        <img src="images/mac-osx-3-t.jpg" alt="Mac screenshot 3" />
+      </div>
+      <div class="lineBreaker">
+        This is how the application looks on Mac (OS X).
+      </div>
+      <subsection name="Linux.">
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Click to enlarge/shrink the image">
+          <img src="images/linux-1-t.jpg" alt="Linux screenshot 1" />
+        </div>
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Click to enlarge/shrink the image">
+          <img src="images/linux-2-t.jpg" alt="Linux screenshot 2" />
+        </div>
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Click to enlarge/shrink the image">
+          <img src="images/linux-3-t.jpg" alt="Linux screenshot 3" />
+        </div>
+        <div class="lineBreaker">
+          This is how the application looks on Linux (OpenSuse).
+        </div>
+      </subsection>
+    </section>
+  </body>
+</document>
+    

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>General Information</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>Russian card game</author>
+    <author>PrefCount about</author>
+    <author>PrefCount information</author>
+  </properties>
+  <body>
+    <section name="General Information.">
+      <p>
+        System requirements:
+        <ul>
+          <li>Windows ME/2000/XP/Vista or Linux/Unix or Mac OS 9/X;</li>
+          <li>Java Runtime Environment (JRE) version 1.5 or higher.</li>
+        </ul>
+        <br />
+        Get Java:
+        <a href="http://java.com/en/download/index.jsp">
+          <img alt="Java" src="images/getjava_sm.gif" />
+        </a>
+        <br />
+        <br />
+        For more information about Preferance, please, visit:
+        <br />
+        <ul>
+          <li>
+            <a href="http://en.wikipedia.org/wiki/Preferans">
+              Wikipedia
+            </a>
+          </li>
+          <li>
+            <a href="http://www.pagat.com/rams/ruspref.html">
+              www.pagat.com/rams/ruspref.html
+            </a>
+          </li>
+          <li>
+            <a href="http://www.pref.md/">Moldova Preferance society</a>
+          </li>
+        </ul>
+      </p>
+    </section>
+  </body>
+</document>

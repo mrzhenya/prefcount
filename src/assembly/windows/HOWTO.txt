@@ -1,0 +1,32 @@
+PACKAGING FOR WINDOWS
+==============================================================
+To create an executable for Windows, we use utilityJexePack:
+<http://www.duckware.com/jexepack/>. Note that you can use
+this utility for free, but every time you run the packaged exe
+file, you will get a "please register" note (ones per run).
+When you get annoyed enough, you can either purchase a license
+(runs about $100, unfortunately) or email me and I can do
+the packaging myself.
+
+Another tool is JExeCreator. It's a GUI tool and it's cheaper
+($75) - <http://www.ucware.com/jexec>, but there is no command
+line functionality.
+
+
+HOW TO GENERATE AN EXE FILE USING JEXEPACK
+==============================================================
+Put the configuration file (prefcount.ini), the windows icon
+file (PrefCount.ico), and the executable jar file into the
+same directory, navigate there and execute the jexepack command
+with the configuration file argument on the command line:
+
+    jexepack @prefcount.ini
+
+This will create an executable PrefCount.exe which you can run,
+assuming the jre version > 1.5 is installed on your system.
+
+Make sure names of the packaged files match the ones in the
+configuration file. You can also modify other configuration
+settings in the ini file - for full list of options, please, see
+the JexePack website.
+

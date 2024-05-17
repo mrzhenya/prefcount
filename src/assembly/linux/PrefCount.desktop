@@ -1,0 +1,22 @@
+[Desktop Entry]
+Comment=PrefCount is a program to compute results for a Russian "Preferance" card game.
+Comment[en_US]=PrefCount is a program to compute results for a Russian "Preferance" card game.
+Comment[ru_RU]=PrefCount это программа которая помогает подводить итог в игре в Преферанс.
+Encoding=UTF-8
+Exec='@INSTALLDIR@/bin/run.sh'
+GenericName=PrefCount - the Preferance helper.
+GenericName[en_US]=PrefCount - the Preferance scores helper.
+GenericName[ru_RU]=PrefCount - подсчет результатов в Преферансе.
+Icon=@INSTALLDIR@/files/PrefCount-128x128.png
+MimeType=
+Name=PrefCount
+Name[en_US]=PrefCount
+Name[ru_RU]=PrefCount
+Path=
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DCOP-ServiceType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

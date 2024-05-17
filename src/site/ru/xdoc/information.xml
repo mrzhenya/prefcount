@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Общая информация</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>ПрефКаунт</author>
+    <author>ПрефКаунт информация</author>
+    <author>Преферанс</author>
+    <author>карточные игры</author>
+    <author>преферанс посчитать</author>
+  </properties>
+  <body>
+
+    <!-- Rambler's Top100 counter -->
+    <div style="display: none;">
+      <img src="http://counter.rambler.ru/top100.cnt?1348433" alt="" width="1" height="1" border="0" />
+    </div>
+
+    <section name="Общая информация.">
+      <p>
+        Системные требования:
+        <ul>
+          <li>Windows ME/2000/XP/Vista или Linux/Unix или Mac OS 9/X;</li>
+          <li>Java Runtime Environment (JRE) версия 1.5 или выше.</li>
+        </ul>
+        <br />
+        Скачать Java:
+        <a href="http://java.com/en/download/index.jsp">
+          <img alt="Java" src="images/getjava_sm.gif" />
+        </a>
+        <br />
+        <br />
+        Полезные ссылки любителям преферанса:
+        <br />
+        <ul>
+          <li>
+            <a href="http://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D0%BD%D1%81">
+              Википедия о Преферансе
+            </a>
+          </li>
+          <li>
+            <a href="http://www.marriage.ru/codex/">Кодекс Преферанса</a>
+          </li>
+          <li>
+            <a href="http://www.marriage.ru/">Сайт клуба "Марьяж"</a>
+          </li>
+          <li>
+            <a href="http://pref-game1.narod.ru/">Полезный сайт о Преферансе</a>
+          </li>
+          <li>
+            <a href="http://www.pref.md/">Преферансное сообщество Молдовы</a>
+          </li>
+<!--
+          <li>
+            <a href="http://raitpref.hotbox.ru/">Салехардский Преф-Клуб</a>
+          </li>
+-->
+        </ul>
+      </p>
+    </section>
+    <section name="Реклама">
+      <a href="http://livegamerus.net" title="LiveGameRus - Портал игровых развлечений" target="_blank">
+        <img alt="LiveGameRus - Игры On-Line" src="http://livegamerus.net/image/banner/1pref100x100.gif" border="0" />
+      </a>
+    </section>
+  </body>
+</document>

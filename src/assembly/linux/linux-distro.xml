@@ -1,0 +1,61 @@
+<assembly>
+  <id>linux</id>
+  <!-- This is an assembly descriptor for creating linux distribution files;
+       Note that this assembly assumes the executable jar
+       has already been built (jar-runable assembly) -->
+  <formats>
+    <format>tar.gz</format>
+    <format>tar.bz2</format>
+  </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <files>
+    <file>
+      <source>src/assembly/PrefCount-license.txt</source>
+    </file>
+    <file>
+      <source>src/assembly/PrefCount-license.pdf</source>
+    </file>
+    <file>
+      <source>src/assembly/linux/README.txt</source>
+    </file>
+    <file>
+      <source>src/assembly/linux/README-RUS.pdf</source>
+    </file>
+    <file>
+      <source>src/assembly/linux/README-ENG.pdf</source>
+    </file>
+    <file>
+      <source>src/assembly/linux/install.sh</source>
+      <fileMode>0755</fileMode>
+    </file>
+    <file>
+      <source>src/assembly/linux/PrefCount.desktop</source>
+      <outputDirectory>files</outputDirectory>
+    </file>
+  </files>
+  <fileSets>
+    <fileSet>
+      <directory>src/assembly/linux</directory>
+      <outputDirectory>bin</outputDirectory>
+      <includes>
+        <include>run.sh</include>
+        <include>uninstall.sh</include>
+      </includes>
+      <fileMode>0755</fileMode>
+    </fileSet>
+    <fileSet>
+      <directory>target</directory>
+      <outputDirectory>files</outputDirectory>
+      <includes>
+        <include>*-jar-runable.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src/art/app-image</directory>
+      <outputDirectory>files</outputDirectory>
+      <includes>
+        <include>*.png</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</assembly>

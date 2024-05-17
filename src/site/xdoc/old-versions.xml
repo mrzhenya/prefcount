@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Old versions</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>Russian card games</author>
+    <author>PrefCount download</author>
+    <author>PrefCount get</author>
+    <author>PrefCount run</author>
+  </properties>
+  <body>
+    <p>
+      Below, you will find links to download PrefCount's old releases.
+    </p>
+    <section name="Version 0.2.">
+      <a href="http://downloads.curre.net/get.php?id=24">PrefCount-0.2-jar-runable.jar</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=20">prefcount-0.2-win.zip</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=19">prefcount-0.2-win.rar</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=15">prefcount-0.2-mac.dmg</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=16">prefcount-0.2-mac.zip</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=18">prefcount-0.2-linux.tar.gz</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=17">prefcount-0.2-linux.tar.bz2</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=22">prefcount-0.2-src.tar.gz</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=21">prefcount-0.2-src.tar.bz2</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=23">prefcount-0.2-src.zip</a>
+      <br/>
+    </section>
+
+    <section name="Version 0.1.">
+      <a href="http://downloads.curre.net/get.php?id=12">prefcount-0.1-jar-runable.jar</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=10">prefcount-0.1-win.zip</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=11">prefcount-0.1-win.rar</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=5">prefcount-0.1-mac.dmg</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=6">prefcount-0.1-mac.zip</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=4">prefcount-0.1-linux.tar.gz</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=3">prefcount-0.1-linux.tar.bz2</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=8">prefcount-0.1-src.tar.gz</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=7">prefcount-0.1-src.tar.bz2</a>
+      <br/>
+      <a href="http://downloads.curre.net/get.php?id=9">prefcount-0.1-src.zip</a>
+      <br/>
+    </section>
+  </body>
+</document>
+    

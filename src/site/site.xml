@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PrefCount">
+  <skin>
+    <groupId>org.apache.maven/skins</groupId>
+    <artifactId>maven-stylus-skin</artifactId>
+    <version>1.0.1</version>
+  </skin>
+  <bannerLeft>
+    <name>PrefCount</name>
+    <src>images/banner-left.jpg</src>
+    <href>${project.url}/index.html</href>
+  </bannerLeft>
+  <bannerRight>
+    <src>images/banner-right.jpg</src>
+  </bannerRight>
+  <publishDate position="navigation-bottom" format="MM-dd-yy" />
+  <body>
+    <menu name="Main">
+      <item name="Introduction" href="index.html" />
+      <item name="General Information" href="information.html" />
+      <item name="Screenshots" href="screenshots.html" />
+      <item name="How to count" href="how-to-count.html" />
+      <item name="Game reference" href="pref-reference.html" />
+      <item name="FAQ" href="faq.html" />
+    </menu>
+    <menu name="Get PrefCount">
+      <item name="Download" href="download.html" />
+      <item name="Release Notes" href="release-notes.html" />
+      <item name="License" href="license.html" />
+    </menu>
+    <menu ref="reports" />
+  </body>
+  <poweredBy>
+    <logo name="Maven" href="http://maven.apache.org/"
+          img="images/maven-feather.png" />
+  </poweredBy>
+</project>

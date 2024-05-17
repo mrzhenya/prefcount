@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Картинки</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>ПрефКаунт</author>
+    <author>ПрефКаунт информация</author>
+    <author>ПрефКаунт картинки</author>
+    <author>Преферанс</author>
+    <author>карточные игры</author>
+    <author>преферанс посчитать</author>
+  </properties>
+  <body>
+
+    <!-- Rambler's Top100 counter -->
+    <div style="display: none;">
+      <img src="http://counter.rambler.ru/top100.cnt?1348433" alt="" width="1" height="1" border="0" />
+    </div>
+
+    <section name="Картинки (скриншоты).">
+      <p>
+        Здесь Вы можете посмотреть на то как выглядит программа PrefCount.
+        Обратите внимание на то что PrefCount имеет много различных "оболочек",
+        которые позволят Вам сделать так чтобы программа выглядела так как Вам
+        больше понравится.
+        <br />
+        <br />
+        Кликните по картинке для её увеличения/уменьшения.
+      </p>
+      <subsection name="Windows.">
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Кликните для увеличения/уменьшения картинки">
+          <img src="images/win-1-t.jpg" alt="Windows картинка 1" />
+        </div>
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Кликните для увеличения/уменьшения картинки">
+          <img src="images/win-2-t.jpg" alt="Windows картинка 2" />
+        </div>
+        <div class="lineBreaker">
+          Вот так программа выглядит на Windows (XP).
+        </div>
+      </subsection>
+      <subsection name="Mac.">
+      </subsection>
+      <div class="screenshot" onclick="toggleImageSize(this);"
+           title="Кликните для увеличения/уменьшения картинки">
+        <img src="images/mac-osx-1-t.jpg" alt="Mac картинка 1" />
+      </div>
+      <div class="screenshot" onclick="toggleImageSize(this);"
+           title="Кликните для увеличения/уменьшения картинки">
+        <img src="images/mac-osx-2-t.jpg" alt="Mac картинка 2" />
+      </div>
+      <div class="screenshot" onclick="toggleImageSize(this);"
+           title="Кликните для увеличения/уменьшения картинки">
+        <img src="images/mac-osx-3-t.jpg" alt="Mac картинка 3" />
+      </div>
+      <div class="lineBreaker">
+        Вот так программа выглядит на Mac (OS X).
+      </div>
+      <subsection name="Linux.">
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Кликните для увеличения/уменьшения картинки">
+          <img src="images/linux-1-t.jpg" alt="Linux картинка 1" />
+        </div>
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Кликните для увеличения/уменьшения картинки">
+          <img src="images/linux-2-t.jpg" alt="Linux картинка 2" />
+        </div>
+        <div class="screenshot" onclick="toggleImageSize(this);"
+             title="Кликните для увеличения/уменьшения картинки">
+          <img src="images/linux-3-t.jpg" alt="Linux картинка 3" />
+        </div>
+        <div class="lineBreaker">
+          Вот так программа выглядит на Linux (OpenSuse).
+        </div>
+      </subsection>
+    </section>
+  </body>
+</document>
+    

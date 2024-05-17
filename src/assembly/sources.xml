@@ -1,0 +1,27 @@
+<assembly>
+  <!-- This is a descriptor for creating a source code distribution -->
+  <id>src</id>
+  <formats>
+    <format>tar.gz</format>
+    <format>tar.bz2</format>
+    <format>zip</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <includes>
+        <include>pom.xml</include>
+      </includes>
+      <useDefaultExcludes>true</useDefaultExcludes>
+    </fileSet>
+    <fileSet>
+      <directory>src</directory>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <excludes>
+        <exclude>*.txt</exclude>
+      </excludes>
+      <!-- filtering does not work yet - waiting for the new plugin version -->
+      <filtered>true</filtered>
+    </fileSet>
+  </fileSets>
+</assembly>
+    

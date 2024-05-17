@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>FAQ</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>Russian card game</author>
+    <author>PrefCount about</author>
+    <author>PrefCount information</author>
+  </properties>
+  <body>
+    <section name="Frequently Asked Questions.">
+      <p>
+        Nothing here yet.
+      </p>
+    </section>
+  </body>
+</document>

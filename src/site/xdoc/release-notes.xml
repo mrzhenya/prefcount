@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Release Notes</title>
+    <!-- author tags are actually the keywords for html meta tag
+         (note, that keywords "PrefCount" and "Preferance" are added by default) -->
+    <author>Russian card game</author>
+    <author>PrefCount about</author>
+    <author>PrefCount information</author>
+  </properties>
+  <body>
+    <section name="Release Notes.">
+
+      <subsection name="Version 0.3">
+        Release date: 22 December 2008.
+        <ul>
+          <li>Bug fixes and small improvements;</li>
+        </ul>
+      </subsection>
+
+      <subsection name="Version 0.2">
+        Release date: 16 October 2008.
+        <ul>
+          <li>Simplified user interface;</li>
+          <li>Added printing functionality;</li>
+          <li>Added tooltips for the scoreboard items;</li>
+          <li>Added count winnings functionality;</li>
+          <li>Add more score compute options (game type and mount divisibility);</li>
+          <li>Added help (about Preferance, how to count, etc.);</li>
+          <li>Added native look-and-feel theme;</li>
+          <li>Numerous improvements and bug fixes.</li>
+        </ul>
+      </subsection>
+
+      <subsection name="Version 0.1">
+        Release date: 10 February 2008. Initial release 0.1 of the application
+        has all the necessary functionality for calculating the final scores of
+        a Preferance game. However, this release does not print or save scores.
+      </subsection>
+
+    </section>
+  </body>
+</document>
+    
