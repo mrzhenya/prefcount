@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -36,7 +36,7 @@ import net.curre.prefcount.bean.GameResultBean;
 import net.curre.prefcount.bean.PlayerStatistics;
 import net.curre.prefcount.bean.TooltipLocationsMap;
 import net.curre.prefcount.gui.aa.AAJPanel;
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
+import net.curre.prefcount.gui.theme.LafTheme;
 import net.curre.prefcount.gui.type.Place;
 import static net.curre.prefcount.gui.type.Place.EAST;
 import static net.curre.prefcount.gui.type.Place.NORTH;
@@ -57,11 +57,10 @@ import static net.curre.prefcount.gui.type.ScoreItem.WHIST_NORTH_SALDO;
 import static net.curre.prefcount.gui.type.ScoreItem.WHIST_SALDO_TOTAL;
 import static net.curre.prefcount.gui.type.ScoreItem.WHIST_SOUTH_SALDO;
 import static net.curre.prefcount.gui.type.ScoreItem.WHIST_WEST_SALDO;
-import net.curre.prefcount.service.LafThemeService;
 import net.curre.prefcount.util.LocaleExt;
 import net.curre.prefcount.util.Utilities;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Object of this class represents the score board panel
@@ -105,8 +104,8 @@ public class ScoreBoardPanel extends AAJPanel {
     final int newWidth = getWidth();
     final int newHeight = getHeight();
 
-    final PrefSkin skin = LafThemeService.getInstance().getCurrentSkin();
-    drawScoreBoard((Graphics2D) g, newWidth, newHeight, 0, 0, null, skin);
+    final LafTheme lafTheme = PrefCountRegistry.getInstance().getLafThemeService().getCurrentLafTheme();
+    drawScoreBoard((Graphics2D) g, newWidth, newHeight, 0, 0, null, lafTheme);
   }
 
   /** {@inheritDoc} */
@@ -152,13 +151,13 @@ public class ScoreBoardPanel extends AAJPanel {
    * @param newWidth      current width.
    * @param newHeight     current height.
    * @param offsetX       offset X coordinate.
-   * @param offsetY       offset Y coordunate.
+   * @param offsetY       offset Y coordinate.
    * @param playersNumber when this value is not null, only the score board
    *                      template will be printed (for the specified number
-   * @param skin          pref skin to use.
+   * @param lafTheme          pref skin to use.
    */
   protected void drawScoreBoard(Graphics2D g2, int newWidth, int newHeight,
-                                int offsetX, int offsetY, Integer playersNumber, PrefSkin skin) {
+                                int offsetX, int offsetY, Integer playersNumber, LafTheme lafTheme) {
     this.locationsMap.computeLocations(newWidth, newHeight, offsetX, offsetY, false);
 
     final int margin = ScoreBoardLocationsMap.MARGIN;
@@ -176,19 +175,19 @@ public class ScoreBoardPanel extends AAJPanel {
     final int poolMountY = this.locationsMap.poolMountDividerY;
 
     // drawing nice borders
-    Color bordColor = Utilities.createDarkerColor(skin.getMainBackgroundColor(), 20);
+    Color bordColor = Utilities.createDarkerColor(lafTheme.getMainBackgroundColor(), 20);
     g2.setColor(bordColor);
     g2.drawRect(4 + offsetX, 4 + offsetY, width - 8, height - 8);
     bordColor = Utilities.createDarkerColor(bordColor, 20);
     g2.setColor(bordColor);
     g2.drawRect(5 + offsetX, 5 + offsetY, width - 10, height - 10);
 
-    // painting score board backgound
-    g2.setPaint(skin.getBoardBackgroundPaint());
+    // painting score board background
+    g2.setPaint(lafTheme.getBoardBackgroundPaint());
     g2.fillRect(6 + offsetX, 6 + offsetY, width - 11, height - 11);
 
     // player sections lines
-    prepareBoardLinePen(g2, skin);
+    prepareBoardLinePen(g2, lafTheme);
     Ellipse2D e = new Ellipse2D.Double();
     e.setFrameFromCenter(centerX + 1d, centerY, centerX + 32d, centerY + 30d);
     g2.draw(e);
@@ -197,15 +196,15 @@ public class ScoreBoardPanel extends AAJPanel {
     GameResultBean resultBean = PrefCountRegistry.getInstance().getGameResultBean();
     Map<Place, PlayerStatistics> statistics = resultBean.getPlayerStats();
 
-    final int numPlayers = playersNumber == null ? statistics.size() : playersNumber.intValue();
+    final int numPlayers = playersNumber == null ? statistics.size() : playersNumber;
     switch (numPlayers) {
       case 3:
         // drawing players main sections lines
-        g2.setPaint(skin.getMainSectionLinesPain());
+        g2.setPaint(lafTheme.getMainSectionLinesPain());
         g2.drawLine(margin + offsetX, height - margin + offsetY, centerX, centerY);         // /
         g2.drawLine(centerX, centerY, width - margin + offsetX, height - margin + offsetY); // \
         g2.drawLine(centerX, centerY, centerX, margin + offsetY);                           // |
-        g2.setColor(skin.getBoardLineColor());
+        g2.setColor(lafTheme.getBoardLineColor());
 
         // drawing field division lines (to separate mount from pool, etc.)
         g2.drawLine(twoFifthX, whistPoolY, whistPoolX, whistPoolY);             // - (south-bottom)
@@ -223,23 +222,23 @@ public class ScoreBoardPanel extends AAJPanel {
 
         if (playersNumber == null) {
           // drawing player 0 information
-          drawPlayerScores(EAST, g2, skin);
+          drawPlayerScores(EAST, g2, lafTheme);
 
           // drawing player 1 information
-          drawPlayerScores(SOUTH, g2, skin);
+          drawPlayerScores(SOUTH, g2, lafTheme);
 
           // drawing player 2 information
-          drawPlayerScores(WEST, g2, skin);
+          drawPlayerScores(WEST, g2, lafTheme);
         }
 
         break;
 
       case 4:
         // drawing players main sections lines
-        g2.setPaint(skin.getMainSectionLinesPain());
+        g2.setPaint(lafTheme.getMainSectionLinesPain());
         g2.drawLine(margin + offsetX, margin + offsetY, width - margin + offsetX, height - margin + offsetY); // \
         g2.drawLine(margin + offsetX, height - margin + offsetY, width - margin + offsetX, margin + offsetY); // /
-        g2.setColor(skin.getBoardLineColor());
+        g2.setColor(lafTheme.getBoardLineColor());
 
         // drawing field division lines (to separate mount from pool, etc.)
         g2.drawLine(twoFifthX, whistPoolY, whistPoolX, whistPoolY);       // - (bottom whist-pool)
@@ -272,16 +271,16 @@ public class ScoreBoardPanel extends AAJPanel {
 
         if (playersNumber == null) {
           // displaying player 0 information
-          drawPlayerScores(NORTH, g2, skin);
+          drawPlayerScores(NORTH, g2, lafTheme);
 
           // displaying player 1 information
-          drawPlayerScores(EAST, g2, skin);
+          drawPlayerScores(EAST, g2, lafTheme);
 
           // displaying player 2 information
-          drawPlayerScores(SOUTH, g2, skin);
+          drawPlayerScores(SOUTH, g2, lafTheme);
 
           // displaying player 3 information
-          drawPlayerScores(WEST, g2, skin);
+          drawPlayerScores(WEST, g2, lafTheme);
         }
         break;
 
@@ -309,30 +308,28 @@ public class ScoreBoardPanel extends AAJPanel {
     return this.locationsMap;
   }
 
-  /***************** PRIVATE METHODS *******************/
-
   /**
    * Method to draw all player scores.
    *
    * @param place Current player place.
    * @param g2    Graphics object to use.
-   * @param skin  Current skin.
+   * @param lafTheme  Current skin.
    */
-  private void drawPlayerScores(Place place, Graphics2D g2, PrefSkin skin) {
+  private void drawPlayerScores(Place place, Graphics2D g2, LafTheme lafTheme) {
 
     GameResultBean resultBean = PrefCountRegistry.getInstance().getGameResultBean();
     PlayerStatistics stats = resultBean.getPlayerStats().get(place);
     Map<ScoreItem, Point2D.Double> locations = getLocationsMap().getLocationsMap(place);
 
-    // drawing player's place letter (S-outh, E-ast...)
-    preparePlayerNamePen(g2, skin);
+    // drawing player's place letter (South, East...)
+    preparePlayerNamePen(g2, lafTheme);
     Point.Double point = locations.get(PLAYER_NAME);
     String placeChar = LocaleExt.getString(place.shortKey);
     g2.drawString(placeChar, (float) point.getX(), (float) point.getY());
     this.ttLocationsMap.addRectangleLocation(PLAYER_NAME, place, g2, point, placeChar);
 
     // drawing player's mount value
-    preparePlayerScorePen(g2, skin);
+    preparePlayerScorePen(g2, lafTheme);
     point = locations.get(PLAYER_MOUNT);
     final String mount = getStringFromInt(stats.getMountain());
     g2.drawString(mount, (float) point.getX(), (float) point.getY());
@@ -351,12 +348,12 @@ public class ScoreBoardPanel extends AAJPanel {
     if (resultBean.isFinalScoresReady()) {
       // whist saldo
       for (ScoreItem other : getLocationsMap().getOtherWhistSaldoItems(place)) {
-        final int wSaldo = stats.getWhistSaldoMap().get(other.place).intValue();
+        final int wSaldo = stats.getWhistSaldoMap().get(other.place);
         drawWhistSaldo(g2, wSaldo, locations.get(other), false, place, other);
       }
 
       // total whist saldo
-      final int wSaldo = stats.getWhistSaldoAgainstPlayer(place).intValue();
+      final int wSaldo = stats.getWhistSaldoAgainstPlayer(place);
       drawWhistSaldo(g2, wSaldo, locations.get(WHIST_SALDO_TOTAL), true, place, WHIST_SALDO_TOTAL);
 
       // new mountain and new (closed) pool
@@ -365,9 +362,9 @@ public class ScoreBoardPanel extends AAJPanel {
       drawClosedPool(g2, stats, locations.get(PLAYER_POOL), isVertical, place);
 
       // final mountain and final scores 
-      preparePlayerTotalsPen(g2, skin);
+      preparePlayerTotalsPen(g2, lafTheme);
       drawFinalMountain(g2, stats, locations.get(FINAL_MOUNT), place);
-      drawFinalScore(g2, stats, locations.get(FINAL_SCORE), skin, place);
+      drawFinalScore(g2, stats, locations.get(FINAL_SCORE), lafTheme, place);
 
     } else {
       this.ttLocationsMap.removeLocation(place, WHIST_SALDO_TOTAL, WHIST_EAST_SALDO, WHIST_SOUTH_SALDO,
@@ -459,12 +456,12 @@ public class ScoreBoardPanel extends AAJPanel {
   private void drawNewMountain(Graphics2D g2, PlayerStatistics stats,
                                final Point2D.Double point, final boolean vertical, Place place) {
     int newMount = stats.getNewMountain();
-    final String newMountStr = getStringFromInt(Integer.valueOf(newMount));
+    final String newMountStr = getStringFromInt(newMount);
     final float width1 = (float) Utilities.determineSizeOfString(g2, stats.getMountain().toString()).getWidth();
     final int amnistMount = newMount - stats.getMinMountain();
     final String amnistMountStr = amnistMount + ".";
     final String mountFixStr = stats.getMountFix() == null ? null :
-                               (amnistMount + stats.getMountFix().intValue()) + ".";
+                               (amnistMount + stats.getMountFix()) + ".";
     final float x = (float) point.getX();
     final float y = (float) point.getY();
     Stroke tempStroke = g2.getStroke();
@@ -535,17 +532,17 @@ public class ScoreBoardPanel extends AAJPanel {
   }
 
   /**
-   * Draws final score and a thombus around it
+   * Draws final score and a thrombus around it
    * at the given location.
    *
    * @param g2    Graphics2D to use.
    * @param stats Player statistics object.
    * @param point Point's coordinates.
-   * @param skin  current skin.
+   * @param lafTheme  current skin.
    * @param place player's place.
    */
   private void drawFinalScore(Graphics2D g2, PlayerStatistics stats,
-                              final Point2D.Double point, PrefSkin skin, Place place) {
+                              final Point2D.Double point, LafTheme lafTheme, Place place) {
     final float x = (float) point.getX();
     final float y = (float) point.getY();
     final String score = String.valueOf(stats.getFinalScoreInWhists());
@@ -568,7 +565,7 @@ public class ScoreBoardPanel extends AAJPanel {
     polygon.lineTo(leftX, realCenterY);
     polygon.closePath();
     g2.draw(polygon);
-    g2.setPaint(skin.getFinalScoreBackgroundPaint());
+    g2.setPaint(lafTheme.getFinalScoreBackgroundPaint());
     g2.fill(polygon);
 
     // adding the tooltip location
@@ -580,13 +577,13 @@ public class ScoreBoardPanel extends AAJPanel {
    * ant the end; if the passed value is null an empty string
    * is returned.
    *
-   * @param value Inetger value to convert.
+   * @param value Integer value to convert.
    * @return String representation of the passed integer
    *         with a period at the end or an empty string
    *         if the passed integer is null.
    */
   private static String getStringFromInt(final Integer value) {
-    return value == null ? "" : value.toString() + ".";
+    return value == null ? "" : value + ".";
   }
 
   /**
@@ -594,11 +591,11 @@ public class ScoreBoardPanel extends AAJPanel {
    * for the score board lines painting.
    *
    * @param g2   Graphics object.
-   * @param skin Current prefcount skin.
+   * @param lafTheme Current prefcount LAF theme.
    */
-  private static void prepareBoardLinePen(Graphics2D g2, PrefSkin skin) {
-    g2.setStroke(skin.getBoardLineStroke());
-    g2.setColor(skin.getBoardLineColor());
+  private static void prepareBoardLinePen(Graphics2D g2, LafTheme lafTheme) {
+    g2.setStroke(lafTheme.getBoardLineStroke());
+    g2.setColor(lafTheme.getBoardLineColor());
   }
 
   /**
@@ -606,12 +603,12 @@ public class ScoreBoardPanel extends AAJPanel {
    * object for the player name painting.
    *
    * @param g2   Graphics object.
-   * @param skin Current prefcount skin.
+   * @param lafTheme Current prefcount skin.
    */
-  private static void preparePlayerNamePen(Graphics2D g2, PrefSkin skin) {
-    g2.setColor(skin.getPlayerNameColor());
-    g2.setFont(skin.getPlayerNameFont());
-    g2.setStroke(skin.getPlayerNameStroke());
+  private static void preparePlayerNamePen(Graphics2D g2, LafTheme lafTheme) {
+    g2.setColor(lafTheme.getPlayerNameColor());
+    g2.setFont(lafTheme.getPlayerNameFont());
+    g2.setStroke(lafTheme.getPlayerNameStroke());
   }
 
   /**
@@ -619,12 +616,12 @@ public class ScoreBoardPanel extends AAJPanel {
    * object for the player score painting.
    *
    * @param g2   Graphics object.
-   * @param skin Current prefcount skin.
+   * @param lafTheme Current prefcount skin.
    */
-  private static void preparePlayerScorePen(Graphics2D g2, PrefSkin skin) {
-    g2.setColor(skin.getPlayerScoreColor());
-    g2.setFont(skin.getPlayerScoreFont());
-    g2.setStroke(skin.getPlayerScoreStroke());
+  private static void preparePlayerScorePen(Graphics2D g2, LafTheme lafTheme) {
+    g2.setColor(lafTheme.getPlayerScoreColor());
+    g2.setFont(lafTheme.getPlayerScoreFont());
+    g2.setStroke(lafTheme.getPlayerScoreStroke());
   }
 
   /**
@@ -632,12 +629,12 @@ public class ScoreBoardPanel extends AAJPanel {
    * object for the player (score) totals painting.
    *
    * @param g2   Graphics object.
-   * @param skin Current prefcount skin.
+   * @param lafTheme Current prefcount skin.
    */
-  private static void preparePlayerTotalsPen(Graphics2D g2, PrefSkin skin) {
-    g2.setColor(skin.getPlayerTotalsColor());
-    g2.setFont(skin.getPlayerTotalsFont());
-    g2.setStroke(skin.getPlayerTotalsStroke());
+  private static void preparePlayerTotalsPen(Graphics2D g2, LafTheme lafTheme) {
+    g2.setColor(lafTheme.getPlayerTotalsColor());
+    g2.setFont(lafTheme.getPlayerTotalsFont());
+    g2.setStroke(lafTheme.getPlayerTotalsStroke());
   }
 
   /**
@@ -663,7 +660,7 @@ public class ScoreBoardPanel extends AAJPanel {
       if (resultBean.isFinalScoresReady()) {
         Integer fix = stats.getWhistFixesMap().get(other.place);
         if (fix != null) {
-          String fixStr = (stats.getWhistsAgainstPlayer(other.place).intValue() + fix.intValue()) + ".";
+          String fixStr = (stats.getWhistsAgainstPlayer(other.place) + fix) + ".";
           float fixX = (float) (point.getX() + 2 + Utilities.determineSizeOfString(g2, whistStr).getWidth());
           g2.drawString(fixStr, fixX, (float) point.getY());
           Point2D.Double fPoint = new Point2D.Double(fixX, point.getY());
@@ -678,5 +675,4 @@ public class ScoreBoardPanel extends AAJPanel {
       }
     }
   }
-
 }

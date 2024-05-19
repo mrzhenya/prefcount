@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -33,7 +33,7 @@ import net.curre.prefcount.util.LocaleExt;
 public abstract class DialogInnerPanel extends JPanel {
 
   /** Enumeration for inner panel relative position. */
-  public static enum PanelPosition {
+  public enum PanelPosition {
 
     /** Indicates that this is the first panel. */
     FIRST,
@@ -44,10 +44,10 @@ public abstract class DialogInnerPanel extends JPanel {
   }
 
   /** Panel relative position (first, middle, last). */
-  private PanelPosition panelPosition;
+  private final PanelPosition panelPosition;
 
   /** Header message resource key. */
-  private String headerMessageKey;
+  private final String headerMessageKey;
 
   /** Reference to the locale sensitive components. */
   protected Collection<Component> localeSensitiveComps;
@@ -61,7 +61,7 @@ public abstract class DialogInnerPanel extends JPanel {
   public DialogInnerPanel(String headerKey, PanelPosition position) {
     this.panelPosition = position;
     this.headerMessageKey = headerKey;
-    this.localeSensitiveComps = new ArrayList<Component>();
+    this.localeSensitiveComps = new ArrayList<>();
     super.setOpaque(false);
   }
 

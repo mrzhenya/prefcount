@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -31,7 +31,7 @@ import net.curre.prefcount.gui.type.WindowComponent;
 import net.curre.prefcount.util.LocaleExt;
 
 /**
- * Object of this class represents a frame with help infomation.
+ * Object of this class represents a frame with help information.
  * <p/>
  * Created date: Jun 18, 2008
  *
@@ -39,17 +39,17 @@ import net.curre.prefcount.util.LocaleExt;
  */
 public class HelpFrame extends JFrame {
 
-  /** Name of the how to count help file (w/o extention). */
+  /** Name of the how to count help file (w/o extension). */
   private static final String HOW_TO_COUNT_FILENAME = "howToCount";
 
-  /** Name of the preference reference help file (w/o extention). */
+  /** Name of the preference reference help file (w/o extension). */
   private static final String PREF_REFERENCE_FILENAME = "prefReference";
 
-  /** Name of the common rules help file (w/o extention). */
+  /** Name of the common rules help file (w/o extension). */
   private static final String COMMON_RULES_FILENAME = "commonRules";
 
   /** Reference to the text pane object. */
-  private JTextPane textPane;
+  private final JTextPane textPane;
 
   /** Current help type enum. */
   private WindowComponent currHelpEnum;
@@ -134,5 +134,4 @@ public class HelpFrame extends JFrame {
     super.pack();
     super.setVisible(true);
   }
-
 }

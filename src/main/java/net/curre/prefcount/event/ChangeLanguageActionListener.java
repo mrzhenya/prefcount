@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -33,15 +33,15 @@ public class ChangeLanguageActionListener
     implements ItemListener, ActionListener {
 
   /**
-   * The locale identifier (case insensitive language name)
+   * The locale identifier (case-insensitive language name)
    * to which to switch.
    */
-  private String localeId;
+  private final String localeId;
 
   /**
    * Constructor.
    *
-   * @param localeId The locale identifier (case insensitive language name).
+   * @param localeId The locale identifier (case-insensitive language name).
    */
   public ChangeLanguageActionListener(String localeId) {
     this.localeId = localeId;
@@ -75,5 +75,4 @@ public class ChangeLanguageActionListener
   private void changeLanguage() {
     PrefCountRegistry.getInstance().setCurrentLocale(localeId);
   }
-
 }

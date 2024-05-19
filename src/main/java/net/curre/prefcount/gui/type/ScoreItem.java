@@ -1,7 +1,15 @@
-/**
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as 
- * published by the Free Software Foundation;
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package net.curre.prefcount.gui.type;
@@ -42,28 +50,28 @@ public enum ScoreItem {
   /** Key for the closed pool's location. */
   PLAYER_POOL_CLOSED(null, "pref.scoreboard.tooltip.poolClosed", false),
 
-  /** Key for the whist agains the North location. */
+  /** Key for the whist against the North location. */
   WHIST_NORTH(NORTH, "pref.scoreboard.tooltip.whist", true),
 
-  /** Key for the whist agains the East location. */
+  /** Key for the whist against the East location. */
   WHIST_EAST(EAST, "pref.scoreboard.tooltip.whist", true),
 
-  /** Key for the whist agains the South location. */
+  /** Key for the whist against the South location. */
   WHIST_SOUTH(SOUTH, "pref.scoreboard.tooltip.whist", true),
 
-  /** Key for the whist agains the West location. */
+  /** Key for the whist against the West location. */
   WHIST_WEST(WEST, "pref.scoreboard.tooltip.whist", true),
 
-  /** Key for the whist fix agains the North location. */
+  /** Key for the whist fix against the North location. */
   WHIST_FIX_NORTH(NORTH, "pref.scoreboard.tooltip.whistFix", true),
 
-  /** Key for the whist fix agains the East location. */
+  /** Key for the whist fix against the East location. */
   WHIST_FIX_EAST(EAST, "pref.scoreboard.tooltip.whistFix", true),
 
-  /** Key for the whist fix agains the South location. */
+  /** Key for the whist fix against the South location. */
   WHIST_FIX_SOUTH(SOUTH, "pref.scoreboard.tooltip.whistFix", true),
 
-  /** Key for the whist fix agains the West location. */
+  /** Key for the whist fix against the West location. */
   WHIST_FIX_WEST(WEST, "pref.scoreboard.tooltip.whistFix", true),
 
   /** Key for the whist saldo with the North location. */
@@ -89,7 +97,7 @@ public enum ScoreItem {
 
   /**
    * This indicates that the item refers to a particular place
-   * (i.e. whists agains some player/place).
+   * (i.e. whists against some player/place).
    */
   public final Place place;
 
@@ -142,5 +150,4 @@ public enum ScoreItem {
         throw new IllegalArgumentException("Unable to determine whist fix item for place: " + whist + "!");
     }
   }
-
 }

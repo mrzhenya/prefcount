@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -17,9 +17,11 @@ package net.curre.prefcount.bean;
 import java.io.Serializable;
 
 import net.curre.prefcount.PrefCountRegistry;
-import net.curre.prefcount.gui.theme.skin.DefaultSkin;
+import net.curre.prefcount.gui.theme.LafThemeId;
 import net.curre.prefcount.gui.type.WindowComponent;
 import net.curre.prefcount.gui.type.Place;
+
+import static net.curre.prefcount.service.LafThemeService.DEFAULT_LAF_THEME_ID;
 
 /**
  * Object of this class represents a bean for storing
@@ -46,9 +48,6 @@ public class Settings implements Serializable {
   /** Default value for the dialog window frame height. */
   public static final int DEFAULT_DIALOG_FRAME_HEIGHT = 340;
 
-  /** Default value for the Look and Feel theme/skin ID. */
-  public static final String DEFAULT_LAF_SKIN_ID = DefaultSkin.NAME_KEY;
-
   /** Default preferance type option. */
   public static final String DEFAULT_PREF_TYPE = WindowComponent.LENINGRAD.name();
 
@@ -73,8 +72,8 @@ public class Settings implements Serializable {
   /** The dialog window frame height. */
   private int dialogFrameHeight;
 
-  /** Look and Feel theme/skin ID (resource key). */
-  private String lafSkinId;
+  /** Look and Feel theme/skin ID. */
+  private LafThemeId lafThemeId;
 
   /** Locale identifier (case insensitive language name). */
   private String localeId;
@@ -169,26 +168,23 @@ public class Settings implements Serializable {
   }
 
   /**
-   * Getter for the Look and Feel theme/skin ID (resource key).
-   *
-   * @return The Look and Feel theme/skin ID (resource key).
+   * Getter for the Look and Feel theme ID.
+   * @return The Look and Feel theme ID
    */
-  public String getLafSkinId() {
-    return lafSkinId;
+  public LafThemeId getLafThemeId() {
+    return this.lafThemeId;
   }
 
   /**
    * Setter for the Look and Feel theme/skin ID (resource key).
-   *
-   * @param lafSkinId The Look and Feel theme/skin ID (resource key).
+   * @param lafThemeId The Look and Feel theme/skin ID (resource key)
    */
-  public void setLafSkinId(String lafSkinId) {
-    this.lafSkinId = lafSkinId;
+  public void setLafThemeId(LafThemeId lafThemeId) {
+    this.lafThemeId = lafThemeId;
   }
 
   /**
-   * Getter for the locale identifier (case
-   * insensitive language name).
+   * Getter for the locale identifier (case-insensitive language name).
    *
    * @return The locale identifier (language name).
    */
@@ -197,17 +193,16 @@ public class Settings implements Serializable {
   }
 
   /**
-   * Setter for the locale identifier (case
-   * insensitive language name).
+   * Setter for the locale identifier (case-insensitive language name).
    *
-   * @param localeId Locale identifier (case insensitive language name).
+   * @param localeId Locale identifier (case-insensitive language name).
    */
   public void setLocaleId(String localeId) {
     this.localeId = localeId;
   }
 
   /**
-   * Getter for the the Preferance type option.
+   * Getter for the Preferance type option.
    *
    * @return WindowComponent enum name that represents the Preferance type option.
    */
@@ -266,32 +261,6 @@ public class Settings implements Serializable {
   }
 
   /**
-   * Tests if settings values are null and sets them to the
-   * default values if they are null. This is crucial when
-   * a newer application uses an older version of serialized
-   * settings object.
-   */
-  public void testSettings() {
-    if (this.lafSkinId == null) {
-      this.lafSkinId = DEFAULT_LAF_SKIN_ID;
-    }
-    if (this.localeId == null) {
-      this.localeId = PrefCountRegistry.DEFAULT_LOCALE_ID;
-    }
-    if (this.prefType == null) {
-      this.prefType = DEFAULT_PREF_TYPE;
-    }
-    if (this.playersNumber == null) {
-      this.playersNumber = DEFAULT_PLAYERS_NUMBER;
-    }
-    if (this.divisibleBy == null) {
-      this.divisibleBy = DEFAULT_DIVISIBLE_BY;
-    }
-  }
-
-  /** Private methods ********************** */
-
-  /**
    * Helper method to initialize all settings
    * properties to default values.
    */
@@ -300,11 +269,10 @@ public class Settings implements Serializable {
     this.mainFrameHeight = DEFAULT_MAIN_FRAME_HEIGHT;
     this.dialogFrameWidth = DEFAULT_DIALOG_FRAME_WIDTH;
     this.dialogFrameHeight = DEFAULT_DIALOG_FRAME_HEIGHT;
-    this.lafSkinId = DEFAULT_LAF_SKIN_ID;
+    this.lafThemeId = DEFAULT_LAF_THEME_ID;
     this.localeId = PrefCountRegistry.DEFAULT_LOCALE_ID;
     this.prefType = DEFAULT_PREF_TYPE;
     this.playersNumber = DEFAULT_PLAYERS_NUMBER;
     this.divisibleBy = DEFAULT_DIVISIBLE_BY;
   }
-
 }

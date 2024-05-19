@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -31,6 +31,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import net.curre.prefcount.App;
@@ -39,8 +40,8 @@ import net.curre.prefcount.gui.aa.AAJLabel;
 import net.curre.prefcount.gui.aa.AAJPanel;
 import net.curre.prefcount.gui.type.UIItem;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 /**
  * Object of this class represents a set of
@@ -53,16 +54,16 @@ import org.apache.commons.lang.time.FastDateFormat;
 public class Utilities {
 
   /** Private class logger. */
-  private static Logger log = Logger.getLogger(Utilities.class.toString());
+  private static final Logger log = Logger.getLogger(Utilities.class.toString());
 
   /** Enumeration tha represents a field type. */
-  public static enum FieldType {
+  public enum FieldType {
 
     UNDEFINED, INTEGER, DOUBLE
   }
 
   /** Enumeration tha represents a platform/os type. */
-  public static enum PlatformType {
+  public enum PlatformType {
 
     MAC_OS, LINUX, WINDOWS, UNKNOWN
   }
@@ -136,7 +137,7 @@ public class Utilities {
   public static int parseIntFromTextField(JTextField field) {
     if (field != null) {
       String value = field.getText().trim();
-      if (value.length() != 0) {
+      if (!value.isEmpty()) {
         return Integer.parseInt(value);
       }
     }
@@ -162,11 +163,11 @@ public class Utilities {
    * (image file is expected to be in the images/ directory
    * relative to the net.curre.prefcount.App class).
    *
-   * @param fileName File name without extention.
+   * @param fileName File name without extension.
    * @return The created ImageIcon object.
    */
   public static ImageIcon createImage(String fileName) {
-    return new ImageIcon(App.class.getResource("images/" + fileName + ".gif"));
+    return new ImageIcon(Objects.requireNonNull(App.class.getResource("images/" + fileName + ".gif")));
   }
 
   /**
@@ -240,10 +241,10 @@ public class Utilities {
 
   /** Prints available looks and feels. */
   public static void printLookAndFeels() {
-    UIManager.LookAndFeelInfo laf[] = UIManager.getInstalledLookAndFeels();
-    for (int i = 0, n = laf.length; i < n; i++) {
-      System.out.print("LAF Name: " + laf[i].getName() + "\t");
-      System.out.println("  LAF Class name: " + laf[i].getClassName());
+    UIManager.LookAndFeelInfo[] laf = UIManager.getInstalledLookAndFeels();
+    for (UIManager.LookAndFeelInfo lookAndFeelInfo : laf) {
+      System.out.print("LAF Name: " + lookAndFeelInfo.getName() + "\t");
+      System.out.println("  LAF Class name: " + lookAndFeelInfo.getClassName());
     }
   }
 
@@ -254,16 +255,15 @@ public class Utilities {
     JPanel mainPanel = new AAJPanel();
     f.add(mainPanel);
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    String fontNames[] = ge.getAvailableFontFamilyNames();
-    int j = fontNames.length;
-    for (int i = 0; i < j; ++i) {
+    String[] fontNames = ge.getAvailableFontFamilyNames();
+    for (String fontName : fontNames) {
       JPanel panel = new JPanel();
-      JLabel label = new AAJLabel(fontNames[i]);
-      label.setFont(new Font(fontNames[i], Font.PLAIN, 16));
+      JLabel label = new AAJLabel(fontName);
+      label.setFont(new Font(fontName, Font.PLAIN, 16));
       panel.add(label);
       mainPanel.add(panel);
 
-      System.out.println(fontNames[i]);
+      System.out.println(fontName);
     }
     f.pack();
     f.setVisible(true);
@@ -277,11 +277,11 @@ public class Utilities {
   public static PlatformType getPlatformType() {
     if (System.getProperty("mrj.version") == null) {
       String osProp = System.getProperty("os.name").toLowerCase();
-      if (osProp.indexOf("windows") != -1) {
+      if (osProp.startsWith("windows")) {
         return PlatformType.WINDOWS;
-      } else if (osProp.indexOf("mac") != -1) {
+      } else if (osProp.startsWith("mac")) {
         return PlatformType.MAC_OS;
-      } else if (osProp.indexOf("linux") != -1) {
+      } else if (osProp.startsWith("linux")) {
         return PlatformType.LINUX;
       } else {
         return PlatformType.UNKNOWN;
@@ -291,9 +291,9 @@ public class Utilities {
   }
 
   /**
-   * Returns true if we are running on Mac OS; false otehrwise.
+   * Returns true if we are running on macOS; false otherwise.
    *
-   * @return True if we are on Mac OS; false otherwise.
+   * @return True if we are on macOS; false otherwise.
    */
   public static boolean isMacOs() {
     return getPlatformType() == PlatformType.MAC_OS;
@@ -333,7 +333,7 @@ public class Utilities {
       String shortcutIndexKey = item.getShortcutIndexKey();
       if (shortcutIndexKey != null) {
         String shortcutIndex = LocaleExt.getString(shortcutIndexKey);
-        int index = Integer.valueOf(shortcutIndex);
+        int index = Integer.parseInt(shortcutIndex);
         if (index < 0) {
           label += " (" + shortcut + ")";
           label = Utilities.underlineLetter(label, label.lastIndexOf(shortcut));
@@ -346,5 +346,4 @@ public class Utilities {
 
     return label;
   }
-
 }

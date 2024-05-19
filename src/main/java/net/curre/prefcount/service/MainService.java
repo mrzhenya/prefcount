@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -28,7 +28,6 @@ import net.curre.prefcount.gui.Template;
 import net.curre.prefcount.gui.menu.AwtMenuBar;
 import net.curre.prefcount.gui.menu.PrefCountMenuBar;
 import net.curre.prefcount.gui.menu.SwingMenuBar;
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
 import net.curre.prefcount.gui.type.WindowComponent;
 import net.curre.prefcount.util.Utilities;
 
@@ -43,7 +42,7 @@ import net.curre.prefcount.util.Utilities;
 public class MainService {
 
   /** Private class logger. */
-  private static Logger log = Logger.getLogger(MainService.class.toString());
+  private static final Logger log = Logger.getLogger(MainService.class.toString());
 
   /** Reference to the help frame. */
   private static HelpFrame helpFrame;
@@ -99,8 +98,7 @@ public class MainService {
   }
 
   /** Disposes all frames and quits the application. */
-  public static void doQuit() {
-
+  public static void quitApp() {
     if (helpFrame != null) {
       helpFrame.setVisible(false);
       helpFrame.dispose();
@@ -108,17 +106,6 @@ public class MainService {
 
     MainWindow window = PrefCountRegistry.getInstance().getMainWindow();
     window.setVisible(false);
-
-    // when there is a pending skin set and persist it
-    PrefSkin skin = LafThemeService.getInstance().getPendingSkin();
-    if (skin != null) {
-      SettingsService.updateSkin(skin);
-      try {
-        SettingsService.persistSettings();
-      } catch (ServiceException e) {
-        log.warning("Error while saving the settings: " + e);
-      }
-    }
 
     if (window.playerDialogFrame != null) {
       window.playerDialogFrame.setVisible(false);
@@ -133,11 +120,11 @@ public class MainService {
    * Creates a menu bar for the player dialog window
    * and sets it on the mainWindow.playerDialogFrame object.
    * This menu bar is created and added only when running
-   * on Mac OS platform.
+   * on macOS platform.
    *
    * @param frame Reference to the frame to add this menu bar to.
    * @return Reference to the created PrefCount menu bar or
-   *         null of running on not Mac OS platform.
+   *         null of running on not macOS platform.
    */
   public static PrefCountMenuBar addPlayerDialogMenuBar(JFrame frame) {
     PrefCountMenuBar menuBar = null;
@@ -150,7 +137,7 @@ public class MainService {
 
   /**
    * Creates an appropriate menu bar for the main window
-   * and sets it on the mainWindow object. Since sunstance
+   * and sets it on the mainWindow object. Since substance
    * LAF does not work with native Mac menu bar, an awt
    * menu bar is created for the Mac platform; for other
    * platforms, a swing menu bar is created.
@@ -169,6 +156,4 @@ public class MainService {
     }
     return menuBar;
   }
-
-
 }

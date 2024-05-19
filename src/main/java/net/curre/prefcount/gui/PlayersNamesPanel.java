@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -28,11 +28,11 @@ import net.curre.prefcount.util.LocaleExt;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Object of this class represents a players names panel -
- * the first panel, where player names/achronyms are entered.
+ * the first panel, where player names/acronyms are entered.
  * <p/>
  * Created date: Apr 8, 2007
  *
@@ -44,7 +44,7 @@ public class PlayersNamesPanel extends DialogInnerPanel {
   protected Map<Place, JTextField> playersFields;
 
   /** Reference to the parent dialog frame. */
-  private PlayerDialogBaseFrame dialogWindow;
+  private final PlayerDialogBaseFrame dialogWindow;
 
   /**
    * Current error field index - field that
@@ -67,7 +67,7 @@ public class PlayersNamesPanel extends DialogInnerPanel {
     }
 
     this.dialogWindow = dialogWindow;
-    this.playersFields = new HashMap<Place, JTextField>();
+    this.playersFields = new HashMap<>();
 
     setLayout(new TableLayout(new double[][]{
         {TableLayout.FILL, TableLayout.PREFERRED, 12, TableLayout.PREFERRED, TableLayout.FILL},
@@ -117,8 +117,8 @@ public class PlayersNamesPanel extends DialogInnerPanel {
   /** {@inheritDoc} */
   @Override
   public void doOnLeave() {
-    // creating a list of players names/achronyms
-    Map<Place, String> playersNames = new HashMap<Place, String>();
+    // creating a list of players names/acronyms
+    Map<Place, String> playersNames = new HashMap<>();
     for (Map.Entry<Place, JTextField> entry : this.playersFields.entrySet()) {
       playersNames.put(entry.getKey(), entry.getValue().getText().trim());
     }

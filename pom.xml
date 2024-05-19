@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>net.curre</groupId>
   <artifactId>prefcount</artifactId>
   <packaging>jar</packaging>
   <version>0.4.0</version>
-  <name>PrefCount</name>
-  <url>http://prefcount.curre.net</url>
+  <properties>
+    <!-- User facing application name. -->
+    <project.appName>PrefCount</project.appName>
+
+    <!-- Windows project and file version must be in the form of x.x.x.x -->
+    <project.windowsVersion>${project.version}.0</project.windowsVersion>
+
+    <!-- Class path of the Java application main class. -->
+    <project.javaMainClass>net.curre.prefcount.App</project.javaMainClass>
+
+    <!-- Application copyright info, included in the distribution packages. -->
+    <project.appCopyright>Copyright © 2024 Yevgeny Nyden</project.appCopyright>
+
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
   <developers>
     <developer>
       <id>ZHEN</id>
@@ -26,14 +42,6 @@
       </roles>
     </contributor>
   </contributors>
-  <description>
-    PrefCount is an application that assists
-    with computing the final results of a Preferance card game.
-  </description>
-  <scm>
-    <url>http://svn.curre.net/prefcount/tags/prefcount-0.3</url>
-    <developerConnection>scm:http://svn.curre.net/prefcount/trunk</developerConnection>
-  </scm>
   <licenses>
     <license>
       <name>GNU General Public License (GNU GPL) version 3</name>
@@ -41,285 +49,246 @@
       <distribution>distribution</distribution>
     </license>
   </licenses>
-  <distributionManagement>
-    <site>
-      <name>Production site</name>
-      <id>prefcount.curre.net</id>
-      <url>scp://curre.net/home/zhenya/prefcount.curre.net</url>
-    </site>
-  </distributionManagement>
-
-  <!-- Project properties. -->
-  <properties>
-  </properties>
-
-  <!-- Reporting configuration. -->
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>dependencies</report>
-              <report>project-team</report>
-              <report>license</report>
-              <report>scm</report>
-              <!--
-                            <report>mailing-list</report>
-                            <report>cim</report>
-                            <report>issue-tracking</report>
-              -->
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <!-- invoke with "mvn surefire-report:report" or
-             "surefire-report:report-only" and look in target/site -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <configuration>
-          <showSuccess>true</showSuccess>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <quiet>true</quiet>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
-
-  <!-- Repositories. -->
-  <repositories>
-    <repository>
-      <id>curre-remote</id>
-      <name>The curre.net maven repository</name>
-      <url>http://maven.curre.net</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>curre-remote</id>
-      <name>The curre.net maven repository</name>
-      <url>http://maven.curre.net</url>
-    </pluginRepository>
-  </pluginRepositories>
 
   <!-- PrefCount project dependencies. -->
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.4</version>
+      <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.3</version>
-      <scope>compile</scope>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.14.0</version>
     </dependency>
     <dependency>
-      <groupId>org.jvnet</groupId>
-      <artifactId>substance-lite</artifactId>
-      <version>4.2</version>
-      <scope>compile</scope>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <version>3.3</version>
     </dependency>
     <dependency>
-      <groupId>info.clearthought</groupId>
+      <groupId>tablelayout</groupId>
       <artifactId>TableLayout</artifactId>
-      <version>0.0</version>
-      <scope>compile</scope>
+      <version>20050920</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>2.0.1.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.23.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.23.1</version>
     </dependency>
   </dependencies>
 
   <!-- build section. -->
   <build>
-    <defaultGoal>compile</defaultGoal>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-    <directory>target</directory>
-    <outputDirectory>target/classes</outputDirectory>
-    <testOutputDirectory>target/test-classes</testOutputDirectory>
-    <finalName>${artifactId}-${version}</finalName>
-    <testResources>
-      <testResource>
-        <directory>src/test/etc</directory>
-        <includes>
-          <include>**/*.xml</include>
-          <include>**/*.properties</include>
-        </includes>
-      </testResource>
-    </testResources>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-        <excludes>
-          <exclude>**/*.gif</exclude>
-          <exclude>**/*.png</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <directory>src/assembly</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>PrefCount-license.txt</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>false</filtering>
-        <includes>
-          <include>**/*.gif</include>
-          <include>**/*.png</include>
-        </includes>
-      </resource>
-    </resources>
-    <filters>
-      <filter>src/assembly/filter.properties</filter>
-    </filters>
-
-    <!-- Junit tests configuration. -->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>show-profiles</id>
+            <phase>package</phase>
+            <goals>
+              <goal>active-profiles</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
         </configuration>
       </plugin>
       <plugin>
+        <!-- https://maven.apache.org/plugins/maven-shade-plugin/ -->
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <!-- set to true to skip unit tests entirely -->
-          <skip>false</skip>
-          <disableXmlReport>false</disableXmlReport>
-          <!-- to specify individual tests, use <test/> or <includes/> tags -->
-          <!--<includes>-->
-            <!--<include>**/SettingsServiceTest.java</include>-->
-          <!--</includes>-->
-          <excludes>
-            <exclude>**/AppTest.java</exclude>
-          </excludes>
-          <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <!-- format: brief or plain -->
-          <reportFormat>brief</reportFormat>
-        </configuration>
-      </plugin>
-
-      <!-- PrefCount project site configuration. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <locales>en,ru</locales>
-          <inputEncoding>UTF-8</inputEncoding>
-          <outputEncoding>UTF-8</outputEncoding>
-          <templateFile>${basedir}/src/site/site.vm</templateFile>
-          <stagingDirectory>${project.build.directory}/site</stagingDirectory>
-        </configuration>
-      </plugin>
-
-      <!-- PrefCount packaging assemblies. -->
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptors>
-            <descriptor>src/assembly/sources.xml</descriptor>
-            <descriptor>src/assembly/jar-runable.xml</descriptor>
-            <descriptor>src/assembly/linux/linux-distro.xml</descriptor>
-          </descriptors>
-          <archive>
-            <manifest>
-              <mainClass>net.curre.prefcount.App</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attached</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <alias>http://prefcount.curre.net</alias>
-          <!-- this must be set to false when packaging "for real" -->
-          <skip>false</skip>
-          <jarPath>${project.build.directory}/${project.build.finalName}-jar-runable.jar</jarPath>
-          <verify>true</verify>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>maven-macosassembly-plugin</artifactId>
-        <version>0.1</version>
-        <configuration>
-          <mainClass>net.curre.prefcount.App</mainClass>
-          <iconFile>${basedir}/src/art/app-image/PrefCount.icns</iconFile>
-          <jvmVersion>1.5+</jvmVersion>
-          <bundleName>PrefCount</bundleName>
-          <additionalResources>
-            <fileSet>
-              <directory>src/assembly/mac</directory>
-              <includes>
-                <include>.background/*.jpg</include>
-                <include>PrefCount-license.pdf</include>
-                <include>README-RUS.pdf</include>
-                <include>README-ENG.pdf</include>
-              </includes>
-            </fileSet>
-            <fileSet>
-              <directory>src/assembly</directory>
-              <includes>
-                <include>PrefCount-license.pdf</include>
-              </includes>
-            </fileSet>
-            <fileSet>
-              <directory>src/assembly/mac/DS_Store</directory>
-              <includes>
-                <include>.DS_Store</include>
-              </includes>
-              <useDefaultExcludes>false</useDefaultExcludes>
-            </fileSet>
-          </additionalResources>
-          <diskImageFile>${project.build.directory}/${project.build.finalName}-mac.dmg</diskImageFile>
-          <zipFile>${project.build.directory}/${project.build.finalName}-mac.zip</zipFile>
-        </configuration>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
         <executions>
           <execution>
             <phase>package</phase>
             <goals>
-              <goal>bundle</goal>
+              <goal>shade</goal>
             </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <transformers>
+                <transformer
+                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>${project.javaMainClass}</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <!--
+      Profile that's activated on Windows to generate a Windows exe file.
+    -->
+    <profile>
+      <id>windows-profile</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <!--
+            https://github.com/orphan-oss/launch4j-maven-plugin
+            https://launch4j.sourceforge.net/docs.html#Configuration_file
+          -->
+          <plugin>
+            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+            <artifactId>launch4j-maven-plugin</artifactId>
+            <version>2.5.0</version>
+            <executions>
+              <execution>
+                <id>l4j-clui</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>launch4j</goal>
+                </goals>
+                <configuration>
+                  <headerType>gui</headerType>
+                  <jar>${project.build.directory}/${project.artifactId}-${project.version}.jar</jar>
+                  <outfile>${project.build.directory}/${project.appName}-${project.version}.exe</outfile>
+                  <downloadUrl>https://github.com/mrzhenya/prefcount</downloadUrl>
+                  <errTitle>${project.appName}</errTitle>
+                  <classPath>
+                    <mainClass>${project.javaMainClass}</mainClass>
+                    <preCp>anything</preCp>
+                  </classPath>
+                  <icon>src/main/bundle/PrefCount.ico</icon>
+                  <jre>
+                    <minVersion>1.8.0</minVersion>
+                    <requiresJdk>false</requiresJdk>
+                    <opts>
+                      <opt>-Dfile.encoding="UTF-8"</opt>
+                      <opt>-Dsun.jnu.encoding="UTF-8"</opt>
+                    </opts>
+                  </jre>
+                  <singleInstance>
+                    <mutexName>${project.artifactId}</mutexName>
+                    <windowTitle>${project.appName}</windowTitle>
+                  </singleInstance>
+                  <versionInfo>
+                    <fileVersion>${project.windowsVersion}</fileVersion>
+                    <fileDescription>
+                      ${project.appName} is an application (written in Java) that assists with counting up the
+                      results of a game of Preferans, or Preference (a European card game).
+                    </fileDescription>
+                    <copyright>${project.appCopyright}</copyright>
+                    <productVersion>${project.windowsVersion}</productVersion>
+                    <productName>${project.appName}</productName>
+                    <companyName>Yevgeny Nyden</companyName>
+                    <internalName>${project.artifactId}</internalName>
+                    <originalFilename>${project.appName}-${project.version}.exe</originalFilename>
+                  </versionInfo>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!--
+      Profile that's activated on Mac OS X to create Mac specific package bundles:
+        * an application bundle
+        * dmg package with the application bundle
+    -->
+    <profile>
+      <id>mac-profile</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <version>3.3.2</version>
+            <executions>
+              <execution>
+                <id>auto-clean</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>clean</goal>
+                </goals>
+                <configuration>
+                  <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                  <filesets>
+                    <fileset>
+                      <directory>${project.build.directory}/bundle</directory>
+                    </fileset>
+                    <fileset>
+                      <directory>${project.build.directory}</directory>
+                      <includes>
+                        <include>*.dmg</include>
+                      </includes>
+                    </fileset>
+                  </filesets>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <!-- https://github.com/perdian/macosappbundler-maven-plugin -->
+            <groupId>de.perdian.maven.plugins</groupId>
+            <artifactId>macosappbundler-maven-plugin</artifactId>
+            <version>1.20.0</version>
+            <configuration>
+              <app>
+                <includeDependencies>false</includeDependencies>
+              </app>
+              <plist>
+                <CFBundleIconFile>src/main/bundle/PrefCount.icns</CFBundleIconFile>
+                <CFBundleDisplayName>${project.appName}</CFBundleDisplayName>
+                <CFBundleIdentifier>${project.appName}</CFBundleIdentifier>
+                <CFBundleDevelopmentRegion>English</CFBundleDevelopmentRegion>
+                <NSHumanReadableCopyright>${project.appCopyright}</NSHumanReadableCopyright>
+                <CFBundleName>${project.appName}</CFBundleName>
+                <JVMMainClassName>${project.javaMainClass}</JVMMainClassName>
+              </plist>
+              <dmg>
+                <generate>true</generate>
+              </dmg>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>bundle</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

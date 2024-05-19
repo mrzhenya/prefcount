@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * Object of this class represents a checkbox menu item
- * group to provide radio-buton-like functionality for awt
+ * group to provide radio-button-like functionality for awt
  * <code>CheckboxMenuItem</code>.
  * <p/>
  * Created date: Jan 23, 2008
@@ -35,11 +35,11 @@ import java.util.List;
 public class AwtCheckboxMenuGroup {
 
   /** List of checkbox items included in this group. */
-  private List<CheckboxMenuItem> menuItems;
+  private final List<CheckboxMenuItem> menuItems;
 
   /** Default constructor. */
   public AwtCheckboxMenuGroup() {
-    this.menuItems = new ArrayList<CheckboxMenuItem>();
+    this.menuItems = new ArrayList<>();
   }
 
   /**
@@ -58,7 +58,7 @@ public class AwtCheckboxMenuGroup {
   private class GroupItemListener implements ItemListener, ActionListener {
 
     /** Index of the current item on the group's list. */
-    private int index;
+    private final int index;
 
     /**
      * Constructor that sets the index of the current item.
@@ -80,11 +80,7 @@ public class AwtCheckboxMenuGroup {
     /** {@inheritDoc} */
     public void actionPerformed(ActionEvent event) {
       unselectItemsHelper();
-      SwingUtilities.invokeLater(new Runnable() {
-        public void run() {
-          menuItems.get(index).setState(true);
-        }
-      });
+      SwingUtilities.invokeLater(() -> menuItems.get(index).setState(true));
     }
 
     /** Does all the work for unselecting items other than the current one. */
@@ -96,6 +92,4 @@ public class AwtCheckboxMenuGroup {
       }
     }
   }
-
 }
-

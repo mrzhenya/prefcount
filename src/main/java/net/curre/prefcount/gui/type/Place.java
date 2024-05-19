@@ -1,7 +1,15 @@
-/**
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as 
- * published by the Free Software Foundation;
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package net.curre.prefcount.gui.type;
@@ -49,7 +57,7 @@ public enum Place {
    * @param shortKey place's short string resource key.
    * @param longKey  place's long string resource key.
    */
-  private Place(int index, String shortKey, String longKey) {
+  Place(int index, String shortKey, String longKey) {
     this.shortKey = shortKey;
     this.index = index;
     this.longKey = longKey;
@@ -102,7 +110,7 @@ public enum Place {
    *
    * @param place      player's place.
    * @param numPlayers total number of player in the game.
-   * @return whist whist places for all opponents of the given player.
+   * @return whist places for all opponents of the given player.
    */
   public static Place[] getOtherPlayersWhistPlaces(Place place, int numPlayers) {
     Place[] places = new Place[numPlayers - 1];
@@ -137,5 +145,4 @@ public enum Place {
 
     return places;
   }
-
 }

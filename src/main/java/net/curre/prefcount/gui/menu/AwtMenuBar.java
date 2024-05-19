@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -18,28 +18,26 @@ import java.awt.CheckboxMenuItem;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.bean.Settings;
 import net.curre.prefcount.event.ChangeLanguageActionListener;
-import net.curre.prefcount.event.LafMenuItemListener;
+import net.curre.prefcount.event.LafThemeMenuItemListener;
 import static net.curre.prefcount.gui.menu.PrefCountMenuBar.MenuBarType.MAIN_WINDOW;
 import static net.curre.prefcount.gui.menu.PrefCountMenuBar.MenuBarType.PLAYER_DIALOG;
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
 import static net.curre.prefcount.gui.type.WindowComponent.*;
+
+import net.curre.prefcount.gui.theme.LafTheme;
 import net.curre.prefcount.service.LafThemeService;
-import net.curre.prefcount.service.SettingsService;
 import net.curre.prefcount.util.LocaleExt;
 import net.curre.prefcount.util.Utilities;
 
 /**
- * Object of this class represents a menu bar for Mac OS.
+ * Object of this class represents a menu bar for macOS.
  * This menu bar is assumed to be  placed at the top fo the
  * screen. Other platforms are not supported by this class
  * just because swing menu bar is a better option when not
- * on Mac OS.
+ * on macOS.
  * <p/>
  * Note that we are using awt menu bar because swing menu bar
  * is not compatible with the substance look-and-feel library
@@ -69,14 +67,14 @@ public class AwtMenuBar extends MenuBar implements PrefCountMenuBar {
    *
    * @param menuBarType Type of this menu bar (for which frame it was created).
    * @throws IllegalArgumentException      If menu bar type is not supported.
-   * @throws UnsupportedOperationException When running on not Mac OS.
+   * @throws UnsupportedOperationException When running on not macOS.
    */
   public AwtMenuBar(MenuBarType menuBarType) {
 
     if (menuBarType != MAIN_WINDOW && menuBarType != PLAYER_DIALOG) {
       throw new IllegalArgumentException("Unsupported menu bar type: " + menuBarType);
     }
-    if (Utilities.isMacOs() == false) {
+    if (!Utilities.isMacOs()) {
       throw new UnsupportedOperationException("AwtMenuBar should only be created for Mac OS");
     }
 
@@ -105,8 +103,6 @@ public class AwtMenuBar extends MenuBar implements PrefCountMenuBar {
   public void setDialogFrameItemState(boolean isSelected) {
     this.dialogFrameItem.setState(isSelected);
   }
-
-  /** Private methods ***********************/
 
   /**
    * Creates all necessary menus and menu items.
@@ -148,25 +144,27 @@ public class AwtMenuBar extends MenuBar implements PrefCountMenuBar {
     LocaleExt.registerComponent(mainMenu, "pref.mainMenu.main");
 
     // ..... creating Look and Feel submenu
-    Settings settings = SettingsService.getSettings();
+    PrefCountRegistry registry = PrefCountRegistry.getInstance();
+    Settings settings = registry.getSettingsService().getSettings();
     Menu lafMenu = new Menu(LocaleExt.getString("pref.mainMenu.look"));
     LocaleExt.registerComponent(lafMenu, "pref.mainMenu.look");
 
     AwtCheckboxMenuGroup group = new AwtCheckboxMenuGroup();
-    for (final PrefSkin skin : LafThemeService.AVAILABLE_SKINS) {
-      CheckboxMenuItem lafItem = new CheckboxMenuItem(LocaleExt.getString(skin.getNameResourceKey()));
-      LocaleExt.registerComponent(lafItem, skin.getNameResourceKey());
-      if (skin.getNameResourceKey().equals(settings.getLafSkinId())) {
+    LafThemeService lafThemeService = registry.getLafThemeService();
+    for (final LafTheme lafTheme : lafThemeService.getSupportedThemes()) {
+      CheckboxMenuItem lafItem = new CheckboxMenuItem(LocaleExt.getString(lafTheme.getNameResourceKey()));
+      LocaleExt.registerComponent(lafItem, lafTheme.getNameResourceKey());
+      if (lafTheme.getId() == settings.getLafThemeId()) {
         lafItem.setState(true);
       }
-      lafItem.addItemListener(new LafMenuItemListener(skin));
+      lafItem.addItemListener(new LafThemeMenuItemListener(lafTheme));
       group.addItemToGroup(lafItem);
       lafMenu.add(lafItem);
     }
     mainMenu.add(lafMenu);
 
     // .....  creating other menu items on the main menu
-    MenuItemsBean menuItemsBean = PrefCountRegistry.getInstance().getMenuItemsBean();
+    MenuItemsBean menuItemsBean = registry.getMenuItemsBean();
     mainMenu.add(menuItemsBean.getMenuItem(PRINT_SCORES_ACTION));
 
     final Menu printMenu = new Menu(LocaleExt.getString("pref.mainMenu.print.templates"));
@@ -245,16 +243,14 @@ public class AwtMenuBar extends MenuBar implements PrefCountMenuBar {
     this.dialogFrameItem = new CheckboxMenuItem(LocaleExt.getString("pref.windowMenu.dialog"));
     this.dialogFrameItem.setState(true);
     LocaleExt.registerComponent(this.dialogFrameItem, "pref.windowMenu.dialog");
-    this.dialogFrameItem.addItemListener(new ItemListener() {
-      public void itemStateChanged(ItemEvent event) {
-        boolean selected = AwtMenuBar.this.dialogFrameItem.getState();
-        PrefCountRegistry registry = PrefCountRegistry.getInstance();
-        registry.getPlayerDialogFrame().setVisible(selected);
-        registry.getMainWindow().getPrefCountMenuBar().setDialogFrameItemState(selected);
-        PrefCountMenuBar menuBar = registry.getPlayerDialogFrame().getPrefCountMenuBar();
-        if (menuBar != null) {
-          menuBar.setDialogFrameItemState(selected);
-        }
+    this.dialogFrameItem.addItemListener(event -> {
+      boolean selected = AwtMenuBar.this.dialogFrameItem.getState();
+      PrefCountRegistry registry = PrefCountRegistry.getInstance();
+      registry.getPlayerDialogFrame().setVisible(selected);
+      registry.getMainWindow().getPrefCountMenuBar().setDialogFrameItemState(selected);
+      PrefCountMenuBar menuBar = registry.getPlayerDialogFrame().getPrefCountMenuBar();
+      if (menuBar != null) {
+        menuBar.setDialogFrameItemState(selected);
       }
     });
     winMenu.add(this.dialogFrameItem);
@@ -316,5 +312,4 @@ public class AwtMenuBar extends MenuBar implements PrefCountMenuBar {
 
     return helpMenu;
   }
-
 }

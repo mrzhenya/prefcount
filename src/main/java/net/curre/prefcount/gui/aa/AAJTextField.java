@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 
 /**
  * Object of this class represents a <code>JTextField</code>
- * that has font anti-aliasing enabled in the graphics context
+ * that has font antialiasing enabled in the graphics context
  * when rendering this component.
  * <p/>
  * Created date: Jan 28, 2008
@@ -30,9 +30,8 @@ import javax.swing.JTextField;
  */
 public class AAJTextField extends JTextField {
 
-  /** Default constructor. */
-  public AAJTextField() {
-  }
+  /** Ctor. */
+  public AAJTextField() {}
 
   /**
    * Constructor.
@@ -64,5 +63,4 @@ public class AAJTextField extends JTextField {
                                       RenderingHints.VALUE_ANTIALIAS_ON);
     super.paint(g);
   }
-
 }

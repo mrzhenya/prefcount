@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -25,7 +25,7 @@ import java.util.Map;
 import net.curre.prefcount.gui.type.Place;
 import net.curre.prefcount.gui.type.ScoreItem;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This is a map to hold the score item locations (shapes)
@@ -40,13 +40,13 @@ public class TooltipLocationsMap extends HashMap<ScoreItem, Map<Place, Shape>> {
   /** {@inheritDoc} */
   @Override
   public Map<Place, Shape> get(Object item) {
-    if (item instanceof ScoreItem == false) {
+    if (!(item instanceof ScoreItem)) {
       throw new IllegalArgumentException("Key is not an instance of " + ScoreItem.class.getName());
     }
 
     Map<Place, Shape> sMap = super.get(item);
     if (sMap == null) {
-      sMap = new HashMap<Place, Shape>();
+      sMap = new HashMap<>();
       super.put((ScoreItem) item, sMap);
     }
 
@@ -70,7 +70,7 @@ public class TooltipLocationsMap extends HashMap<ScoreItem, Map<Place, Shape>> {
    *
    * @param item  score board item.
    * @param place player's place.
-   * @param shape shpae to add.
+   * @param shape shape to add.
    */
   public void addShapeLocation(ScoreItem item, Place place, Shape shape) {
     Map<Place, Shape> shapesMap = this.get(item);

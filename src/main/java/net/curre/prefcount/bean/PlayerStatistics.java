@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -38,7 +38,7 @@ public class PlayerStatistics {
    * Players place on the players statistics map
    * in the result bean object.
    */
-  private Place playerPlace;
+  private final Place playerPlace;
 
   /** Player's mountain. */
   private Integer mountain;
@@ -53,7 +53,7 @@ public class PlayerStatistics {
    * Map of whists that this player has for other players
    * (key = player's place, value = whists).
    */
-  private Map<Place, Integer> whistsMap;
+  private final Map<Place, Integer> whistsMap;
 
   /**
    * Map that holds whists saldo/balances that this player
@@ -64,17 +64,17 @@ public class PlayerStatistics {
    * total player's whist saldo/balance is stored under the
    * same (as the player's place) key.
    */
-  private Map<Place, Integer> whistSaldoMap;
+  private final Map<Place, Integer> whistSaldoMap;
 
   /**
    * Map of whist fixes that this player has against other players
    * (key = player place, value = whist fix). These values may
    * be generated when applying the "Divisible By N" option.
    */
-  private Map<Place, Integer> whistFixesMap;
+  private final Map<Place, Integer> whistFixesMap;
 
   /** Reference to the result bean. */
-  private GameResultBean resultBean;
+  private final GameResultBean resultBean;
 
   /**
    * Constructor with a result bean argument.
@@ -83,9 +83,9 @@ public class PlayerStatistics {
    * @param playerPlace Player's place.
    */
   public PlayerStatistics(GameResultBean resultBean, Place playerPlace) {
-    this.whistsMap = new TreeMap<Place, Integer>();
-    this.whistSaldoMap = new TreeMap<Place, Integer>();
-    this.whistFixesMap = new TreeMap<Place, Integer>();
+    this.whistsMap = new TreeMap<>();
+    this.whistSaldoMap = new TreeMap<>();
+    this.whistFixesMap = new TreeMap<>();
     this.resultBean = resultBean;
     this.playerPlace = playerPlace;
   }
@@ -117,7 +117,7 @@ public class PlayerStatistics {
    */
   public String getPlayerNameLetter() {
     if (this.playerName != null) {
-      return (this.playerName.length() > 0 ?
+      return (!this.playerName.isEmpty() ?
               this.playerName.substring(0, 1).toUpperCase() :
               "");
     }
@@ -278,7 +278,7 @@ public class PlayerStatistics {
    */
   public int getFinalScoreInWhists() {
     Integer wSaldo = this.whistSaldoMap.get(this.playerPlace);
-    return getFinalMountainInWhists() + (wSaldo == null ? 0 : wSaldo.intValue());
+    return getFinalMountainInWhists() + (wSaldo == null ? 0 : wSaldo);
   }
 
   /**
@@ -341,7 +341,4 @@ public class PlayerStatistics {
     }
     return 0;
   }
-
-  /** Private methods ********************** */
-
 }

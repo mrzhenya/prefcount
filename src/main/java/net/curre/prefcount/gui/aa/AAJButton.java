@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -21,7 +21,7 @@ import javax.swing.JButton;
 
 /**
  * Object of this class represents a <code>JButton</code>
- * that has font anti-aliasing enabled in the graphics context
+ * that has font antialiasing enabled in the graphics context
  * when rendering this component.
  * <p/>
  * Created date: Jan 28, 2008
@@ -29,10 +29,6 @@ import javax.swing.JButton;
  * @author Yevgeny Nyden
  */
 public class AAJButton extends JButton {
-
-  /** Default constructor. */
-  public AAJButton() {
-  }
 
   /**
    * Constructor that sets the label.
@@ -44,7 +40,7 @@ public class AAJButton extends JButton {
   }
 
   /**
-   * Enables font anti-aliasing in the current graphics context.
+   * Enables font antialiasing in the current graphics context.
    *
    * @param g Graphics context/
    */
@@ -54,5 +50,4 @@ public class AAJButton extends JButton {
                                       RenderingHints.VALUE_ANTIALIAS_ON);
     super.paint(g);
   }
-
 }

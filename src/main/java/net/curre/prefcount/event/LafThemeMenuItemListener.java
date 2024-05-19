@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -14,15 +14,19 @@
 
 package net.curre.prefcount.event;
 
+import net.curre.prefcount.PrefCountRegistry;
+import net.curre.prefcount.gui.theme.LafThemeInterface;
+import net.curre.prefcount.service.LafThemeService;
+import net.curre.prefcount.service.SettingsService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.CheckboxMenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
-import net.curre.prefcount.service.LafThemeService;
-import net.curre.prefcount.service.SettingsService;
 
 /**
  * Object of this class represents a listener
@@ -32,18 +36,21 @@ import net.curre.prefcount.service.SettingsService;
  *
  * @author Yevgeny Nyden
  */
-public class LafMenuItemListener implements ActionListener, ItemListener {
+public class LafThemeMenuItemListener implements ActionListener, ItemListener {
+
+  /** Private class logger. */
+  private static final Logger logger = LogManager.getLogger(LafThemeMenuItemListener.class.getName());
 
   /** The Pref skin this listener is for. */
-  private PrefSkin skin;
+  private final LafThemeInterface lafTheme;
 
   /**
    * Constructor that sets the skin this  listener is for.
    *
-   * @param skin Pref skin to set.
+   * @param lafTheme Pref skin to set.
    */
-  public LafMenuItemListener(PrefSkin skin) {
-    this.skin = skin;
+  public LafThemeMenuItemListener(LafThemeInterface lafTheme) {
+    this.lafTheme = lafTheme;
   }
 
   /**
@@ -72,8 +79,19 @@ public class LafMenuItemListener implements ActionListener, ItemListener {
 
   /** Helper method that performs LAF skin change. */
   private void changeSkin() {
-    LafThemeService.getInstance().setLookAndFeel(skin.getNameResourceKey(), false);
-    SettingsService.updateSkin(skin);
+    try {
+      PrefCountRegistry registry = PrefCountRegistry.getInstance();
+      LafThemeService lafService = registry.getLafThemeService();
+      lafService.activateLafTheme(this.lafTheme.getId());
+      SettingsService settingsService = registry.getSettingsService();
+      settingsService.getSettings().setLafThemeId(lafService.getCurrentLafThemeId());
+      settingsService.persistSettings();
+      // TODO - update the registered UI components.
+//      registry.getLandingUi().updateLandingUi();
+      // TODO - show the restart dialog.
+//      registry.getUiService().showRestartGameDialog();
+    } catch (Exception e) {
+      logger.log(Level.WARN,"Unable to save settings.", e);
+    }
   }
-
 }

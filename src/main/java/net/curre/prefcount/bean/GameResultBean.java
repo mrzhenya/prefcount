@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -241,11 +241,9 @@ public class GameResultBean {
   /** {@inheritDoc} */
   @Override
   public String toString() {
-    StringBuilder buff = new StringBuilder();
-    return buff.append(super.toString()).append(": finalScoresReady=").append(this.finalScoresReady).
-        append(", averageMountain=").append(this.averageMountain).
-        append(", minMountain=").append(this.minMountain).
-        append(", divisibleByNPlayer=").append(this.divisibleByNPlayer).append(';').toString();
+    return super.toString() + ": finalScoresReady=" + this.finalScoresReady +
+        ", averageMountain=" + this.averageMountain +
+        ", minMountain=" + this.minMountain +
+        ", divisibleByNPlayer=" + this.divisibleByNPlayer + ';';
   }
-
 }

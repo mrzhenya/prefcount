@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -21,7 +21,7 @@ import javax.swing.JLabel;
 
 /**
  * Object of this class represents a <code>JLabel</code>
- * that has font anti-aliasing enabled in the graphics context
+ * that has font antialiasing enabled in the graphics context
  * when rendering this component.
  * <p/>
  * Created date: Jan 28, 2008
@@ -30,9 +30,8 @@ import javax.swing.JLabel;
  */
 public class AAJLabel extends JLabel {
 
-  /** Default constructor. */
-  public AAJLabel() {
-  }
+  /** Ctor. */
+  public AAJLabel() {}
 
   /**
    * Constructor that sets the label.
@@ -65,5 +64,4 @@ public class AAJLabel extends JLabel {
                                       RenderingHints.VALUE_ANTIALIAS_ON);
     super.paint(g);
   }
-
 }

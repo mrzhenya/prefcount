@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 
 /**
  * Object of this class represents a <code>JPanel</code>
- * that has font anti-aliasing enabled in the graphics context
+ * that has font antialiasing enabled in the graphics context
  * when rendering this component.
  * <p/>
  * Created date: Jan 28, 2008
@@ -31,9 +31,8 @@ import javax.swing.JPanel;
  */
 public class AAJPanel extends JPanel {
 
-  /** Default constructor. */
-  public AAJPanel() {
-  }
+  /** Ctor. */
+  public AAJPanel() {}
 
   /**
    * Constructor.
@@ -64,7 +63,7 @@ public class AAJPanel extends JPanel {
   }
 
   /**
-   * Enables font anti-aliasing in the current graphics context.
+   * Enables font antialiasing in the current graphics context.
    * <br />
    *
    * @param g Graphics context.

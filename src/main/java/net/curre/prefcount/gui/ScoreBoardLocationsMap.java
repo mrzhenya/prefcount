@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -40,7 +40,7 @@ import static net.curre.prefcount.gui.type.ScoreItem.WHIST_WEST;
 import static net.curre.prefcount.gui.type.ScoreItem.WHIST_WEST_SALDO;
 
 /**
- * This class is a utility to determine locaitons of
+ * This class is a utility to determine locations of
  * all items on the score board given the current dimensions
  * of the table/board.
  * <p/>
@@ -105,7 +105,7 @@ public class ScoreBoardLocationsMap {
   public int whistDividerY2;
 
   /** Reference to the score board panel. */
-  private ScoreBoardPanel scoreBoard;
+  private final ScoreBoardPanel scoreBoard;
 
   /**
    * Total number of players in the game
@@ -157,15 +157,15 @@ public class ScoreBoardLocationsMap {
     }
 
     this.numberOfPlayers = numberOfPlayers;
-    this.locationMaps = new HashMap<Place, Map<ScoreItem, Point2D.Double>>();
+    this.locationMaps = new HashMap<>();
     for (Place place : Place.getPlaces(numberOfPlayers)) {
-      this.locationMaps.put(place, new HashMap<ScoreItem, Point2D.Double>());
+      this.locationMaps.put(place, new HashMap<>());
     }
     this.width = 0;
     this.height = 0;
 
-    this.othersWhists = new HashMap<Place, ScoreItem[]>(numberOfPlayers);
-    this.othersWhistSaldos = new HashMap<Place, ScoreItem[]>(numberOfPlayers);
+    this.othersWhists = new HashMap<>(numberOfPlayers);
+    this.othersWhistSaldos = new HashMap<>(numberOfPlayers);
     for (Place place : Place.getPlaces(numberOfPlayers)) {
       this.othersWhists.put(place, getOtherWhistItemsHelper(place));
       this.othersWhistSaldos.put(place, getOtherWhistSaldoItemsHelper(place));
@@ -181,7 +181,7 @@ public class ScoreBoardLocationsMap {
    * Getter for the locations maps for the given player.
    *
    * @param place Players place.
-   * @return The locations maps for the given player.
+   * @return The locations map for the given player.
    */
   public Map<ScoreItem, Point2D.Double> getLocationsMap(Place place) {
     return this.locationMaps.get(place);
@@ -203,7 +203,7 @@ public class ScoreBoardLocationsMap {
 
     // if the frame size didn't change from last time,
     // returning - we can use the already computed values
-    if (force == false && this.width == newWidth && this.height == newHeight) {
+    if (!force && this.width == newWidth && this.height == newHeight) {
       return;
     }
 
@@ -235,19 +235,20 @@ public class ScoreBoardLocationsMap {
     final int bottomY = newHeight - MARGIN - 5 + offsetY;
 
     // generating score board items locations
+    Map<ScoreItem, Point2D.Double> m;
     switch (this.numberOfPlayers) {
       case (3):
         // computing the EAST player items locations
-        Map<ScoreItem, Point2D.Double> m = this.locationMaps.get(EAST);
+        m = this.locationMaps.get(EAST);
         m.put(PLAYER_NAME, new Point2D.Double(this.centerX + 11, this.centerY));
         m.put(PLAYER_MOUNT, new Point2D.Double(this.centerX + 14, topY));
-        m.put(PLAYER_POOL, new Point2D.Double((newWidth / 2) + this.twoFifthX + 10, topY));
+        m.put(PLAYER_POOL, new Point2D.Double(((double) newWidth / 2) + this.twoFifthX + 10, topY));
         m.put(WHIST_SOUTH, new Point2D.Double(this.whistPoolDividerX + 20, this.poolMountDividerY));
         m.put(WHIST_WEST, new Point2D.Double(this.whistPoolDividerX + 20, topY + 23));
         m.put(WHIST_SOUTH_SALDO, new Point2D.Double(this.whistPoolDividerX + 30, this.poolMountDividerY + 40));
         m.put(WHIST_WEST_SALDO, new Point2D.Double(this.whistPoolDividerX + 30, topY + 53));
         m.put(WHIST_SALDO_TOTAL, new Point2D.Double(this.whistPoolDividerX + 20, this.centerY));
-        m.put(FINAL_MOUNT, new Point2D.Double(this.centerX + 40, (halfHeight / 2) + offsetY));
+        m.put(FINAL_MOUNT, new Point2D.Double(this.centerX + 40, ((double) halfHeight / 2) + offsetY));
         m.put(FINAL_SCORE, new Point2D.Double(this.poolMountDividerX + 10, this.centerY - 30));
 
         // computing the SOUTH player items locations
@@ -260,7 +261,7 @@ public class ScoreBoardLocationsMap {
         m.put(WHIST_EAST_SALDO, new Point2D.Double(this.whistPoolDividerX - 20, bottomY - 26));
         m.put(WHIST_WEST_SALDO, new Point2D.Double(this.twoFifthX - 5, bottomY - 26));
         m.put(WHIST_SALDO_TOTAL, new Point2D.Double(this.centerX + 20, bottomY - 30));
-        m.put(FINAL_MOUNT, new Point2D.Double(this.centerX, (newHeight / 2) + this.oneFifthY + 10));
+        m.put(FINAL_MOUNT, new Point2D.Double(this.centerX, ((double) newHeight / 2) + this.oneFifthY + 10));
         m.put(FINAL_SCORE, new Point2D.Double(this.centerX, this.whistPoolDividerY - 10));
 
         // computing the WEST player items locations
@@ -273,7 +274,7 @@ public class ScoreBoardLocationsMap {
         m.put(WHIST_EAST_SALDO, new Point2D.Double(MARGIN + 40 + offsetX, topY + 53));
         m.put(WHIST_SOUTH_SALDO, new Point2D.Double(MARGIN + 40 + offsetX, this.poolMountDividerY + 40));
         m.put(WHIST_SALDO_TOTAL, new Point2D.Double(MARGIN + 44 + offsetX, this.centerY));
-        m.put(FINAL_MOUNT, new Point2D.Double(this.threeFifthX + 20, halfHeight / 2 + offsetY));
+        m.put(FINAL_MOUNT, new Point2D.Double(this.threeFifthX + 20, (double) halfHeight / 2 + offsetY));
         m.put(FINAL_SCORE, new Point2D.Double(this.twoFifthX + 10, this.centerY - 30));
         break;
 
@@ -320,7 +321,7 @@ public class ScoreBoardLocationsMap {
         m.put(WHIST_NORTH_SALDO, new Point2D.Double(this.whistDividerX1 + 60, bottomY - 20));
         m.put(WHIST_WEST_SALDO, new Point2D.Double(MARGIN + 80 + offsetX, bottomY - 20));
         m.put(WHIST_SALDO_TOTAL, new Point2D.Double(this.centerX, bottomY - 44));
-        m.put(FINAL_MOUNT, new Point2D.Double(this.centerX, this.centerY + (halfHeight / 5) + 16));
+        m.put(FINAL_MOUNT, new Point2D.Double(this.centerX, this.centerY + ((double) halfHeight / 5) + 16));
         m.put(FINAL_SCORE, new Point2D.Double(this.centerX, this.whistPoolDividerY - 10));
 
         // computing the WEST player items locations
@@ -366,8 +367,6 @@ public class ScoreBoardLocationsMap {
   public ScoreItem[] getOtherWhistSaldoItems(Place place) {
     return this.othersWhistSaldos.get(place);
   }
-
-  /** Private methods ***********************/
 
   /**
    * Gets whist score items for all other players
@@ -450,5 +449,4 @@ public class ScoreBoardLocationsMap {
 
     return items;
   }
-
 }

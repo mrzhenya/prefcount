@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -49,7 +49,6 @@ import static net.curre.prefcount.gui.type.Place.WEST;
 import static net.curre.prefcount.gui.type.WindowComponent.DIALOG_BACK;
 import static net.curre.prefcount.gui.type.WindowComponent.DIALOG_FORWARD;
 import net.curre.prefcount.service.MainService;
-import net.curre.prefcount.service.SettingsService;
 import net.curre.prefcount.util.LocaleExt;
 import net.curre.prefcount.util.Utilities;
 
@@ -85,7 +84,7 @@ public class PlayerDialogBaseFrame extends JFrame {
   /** Reference to the (validation) error label. */
   JLabel errorLabel;
 
-  /** Reference to the questions pane. */
+  /** Reference to the questions' pane. */
   JPanel questionsPane;
 
   /** Number of players in the game. */
@@ -126,11 +125,9 @@ public class PlayerDialogBaseFrame extends JFrame {
     this.errorLabel = new AAJLabel();
     LocaleExt.registerComponent(this.errorLabel, "pref.dialog.message.default");
 
-    LocaleExt.registerComponent(new LocaleExt.LocaleExec() {
-      public void doChange() {
-        getCurrentInnerPanel().setHeaderMessage(messageLabel);
-      }
-    }, "DIALOG_HEADER_UPDATER");
+    LocaleExt.registerComponent(
+        (LocaleExt.LocaleExec) () ->
+            getCurrentInnerPanel().setHeaderMessage(messageLabel), "DIALOG_HEADER_UPDATER");
 
     initComponents();
 
@@ -155,7 +152,7 @@ public class PlayerDialogBaseFrame extends JFrame {
       }
     });
 
-    // adding a menu bar (only when running on Mac OS)
+    // adding a menu bar (only when running on macOS)
     this.menuBar = MainService.addPlayerDialogMenuBar(this);
   }
 
@@ -189,14 +186,14 @@ public class PlayerDialogBaseFrame extends JFrame {
    *                     false if previous.
    */
   public void nextQuestionEventHelper(boolean isNextAction) {
-    if ((isNextAction && this.nextButton.isEnabled() == false) ||
-        (isNextAction == false && this.backButton.isEnabled() == false)) {
+    if ((isNextAction && !this.nextButton.isEnabled()) ||
+        (!isNextAction && !this.backButton.isEnabled())) {
       return;
     }
     DialogInnerPanel currPanel = getCurrentInnerPanel();
 
     // validating the current panel if necessary
-    if (currPanel.validateFields() == false) {
+    if (!currPanel.validateFields()) {
       return;
     }
 
@@ -207,9 +204,9 @@ public class PlayerDialogBaseFrame extends JFrame {
     currPanel.doOnEntry();
 
     // enabling/disabling navigation buttons and menu items
-    final boolean nextButtonEnabled = currPanel.isLastPanel() == false;
-    final boolean backButtonEnabled = currPanel.isFirstPanel() == false;
-    final boolean computeButtonEnabled = nextButtonEnabled == false;
+    final boolean nextButtonEnabled = !currPanel.isLastPanel();
+    final boolean backButtonEnabled = !currPanel.isFirstPanel();
+    final boolean computeButtonEnabled = !nextButtonEnabled;
     this.nextButton.setEnabled(nextButtonEnabled);
     this.backButton.setEnabled(backButtonEnabled);
     if (this.menuBar != null) {
@@ -263,10 +260,7 @@ public class PlayerDialogBaseFrame extends JFrame {
    * @see MainWindow#readFromCurrentSettings()
    */
   public void readFromCurrentSettings() {
-    // this is the current settings
-    Settings settings = SettingsService.getSettings();
-
-    // setting the frame size
+    Settings settings = PrefCountRegistry.getInstance().getSettingsService().getSettings();
     super.setSize(settings.getDialogFrameWidth(), settings.getDialogFrameHeight());
   }
 
@@ -318,18 +312,16 @@ public class PlayerDialogBaseFrame extends JFrame {
     }
   }
 
-  /** Private methods ********************** */
-
   /** Initializes the components. */
   private void initComponents() {
 
     MenuItemsBean menuItemsBean = PrefCountRegistry.getInstance().getMenuItemsBean();
 
-    // adding Ctrl-Q - quit shortcut to the panel if not on Mac OS;
-    // Mac OS will have a menu for every frame (with a Quit shortcut)
+    // adding Ctrl-Q - quit shortcut to the panel if not on macOS;
+    // macOS will have a menu for every frame (with a Quit shortcut)
     JPanel mainContentPanel = new JPanel();
     mainContentPanel.setOpaque(false);
-    if (Utilities.isMacOs() == false) {
+    if (!Utilities.isMacOs()) {
       mainContentPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
           .put(KeyStroke.getKeyStroke("control Q"), "exitAppAction");
       mainContentPanel.getActionMap().put("exitAppAction", new QuitActionListener());
@@ -345,8 +337,8 @@ public class PlayerDialogBaseFrame extends JFrame {
       navigationPanel.setOpaque(false);
       navigationPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
 
-      // adding the button shortcuts (only if we are not running on Mac OS);
-      // we assume here, that for Mac OS, all button shortcuts are added to
+      // adding the button shortcuts (only if we are not running on macOS);
+      // we assume here, that for macOS, all button shortcuts are added to
       // the frame's menu bar
       JPanel pane = Utilities.isMacOs() ? null : this.questionsPane;
 
@@ -441,5 +433,4 @@ public class PlayerDialogBaseFrame extends JFrame {
     PrefCountRegistry.getInstance().setLastInputPanel(this.lastInputPanel);
     this.questionsPane.add(this.lastInputPanel, "Last Input");
   }
-
 }

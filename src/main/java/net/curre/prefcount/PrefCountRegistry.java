@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -25,9 +25,10 @@ import net.curre.prefcount.gui.MainWindow;
 import net.curre.prefcount.gui.PlayerDialogBaseFrame;
 import net.curre.prefcount.gui.ChoosePlayerDialog;
 import net.curre.prefcount.gui.menu.MenuItemsBean;
+import net.curre.prefcount.service.LafThemeService;
 import net.curre.prefcount.service.ServiceException;
+import net.curre.prefcount.service.SettingsService;
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
 
 /**
  * This is the central place for all prefcount
@@ -40,19 +41,13 @@ import net.curre.prefcount.util.Utilities;
 public class PrefCountRegistry {
 
   /** Private class logger. */
-  private static Logger log = Logger.getLogger(PrefCountRegistry.class.toString());
+  private static final Logger log = Logger.getLogger(PrefCountRegistry.class.toString());
 
-  /** Application name. */
-  public static final String APPLICATION_NAME = "PrefCount";
-
-  /** Location of the images directory. */
+  /** Location of the images' directory. */
   public static final String IMAGES_DIR = "images";
 
-  /** Default value for the locale ID (case insensitive language name). */
+  /** Default value for the locale ID (case-insensitive language name). */
   public static final String DEFAULT_LOCALE_ID = "ru";
-
-  /** Name of the settings file. */
-  public static final String SETTINGS_FILE_NAME = "prefcount-settings.ser";
 
   /** Array of available locales in the application. */
   public static final LocaleExt[] AVAILABLE_LOCALES = new LocaleExt[]{
@@ -60,7 +55,7 @@ public class PrefCountRegistry {
       new LocaleExt("us", "US", "English US")
   };
 
-  /** Reference to the singelton instance of this class. */
+  /** Reference to the singleton instance of this class. */
   private static final PrefCountRegistry instance;
 
   /**
@@ -72,8 +67,14 @@ public class PrefCountRegistry {
   /** Reference to the menu items bean. */
   private final MenuItemsBean menuItemsBean;
 
+  /** Reference to the game settings service. */
+  private final SettingsService settingsService;
+
+  /** Reference to the Look and Feel service. */
+  private final LafThemeService lafThemeService;
+
   /** Reference to the result bean */
-  private GameResultBean gameResultBean;
+  private final GameResultBean gameResultBean;
 
   static {
     instance = new PrefCountRegistry();
@@ -87,9 +88,6 @@ public class PrefCountRegistry {
 
   /** Reference to the last input panel. */
   private LastInputPanel lastInputPanel;
-
-  /** Absolute path to the settings file (including filename). */
-  private String settingsFilePath;
 
   /** Reference to the main controller bean. */
   private MainController mainController;
@@ -111,9 +109,28 @@ public class PrefCountRegistry {
    * the result of the getSettingsFilePathHelper() method.
    */
   private PrefCountRegistry() {
-    this.settingsFilePath = getSettingsFilePathHelper();
+    this.settingsService = new SettingsService(null);
     this.menuItemsBean = new MenuItemsBean();
     this.gameResultBean = new GameResultBean();
+    this.lafThemeService = new LafThemeService();
+  }
+
+  /**
+   * Gets the settings service.
+   *
+   * @return reference to the settings service.
+   */
+  public SettingsService getSettingsService() {
+    return this.settingsService;
+  }
+
+  /**
+   * Gets a reference to the LAF theme service.
+   *
+   * @return reference to the LAF theme service
+   */
+  public LafThemeService getLafThemeService() {
+    return this.lafThemeService;
   }
 
   /**
@@ -128,7 +145,7 @@ public class PrefCountRegistry {
   /**
    * Setter for the current locale.
    *
-   * @param localeId Identifier (case insensitive language name)
+   * @param localeId Identifier (case-insensitive language name)
    *                 for the locale to which to set.
    */
   public synchronized void setCurrentLocale(String localeId) {
@@ -226,26 +243,6 @@ public class PrefCountRegistry {
   }
 
   /**
-   * Getter for property 'settingsFilePath'
-   * (absolute path to the settings file, including filename).
-   *
-   * @return Value for property 'settingsFilePath'.
-   */
-  public String getSettingsFilePath() {
-    return this.settingsFilePath;
-  }
-
-  /**
-   * Setter for property 'settingsFilePath'
-   * (absolute path to the settings file, including filename).
-   *
-   * @param settingsFilePath Value to set for property 'settingsFilePath'.
-   */
-  public void setSettingsFilePath(String settingsFilePath) {
-    this.settingsFilePath = settingsFilePath;
-  }
-
-  /**
    * Gets reference to the main controller bean.
    *
    * @return reference to the main controller bean.
@@ -263,15 +260,13 @@ public class PrefCountRegistry {
     this.mainController = mainController;
   }
 
-  /** Private methods ********************** */
-
   /**
-   * Gets a <code>LocaleExt</code> object given it's
-   * corresponding language name (case insensitive).
+   * Gets a <code>LocaleExt</code> object given its
+   * corresponding language name (case-insensitive).
    *
-   * @param localeId Locale identifier (case insensitive langiage name).
-   * @return <code>LocaleExt</code> object given it's
-   *         corresponding language name (case insensitive).
+   * @param localeId Locale identifier (case insensitive language name).
+   * @return <code>LocaleExt</code> object given its
+   *         corresponding language name (case-insensitive).
    * @throws ServiceException if locale with the given ID is not found.
    */
   private static LocaleExt findLocaleById(String localeId) throws ServiceException {
@@ -284,46 +279,15 @@ public class PrefCountRegistry {
   }
 
   /**
-   * Returns a string that represents an absolute path
-   * to the settings file including the file name. If there are
-   * custom directories in the path that don't exist, they will be created.
-   * Note that the path is platform-specific.
-   *
-   * @return Absolute path to the settings file including the file name.
-   */
-  private static String getSettingsFilePathHelper() {
-    StringBuilder path = new StringBuilder(System.getProperties().getProperty("user.home"));
-    path.append(File.separatorChar);
-    switch (Utilities.getPlatformType()) {
-      case MAC_OS:
-        path.append("Library").append(File.separatorChar).append("Preferences").
-            append(File.separatorChar).append(APPLICATION_NAME);
-        createDirIfDoesntExist(path);
-        path.append(File.separatorChar).append(SETTINGS_FILE_NAME);
-        break;
-      case LINUX:
-        path.append('.').append(SETTINGS_FILE_NAME);
-        break;
-      case WINDOWS:
-        path.append("UserData");
-        createDirIfDoesntExist(path);
-        path.append(File.separatorChar).append(SETTINGS_FILE_NAME);
-        break;
-      default:
-        path.append(File.separatorChar).append(SETTINGS_FILE_NAME);
-    }
-    return path.toString();
-  }
-
-  /**
    * Creates a directory if it doesn't exist
    * (only the last one in the provided path).
    *
    * @param path Path to the directory.
    */
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   private static void createDirIfDoesntExist(StringBuilder path) {
     File dir = new File(path.toString());
-    if (dir.exists() == false) {
+    if (!dir.exists()) {
       dir.mkdir();
     }
   }
@@ -351,5 +315,4 @@ public class PrefCountRegistry {
     }
     this.choosePlayerDialog = null;
   }
-
 }

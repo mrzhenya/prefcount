@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -24,12 +24,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.border.EmptyBorder;
 
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
 import net.curre.prefcount.gui.type.Place;
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.bean.GameResultBean;
 import net.curre.prefcount.bean.PlayerStatistics;
-import static net.curre.prefcount.gui.type.WindowComponent.DIALOG_FORWARD2;
 
 import java.util.ResourceBundle;
 import java.util.Map;
@@ -70,14 +68,16 @@ public class ChoosePlayerDialog extends JDialog {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 		// Generated using JFormDesigner non-commercial license
 		ResourceBundle bundle = ResourceBundle.getBundle("default");
-		dialogPane = new JPanel();
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // Generated using JFormDesigner non-commercial license
+    JPanel dialogPane = new JPanel();
 		JPanel contentPanel = new JPanel();
 		playerEastButton = new JRadioButton();
 		playerSouthButton = new JRadioButton();
 		playerWestButton = new JRadioButton();
 		playerNorthButton = new JRadioButton();
 		JPanel buttonBar = new JPanel();
-		JButton okButton = PrefCountRegistry.getInstance().getMenuItemsBean().createJButtonForChoosePlayerDialog(this.dialogPane);
+		JButton okButton = PrefCountRegistry.getInstance().getMenuItemsBean().createJButtonForChoosePlayerDialog(dialogPane);
 		JPanel headerPanel = new JPanel();
 		JLabel headerMsg = new JLabel();
 
@@ -172,10 +172,7 @@ public class ChoosePlayerDialog extends JDialog {
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
-	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	// Generated using JFormDesigner non-commercial license
-	private JPanel dialogPane;
-	private JRadioButton playerEastButton;
+  private JRadioButton playerEastButton;
 	private JRadioButton playerSouthButton;
 	private JRadioButton playerWestButton;
 	private JRadioButton playerNorthButton;
@@ -219,5 +216,4 @@ public class ChoosePlayerDialog extends JDialog {
     }
     return LocaleExt.getString(place.longKey, ": " + stats.getPlayerName());
   }
-
 }

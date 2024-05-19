@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -57,10 +57,10 @@ public class PlayerDataPanel extends DialogInnerPanel {
   protected Map<Place, JTextField> whistFields;
 
   /** Reference to the whists label fields. */
-  private HashMap<Place, JLabel> whistLabels;
+  private final HashMap<Place, JLabel> whistLabels;
 
   /** Player's place in the game. */
-  private Place playerPlace;
+  private final Place playerPlace;
 
   /**
    * Current error field index - field that
@@ -69,7 +69,7 @@ public class PlayerDataPanel extends DialogInnerPanel {
   private JTextField currErrorField;
 
   /** Reference to the parent dialog frame. */
-  private PlayerDialogBaseFrame dialogWindow;
+  private final PlayerDialogBaseFrame dialogWindow;
 
   /**
    * Constructor.
@@ -83,8 +83,8 @@ public class PlayerDataPanel extends DialogInnerPanel {
     super(null, PanelPosition.MIDDLE);
     this.dialogWindow = dialogWindow;
     this.playerPlace = playerPlace;
-    this.whistFields = new HashMap<Place, JTextField>();
-    this.whistLabels = new HashMap<Place, JLabel>();
+    this.whistFields = new HashMap<>();
+    this.whistLabels = new HashMap<>();
 
     TableLayout layout = new TableLayout(new double[][]{
         {TableLayout.PREFERRED, 90d, 4d, 50d, 4d, 30d, TableLayout.PREFERRED},
@@ -255,5 +255,4 @@ public class PlayerDataPanel extends DialogInnerPanel {
 
     return field;
   }
-
 }

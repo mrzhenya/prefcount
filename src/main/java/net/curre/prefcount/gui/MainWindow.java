@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -32,7 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
+import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
@@ -52,8 +52,8 @@ import net.curre.prefcount.bean.Settings;
 import net.curre.prefcount.event.MainController;
 import net.curre.prefcount.gui.menu.MenuItemsBean;
 import net.curre.prefcount.gui.menu.PrefCountMenuBar;
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
-import net.curre.prefcount.gui.theme.skin.PrintSkin;
+import net.curre.prefcount.gui.theme.LafTheme;
+import net.curre.prefcount.gui.theme.PrintTheme;
 import net.curre.prefcount.gui.type.Place;
 import net.curre.prefcount.gui.type.WindowComponent;
 import static net.curre.prefcount.gui.type.WindowComponent.DIVISIBLE_BY_N;
@@ -62,14 +62,15 @@ import static net.curre.prefcount.gui.type.WindowComponent.LENINGRAD;
 import static net.curre.prefcount.gui.type.WindowComponent.MAIN_3_PLAYERS;
 import static net.curre.prefcount.gui.type.WindowComponent.MAIN_4_PLAYERS;
 import static net.curre.prefcount.gui.type.WindowComponent.SOCHINKA;
-import net.curre.prefcount.service.LafThemeService;
+
 import net.curre.prefcount.service.MainService;
-import net.curre.prefcount.service.SettingsService;
 import net.curre.prefcount.util.LocaleExt;
 import net.curre.prefcount.util.Utilities;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class represent the main frame, which contains
@@ -82,13 +83,10 @@ import info.clearthought.layout.TableLayoutConstraints;
 public class MainWindow extends JFrame implements Printable {
 
   /** Private class logger. */
-  private static Logger log = Logger.getLogger(MainWindow.class.toString());
+  private static final Logger logger = LogManager.getLogger(MainWindow.class.getName());
 
   /** Reference to the player dialog frame. */
   public PlayerDialogBaseFrame playerDialogFrame;
-
-  /** Reference to the main panel object. */
-  protected JPanel mainPanel;
 
   /** Reference to the options panel object. */
   protected JPanel optionsPanel;
@@ -103,7 +101,7 @@ public class MainWindow extends JFrame implements Printable {
   protected JRadioButton players4Button;
 
   /** Reference to the menu bar. */
-  private PrefCountMenuBar prefCountMenuBar;
+  private final PrefCountMenuBar prefCountMenuBar;
 
   /** Default constructor. */
   public MainWindow() {
@@ -114,12 +112,12 @@ public class MainWindow extends JFrame implements Printable {
    * Constructor that sets frame visibility.
    *
    * @param isVisible True when the frame should be made visible by default;
-   *                  false when the frame shoudl be invisible instead.
+   *                  false when the frame should be invisible instead.
    */
   public MainWindow(boolean isVisible) {
     super(LocaleExt.getString("pref.scoreboard.title"));
 
-    log.fine("Creating main window");
+    logger.info("Creating main window");
 
     LocaleExt.registerComponent(this, "pref.scoreboard.title");
 
@@ -177,7 +175,7 @@ public class MainWindow extends JFrame implements Printable {
       /** {@inheritDoc} */
       @Override
       public void windowClosing(WindowEvent event) {
-        MainService.doQuit();
+        MainService.quitApp();
       }
     });
 
@@ -202,7 +200,7 @@ public class MainWindow extends JFrame implements Printable {
     resultBean.clearResults();
 
     // creating the stats
-    Map<Place, PlayerStatistics> stats = new HashMap<Place, PlayerStatistics>();
+    Map<Place, PlayerStatistics> stats = new HashMap<>();
     for (Place place : Place.getPlaces(numberOfPlayers)) {
       PlayerStatistics stat = new PlayerStatistics(resultBean, place);
       stat.setPlayerName("");
@@ -239,7 +237,8 @@ public class MainWindow extends JFrame implements Printable {
 
   /** Displays the about information pane. */
   public void showAboutInfo() {
-    ImageIcon icon = new ImageIcon(App.class.getResource("images/PrefCount-48x48.png"));
+    ImageIcon icon = new ImageIcon(Objects.requireNonNull(
+        App.class.getResource("images/PrefCount-48x48.png")));
     JOptionPane.showMessageDialog(this,
                                   LocaleExt.getString("pref.aboutFrame.message"),
                                   LocaleExt.getString("pref.aboutFrame.title"),
@@ -264,16 +263,9 @@ public class MainWindow extends JFrame implements Printable {
    */
   public void readFromCurrentSettings() {
     // this is the current settings
-    Settings settings = SettingsService.getSettings();
+    PrefCountRegistry registry = PrefCountRegistry.getInstance();
+    Settings settings = registry.getSettingsService().getSettings();
     MenuItemsBean menuItemsBean = PrefCountRegistry.getInstance().getMenuItemsBean();
-
-    // setting the LAF
-    final String lafSkinId = settings.getLafSkinId();
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        LafThemeService.getInstance().setLookAndFeel(lafSkinId, true);
-      }
-    });
 
     // setting the frame size
     try {
@@ -314,7 +306,8 @@ public class MainWindow extends JFrame implements Printable {
     } else {
       Graphics2D g2 = (Graphics2D) g;
       g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-      final PrefSkin skin = LafThemeService.getInstance().getCurrentSkin();
+      PrefCountRegistry registry = PrefCountRegistry.getInstance();
+      final LafTheme lafTheme = registry.getLafThemeService().getCurrentLafTheme();
 
       final int height = (int) pageFormat.getImageableHeight();
       final int width = (int) pageFormat.getImageableWidth();
@@ -322,9 +315,9 @@ public class MainWindow extends JFrame implements Printable {
 
       // drawing the header
       String header = LocaleExt.getString("pref.print.header");
-      g2.setPaint(skin.getPlayerNameColor());
-      g2.setStroke(skin.getPlayerNameStroke());
-      g2.setFont(skin.getPlayerNameFont());
+      g2.setPaint(lafTheme.getPlayerNameColor());
+      g2.setStroke(lafTheme.getPlayerNameStroke());
+      g2.setFont(lafTheme.getPlayerNameFont());
       Dimension headerSize = Utilities.determineSizeOfString(g2, header);
       g2.drawString(header, Utilities.computeCenterX(width, (int) headerSize.getWidth()), y);
 
@@ -340,11 +333,11 @@ public class MainWindow extends JFrame implements Printable {
         g2.translate(-tableX, table.getHeight() + 15);
       }
 
-      // drawing the the score board
+      // drawing the score board
       final int minSize = Math.min(height, width) - 50;
-      final PrefSkin printSkin = new PrintSkin();
+      final LafTheme printTheme = new PrintTheme();
       this.scoreBoardPanel.drawScoreBoard(g2, minSize, minSize, Utilities.computeCenterX(width, minSize),
-                                          0, null, printSkin);
+                                          0, null, printTheme);
       g2.translate(0, minSize + 15);
 
       // drawing the date
@@ -366,8 +359,6 @@ public class MainWindow extends JFrame implements Printable {
   public PrefCountMenuBar getPrefCountMenuBar() {
     return this.prefCountMenuBar;
   }
-
-  /** *********** PRIVATE METHODS *************** */
 
   /**
    * Creates an option panel (one of the three).
@@ -399,5 +390,4 @@ public class MainWindow extends JFrame implements Printable {
 
     return outerPanel;
   }
-
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -23,9 +23,9 @@ import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.service.MainService;
 
 /**
- * This is a Mac OS helper class to assist with handling
- * of MAC OS events using the <code>com.apple.eawt.Application</code>
- * class. This class will not work on a platform other than Mac OS.
+ * This is a macOS helper class to assist with handling
+ * of MACOS events using the <code>com.apple.eawt.Application</code>
+ * class. This class will not work on a platform other than macOS.
  * <p/>
  * It's important to note, that in this class, we use classes
  * from the <code>com.apple.eawt</code> package, but since no such
@@ -39,14 +39,14 @@ import net.curre.prefcount.service.MainService;
 public class MacOsHandler {
 
   /** Private class logger. */
-  private static Logger log = Logger.getLogger(MacOsHandler.class.toString());
+  private static final Logger log = Logger.getLogger(MacOsHandler.class.toString());
 
   /** Flag to indicate that this handler has been initialized. */
   private static boolean isInitialized = false;
 
   /**
-   * Method to initialized Mac OS application handler, which functionality
-   * is based upone the <code>com.apple.eawt.Application</code> class. Here
+   * Method to initialized macOS application handler, which functionality
+   * is based upon the <code>com.apple.eawt.Application</code> class. Here
    * we add custom "about" and "quit" handlers to the Mac application menu bar.
    * <br /><br />
    * This method should be called once per application run - successive calls
@@ -58,15 +58,15 @@ public class MacOsHandler {
     }
     try {
       // creating an Application object
-      Class appClass = Class.forName("com.apple.eawt.Application");
+      Class<?> appClass = Class.forName("com.apple.eawt.Application");
       Object application = appClass.newInstance();
 
-      // geting the Application#addApplicationListener() method
-      Class listClass = Class.forName("com.apple.eawt.ApplicationListener");
+      // getting the Application#addApplicationListener() method
+      Class<?> listClass = Class.forName("com.apple.eawt.ApplicationListener");
       Method addAppListmethod = appClass.getDeclaredMethod("addApplicationListener", listClass);
 
       // creating and adding a custom adapter/listener to the Application
-      Class adapterClass = Class.forName("com.apple.eawt.ApplicationAdapter");
+      Class<?> adapterClass = Class.forName("com.apple.eawt.ApplicationAdapter");
       Object listener = ListenerProxy.newInstance(adapterClass.newInstance());
       addAppListmethod.invoke(application, listener);
 
@@ -77,7 +77,6 @@ public class MacOsHandler {
           "of the com.apple.eawt package! Are we on Mac OS? Exception: ", e);
     }
   }
-
 }
 
 /**
@@ -90,10 +89,10 @@ public class MacOsHandler {
 class ListenerProxy implements InvocationHandler {
 
   /** Private class logger. */
-  private static Logger log = Logger.getLogger(MacOsHandler.class.toString());
+  private static final Logger log = Logger.getLogger(MacOsHandler.class.toString());
 
   /** Reference to the proxied object. */
-  private Object object;
+  private final Object object;
 
   /**
    * Method to create a new proxy for the given object.
@@ -124,7 +123,7 @@ class ListenerProxy implements InvocationHandler {
    * </p>
    * {@inheritDoc}
    */
-  public Object invoke(Object proxy, Method m, Object[] args) throws Throwable {
+  public Object invoke(Object proxy, Method m, Object[] args) {
     Object result = null;
     try {
       if ("handleAbout".equals(m.getName())) {
@@ -139,7 +138,7 @@ class ListenerProxy implements InvocationHandler {
       } else if ("handleQuit".equals(m.getName())) {
         // handling quit action
         log.fine("Processing handleQuit() method...");
-        MainService.doQuit();
+        MainService.quitApp();
 
       } else {
         // for now, we don't care about other methods
@@ -150,5 +149,4 @@ class ListenerProxy implements InvocationHandler {
     }
     return result;
   }
-
 }

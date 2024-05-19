@@ -6,8 +6,6 @@
 
 package net.curre.prefcount.gui.menu;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
@@ -17,8 +15,7 @@ import javax.swing.JRadioButtonMenuItem;
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.bean.Settings;
 import net.curre.prefcount.event.ChangeLanguageActionListener;
-import net.curre.prefcount.event.LafMenuItemListener;
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
+import net.curre.prefcount.event.LafThemeMenuItemListener;
 import static net.curre.prefcount.gui.type.WindowComponent.ABOUT_ACTION;
 import static net.curre.prefcount.gui.type.WindowComponent.DIVISIBLE_BY_N;
 import static net.curre.prefcount.gui.type.WindowComponent.DIVISIBLE_IGNORE;
@@ -35,15 +32,16 @@ import static net.curre.prefcount.gui.type.WindowComponent.QUIT_ACTION;
 import static net.curre.prefcount.gui.type.WindowComponent.RESET_SETTINGS_ACTION;
 import static net.curre.prefcount.gui.type.WindowComponent.SAVE_SETTINGS_ACTION;
 import static net.curre.prefcount.gui.type.WindowComponent.SOCHINKA;
+
+import net.curre.prefcount.gui.theme.LafTheme;
 import net.curre.prefcount.service.LafThemeService;
-import net.curre.prefcount.service.SettingsService;
 import net.curre.prefcount.util.LocaleExt;
 import net.curre.prefcount.util.Utilities;
 
 /**
  * Object of this class represents a menu bar that for
  * a non-Mac OS platform. For the reason of why we can't
- * use the same menu bar for Mac OS, please, read the
+ * use the same menu bar for macOS, please, read the
  * <code>net.curre.prefcount.gui.menu</code> package
  * description and the <code>AwtMenuBar</code> javadoc.
  * <p/>
@@ -65,7 +63,7 @@ public class SwingMenuBar extends JMenuBar implements PrefCountMenuBar {
    * Constructor that initializes necessary
    * data structures, and creates the menus.
    *
-   * @throws UnsupportedOperationException When running on Mac OS.
+   * @throws UnsupportedOperationException When running on macOS.
    */
   public SwingMenuBar() {
     if (Utilities.isMacOs()) {
@@ -109,8 +107,6 @@ public class SwingMenuBar extends JMenuBar implements PrefCountMenuBar {
     this.dialogFrameItem.setSelected(isSelected);
   }
 
-  /** Private methods ***********************/
-
   /** Creates all necessary menus and menu items. */
   private void createMenus() {
 
@@ -143,26 +139,28 @@ public class SwingMenuBar extends JMenuBar implements PrefCountMenuBar {
     LocaleExt.registerComponent(mainMenu, "pref.mainMenu.main");
 
     // ..... creating Look and Feel submenu
-    Settings settings = SettingsService.getSettings();
+    PrefCountRegistry registry = PrefCountRegistry.getInstance();
+    Settings settings = registry.getSettingsService().getSettings();
     final JMenu lafMenu = new JMenu(LocaleExt.getString("pref.mainMenu.look"));
     LocaleExt.registerComponent(lafMenu, "pref.mainMenu.look");
 
     ButtonGroup group = new ButtonGroup();
-    for (final PrefSkin skin : LafThemeService.AVAILABLE_SKINS) {
-      String name = LocaleExt.getString(skin.getNameResourceKey());
+    LafThemeService lafThemeService = registry.getLafThemeService();
+    for (final LafTheme lafTheme : lafThemeService.getSupportedThemes()) {
+      String name = LocaleExt.getString(lafTheme.getNameResourceKey());
       JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(name);
-      LocaleExt.registerComponent(lafItem, skin.getNameResourceKey());
+      LocaleExt.registerComponent(lafItem, lafTheme.getNameResourceKey());
       group.add(lafItem);
-      if (skin.getNameResourceKey().equals(settings.getLafSkinId())) {
+      if (lafTheme.getId() == settings.getLafThemeId()) {
         lafItem.setSelected(true);
       }
-      lafItem.addActionListener(new LafMenuItemListener(skin));
+      lafItem.addActionListener(new LafThemeMenuItemListener(lafTheme));
       lafMenu.add(lafItem);
     }
     mainMenu.add(lafMenu);
 
     // .....  creating other menu items on the main menu
-    MenuItemsBean menuItemsBean = PrefCountRegistry.getInstance().getMenuItemsBean();
+    MenuItemsBean menuItemsBean = registry.getMenuItemsBean();
     mainMenu.add(menuItemsBean.getJMenuItem(PRINT_SCORES_ACTION));
 
     final JMenu printMenu = new JMenu(LocaleExt.getString("pref.mainMenu.print.templates"));
@@ -225,11 +223,9 @@ public class SwingMenuBar extends JMenuBar implements PrefCountMenuBar {
     this.dialogFrameItem = new JRadioButtonMenuItem(LocaleExt.getString("pref.windowMenu.dialog"));
     this.dialogFrameItem.setSelected(true);
     LocaleExt.registerComponent(this.dialogFrameItem, "pref.windowMenu.dialog");
-    this.dialogFrameItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-        boolean selected = SwingMenuBar.this.dialogFrameItem.isSelected();
-        PrefCountRegistry.getInstance().getPlayerDialogFrame().setVisible(selected);
-      }
+    this.dialogFrameItem.addActionListener(event -> {
+      boolean selected = SwingMenuBar.this.dialogFrameItem.isSelected();
+      PrefCountRegistry.getInstance().getPlayerDialogFrame().setVisible(selected);
     });
     winMenu.add(this.dialogFrameItem);
     return winMenu;

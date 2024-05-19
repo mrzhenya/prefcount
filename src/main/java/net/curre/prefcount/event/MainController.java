@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as 
  * published by the Free Software Foundation;
@@ -8,8 +8,6 @@ package net.curre.prefcount.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
@@ -29,9 +27,9 @@ import static net.curre.prefcount.gui.type.WindowComponent.MAIN_4_PLAYERS;
 import static net.curre.prefcount.gui.type.WindowComponent.SAVE_SETTINGS_ACTION;
 import net.curre.prefcount.service.MainService;
 import net.curre.prefcount.service.ResultService;
-import net.curre.prefcount.service.ServiceException;
-import net.curre.prefcount.service.SettingsService;
 import net.curre.prefcount.util.Utilities;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the main controller for handling
@@ -44,13 +42,13 @@ import net.curre.prefcount.util.Utilities;
 public class MainController implements ActionListener {
 
   /** Private class logger. */
-  private static Logger log = Logger.getLogger(MainController.class.toString());
+  private static final Logger logger = LogManager.getLogger(MainController.class.getName());
 
   /** Reference to the main window frame. */
-  private MainWindow mainWindow;
+  private final MainWindow mainWindow;
 
   /** Reference to the player dialog frame. */
-  private PlayerDialogBaseFrame playerDialog;
+  private final PlayerDialogBaseFrame playerDialog;
 
   /**
    * Constructs a new <code>MainController</code> object.
@@ -65,6 +63,7 @@ public class MainController implements ActionListener {
 
   /** {@inheritDoc} */
   public void actionPerformed(ActionEvent event) {
+    logger.info("Handling action");
     selectMenuBarOptions((WindowComponent) event.getSource());
   }
 
@@ -84,8 +83,6 @@ public class MainController implements ActionListener {
     };
   }
 
-  /** Private methods ***********************/
-
   /**
    * Performs an action according to the selected (passed)
    * component enum.
@@ -93,8 +90,8 @@ public class MainController implements ActionListener {
    * @param itemEnum selected item.
    */
   private void selectMenuBarOptions(WindowComponent itemEnum) {
-    Settings settings = SettingsService.getSettings();
     PrefCountRegistry registry = PrefCountRegistry.getInstance();
+    Settings settings = registry.getSettingsService().getSettings();
     GameResultBean resultBean = registry.getGameResultBean();
 
     String itemName = itemEnum.name();
@@ -140,7 +137,7 @@ public class MainController implements ActionListener {
         break;
 
       case QUIT_ACTION:
-        MainService.doQuit();
+        MainService.quitApp();
         break;
 
       case ABOUT_ACTION:
@@ -191,10 +188,11 @@ public class MainController implements ActionListener {
    */
   private void numberOfPlayersHelper(WindowComponent itemEnum) {
     // let's first see if the new value is different
-    Settings settings = SettingsService.getSettings();
+    PrefCountRegistry registry = PrefCountRegistry.getInstance();
+    Settings settings = registry.getSettingsService().getSettings();
     MenuItemsBean menuItemsBean = PrefCountRegistry.getInstance().getMenuItemsBean();
     final String currNumber = settings.getPlayersNumber();
-    if (itemEnum.name().equals(currNumber) == false) {
+    if (!itemEnum.name().equals(currNumber)) {
 
       // need to check if we are not erasing any data
       if (this.playerDialog.isSomeDataEntered()) {
@@ -222,9 +220,11 @@ public class MainController implements ActionListener {
   /**
    * Assists with the save/reset settings actions.
    *
-   * @param isSave true if this is save action; false - reset action.
+   * @param isSave true if this is a save action; false - reset action.
    */
   private void saveResetActionHelper(boolean isSave) {
+    // TODO - not sure, deprecate reset? what is save? why not automatically save?
+/*
     try {
       if (isSave) {
         SettingsService.saveSettings();
@@ -235,13 +235,12 @@ public class MainController implements ActionListener {
                                              "pref.dialog.buttons.yes",
                                              "pref.dialog.buttons.no")) {
           SettingsService.resetSettings();
-          MainService.doQuit();
+          MainService.quitApp();
         }
-
       }
     } catch (ServiceException e) {
       log.log(Level.WARNING, "Unable to perform save/reset action!", e);
     }
+*/
   }
-
 }

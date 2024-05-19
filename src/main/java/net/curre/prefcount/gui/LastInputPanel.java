@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -40,7 +40,7 @@ import net.curre.prefcount.util.Utilities;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Object of this class represents the last input panel,
@@ -54,13 +54,13 @@ import org.apache.commons.lang.StringUtils;
 public class LastInputPanel extends DialogInnerPanel {
 
   /** Reference to the point cost text field. */
-  private JTextField pointCost;
+  private final JTextField pointCost;
 
   /** Reference to the parent dialog frame. */
-  private PlayerDialogBaseFrame dialogWindow;
+  private final PlayerDialogBaseFrame dialogWindow;
 
-  /** Reference to the Jtable with players' scores. */
-  private JTable scoreTable;
+  /** Reference to the JTable with players' scores. */
+  private final JTable scoreTable;
 
   /** Reference to the panel that holds the table and it's header. */
   JPanel tablePanel;
@@ -147,8 +147,8 @@ public class LastInputPanel extends DialogInnerPanel {
         try {
           String costStr = pointCost.getText().trim();
           double cost = 0.0;
-          if (costStr.length() != 0 &&
-              costStr.equals("0.") == false && costStr.equals("0,") == false) {
+          if (!costStr.isEmpty() &&
+              !costStr.equals("0.") && !costStr.equals("0,")) {
             cost = Double.parseDouble(costStr);
           }
           dialogWindow.toggleErrorField(null);
@@ -181,7 +181,7 @@ public class LastInputPanel extends DialogInnerPanel {
     }
     // if there is text, it must be a double and be >= 0
     if (Utilities.validateTextField(this.pointCost, Utilities.FieldType.DOUBLE)) {
-      Double cost = Double.valueOf(this.pointCost.getText().trim());
+      double cost = Double.parseDouble(this.pointCost.getText().trim());
       if (cost < 0) {
         this.dialogWindow.toggleErrorField("pref.dialog.errorLabel.negPointCost");
       } else {
@@ -256,16 +256,16 @@ public class LastInputPanel extends DialogInnerPanel {
     col.setPreferredWidth(65);
   }
 
-  /** Private classes and methods ********************** */
-
   /** Helper class that represents model for the players' score table. */
-  private class ScoreTableModel extends AbstractTableModel {
+  private static class ScoreTableModel extends AbstractTableModel {
 
     /** Array of column resource keys. */
-    private String[] columnNames = {null,
-                                    "pref.dialog.table.player",
-                                    "pref.dialog.table.score",
-                                    "pref.dialog.table.money"};
+    private final String[] columnNames = {
+        null,
+        "pref.dialog.table.player",
+        "pref.dialog.table.score",
+        "pref.dialog.table.money"
+    };
 
     /** Reference to the game result bean. */
     private GameResultBean resultBean;
@@ -348,7 +348,7 @@ public class LastInputPanel extends DialogInnerPanel {
 
     /** {@inheritDoc} */
     @Override
-    public Class getColumnClass(int c) {
+    public Class<?> getColumnClass(int c) {
       if (this.resultBean == null) {
         return null;
       }
@@ -369,7 +369,5 @@ public class LastInputPanel extends DialogInnerPanel {
     @Override
     public void setValueAt(Object value, int row, int col) {
     }
-
   }
-
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -24,8 +24,7 @@ import net.curre.prefcount.gui.type.Place;
 import net.curre.prefcount.PrefCountRegistry;
 
 /**
- * This service bean is responsible for
- * computing game results.
+ * This service bean is responsible for computing game results.
  * <p/>
  * Created date: Jul 29, 2007
  *
@@ -34,7 +33,7 @@ import net.curre.prefcount.PrefCountRegistry;
 public class ResultService {
 
   /** Private class logger. */
-  private static Logger log = Logger.getLogger(ResultService.class.toString());
+  private static final Logger log = Logger.getLogger(ResultService.class.toString());
 
   /**
    * Generates the final player scores. Note that the target
@@ -129,8 +128,6 @@ public class ResultService {
     }
     rBean.clearResults();
   }
-
-  /** Private methods ***********************/
 
   /**
    * Computes and sets the additional mount and whist fields
@@ -239,5 +236,4 @@ public class ResultService {
       }
     }
   }
-
 }

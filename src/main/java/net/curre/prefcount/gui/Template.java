@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -22,8 +22,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 
 import net.curre.prefcount.PrefCountRegistry;
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
-import net.curre.prefcount.gui.theme.skin.PrintSkin;
+import net.curre.prefcount.gui.theme.PrintTheme;
 
 /**
  * Object of this class represents a score board template.
@@ -46,7 +45,6 @@ public class Template implements Printable {
     this.numberOfPlayers = numberOfPlayers;
   }
 
-
   /** {@inheritDoc} */
   public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
     if (pageIndex > 0) {
@@ -59,14 +57,14 @@ public class Template implements Printable {
       final int height = (int) pageFormat.getImageableHeight();
       final int width = (int) pageFormat.getImageableWidth();
 
-      // drawing the the score board
+      // drawing the score board
       MainWindow mainWindow = PrefCountRegistry.getInstance().getMainWindow();
-      final PrefSkin skin = new PrintSkin();
+      final PrintTheme lafTheme = new PrintTheme();
 
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                           RenderingHints.VALUE_ANTIALIAS_ON);
       mainWindow.scoreBoardPanel.drawScoreBoard(g2, width, height - 20, 0, 20,
-                                                numberOfPlayers, skin);
+                                                numberOfPlayers, lafTheme);
       return (PAGE_EXISTS);
     }
   }

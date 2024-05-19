@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -43,7 +43,7 @@ import java.util.Set;
 
 import net.curre.prefcount.gui.type.WindowComponent;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Object of this class represents locale
@@ -56,19 +56,19 @@ import org.apache.commons.lang.StringUtils;
 public class LocaleExt {
 
   /** Reference to the locale object. */
-  private Locale locale;
+  private final Locale locale;
 
   /** Language display name. */
-  private String displayLanguage;
+  private final String displayLanguage;
 
   /** Icon to represent this locale. */
-  private ImageIcon localeIcon;
+  private final ImageIcon localeIcon;
 
   /** Set for holding components and their resource keys. */
-  private static Set<Triple> resourceKeysSet = new HashSet<Triple>();
+  private static final Set<Triple> resourceKeysSet = new HashSet<>();
 
   /** List of input maps and their shortcut resource keys. */
-  private static List<Object[]> inputMapList = new ArrayList<Object[]>();
+  private static final List<Object[]> inputMapList = new ArrayList<>();
 
   /**
    * Constructor.
@@ -142,7 +142,7 @@ public class LocaleExt {
    * are passed, they will replace the "{0}", "{1}", etc. string
    * sequences in this resource (if they exist) in the order
    * they appear on the argument list. Note, that only maximum of
-   * 10 arguments are supported (indeces 0 through 9).
+   * 10 arguments are supported (indexes 0 through 9).
    *
    * @param key     key for a resource to fetch.
    * @param keyArgs array of arguments for the resource key (optional).
@@ -182,7 +182,7 @@ public class LocaleExt {
     }
 
     final Triple triple = new Triple(component, keyEnum, keyArgs);
-    if (resourceKeysSet.add(triple) == false) {
+    if (!resourceKeysSet.add(triple)) {
       throw new IllegalArgumentException("Given component already exists!");
     }
   }
@@ -204,7 +204,7 @@ public class LocaleExt {
     }
 
     final Triple triple = new Triple(component, key, keyArgs);
-    if (resourceKeysSet.add(triple) == false) {
+    if (!resourceKeysSet.add(triple)) {
       throw new IllegalArgumentException("Given component already exists!");
     }
   }
@@ -517,7 +517,5 @@ public class LocaleExt {
     public int hashCode() {
       return component.hashCode();
     }
-
   }
-
 }

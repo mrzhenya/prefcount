@@ -1,7 +1,15 @@
-/**
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as 
- * published by the Free Software Foundation;
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package net.curre.prefcount.gui.menu;
@@ -23,6 +31,7 @@ import java.awt.MenuShortcut;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -52,43 +61,43 @@ public class MenuItemsBean {
   private ActionListener actionListener;
 
   /** Map with radio button menu items. */
-  private Map<WindowComponent, JRadioButtonMenuItem> menuBarRadioItems;
+  private final Map<WindowComponent, JRadioButtonMenuItem> menuBarRadioItems;
 
   /** Map with awt check box menu items. */
-  private Map<WindowComponent, CheckboxMenuItem> menuBarCheckBoxItems;
+  private final Map<WindowComponent, CheckboxMenuItem> menuBarCheckBoxItems;
 
   /** Menu bar menu items map. */
-  private Map<WindowComponent, JMenuItem> menuBarMenuItems;
+  private final Map<WindowComponent, JMenuItem> menuBarMenuItems;
 
   /** Awt menu bar menu items map. */
-  private Map<WindowComponent, MenuItem> menuAwtBarMenuItems;
+  private final Map<WindowComponent, MenuItem> menuAwtBarMenuItems;
 
   /** Menu bar groups map. */
-  private Map<String, ButtonGroup> menuBarGroups;
+  private final Map<String, ButtonGroup> menuBarGroups;
 
   /** Awt menu bar groups map. */
-  private Map<String, AwtCheckboxMenuGroup> menuBarAwtGroups;
+  private final Map<String, AwtCheckboxMenuGroup> menuBarAwtGroups;
 
   /** Radio buttons map. */
-  private Map<WindowComponent, JRadioButton> radioButtons;
+  private final Map<WindowComponent, JRadioButton> radioButtons;
 
   /** JButtons map. */
-  private Map<WindowComponent, JButton> jButtons;
+  private final Map<WindowComponent, JButton> jButtons;
 
   /** Radio buttons groups map. */
-  private Map<String, ButtonGroup> radioButtonGroups;
+  private final Map<String, ButtonGroup> radioButtonGroups;
 
   /** Constructs a new menu items bean object. */
   public MenuItemsBean() {
-    this.menuBarRadioItems = new HashMap<WindowComponent, JRadioButtonMenuItem>();
-    this.menuBarMenuItems = new HashMap<WindowComponent, JMenuItem>();
-    this.menuAwtBarMenuItems = new HashMap<WindowComponent, MenuItem>();
-    this.menuBarCheckBoxItems = new HashMap<WindowComponent, CheckboxMenuItem>();
-    this.menuBarGroups = new HashMap<String, ButtonGroup>();
-    this.menuBarAwtGroups = new HashMap<String, AwtCheckboxMenuGroup>();
-    this.radioButtons = new HashMap<WindowComponent, JRadioButton>();
-    this.radioButtonGroups = new HashMap<String, ButtonGroup>();
-    this.jButtons = new HashMap<WindowComponent, JButton>();
+    this.menuBarRadioItems = new HashMap<>();
+    this.menuBarMenuItems = new HashMap<>();
+    this.menuAwtBarMenuItems = new HashMap<>();
+    this.menuBarCheckBoxItems = new HashMap<>();
+    this.menuBarGroups = new HashMap<>();
+    this.menuBarAwtGroups = new HashMap<>();
+    this.radioButtons = new HashMap<>();
+    this.radioButtonGroups = new HashMap<>();
+    this.jButtons = new HashMap<>();
   }
 
   /**
@@ -137,7 +146,7 @@ public class MenuItemsBean {
 
       if (itemEnum.getShortcutKey() != null) {
         item.setAccelerator(KeyStroke.getKeyStroke(
-            LocaleExt.getString(itemEnum.getShortcutKey()).charAt(0), ActionEvent.CTRL_MASK));
+            LocaleExt.getString(itemEnum.getShortcutKey()).charAt(0), InputEvent.CTRL_MASK));
       }
     }
     return item;
@@ -307,7 +316,7 @@ public class MenuItemsBean {
       LocaleExt.registerComponent(menuItem, itemEnum);
       if (itemEnum.getShortcutKey() != null) {
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
-            LocaleExt.getString(itemEnum.getShortcutKey()).charAt(0), ActionEvent.CTRL_MASK));
+            LocaleExt.getString(itemEnum.getShortcutKey()).charAt(0), InputEvent.CTRL_MASK));
       }
       menuItem.addActionListener(new ItemActionListener(itemEnum));
       this.menuBarMenuItems.put(itemEnum, menuItem);
@@ -375,8 +384,6 @@ public class MenuItemsBean {
     }
   }
 
-  /** Private methods ***********************/
-
   /**
    * Helper method to add a listener to a component.
    * Note that this method is null safe.
@@ -411,7 +418,7 @@ public class MenuItemsBean {
   private class ItemActionListener extends AbstractAction implements ActionListener, ItemListener, KeyListener {
 
     /** This enum represent an item this listener belongs to. */
-    private WindowComponent itemEnum;
+    private final WindowComponent itemEnum;
 
     /**
      * Constructs a new <code>ItemActionListener</code> object.
@@ -461,7 +468,5 @@ public class MenuItemsBean {
         MenuItemsBean.this.actionListener.actionPerformed(event);
       }
     }
-
   }
-
 }

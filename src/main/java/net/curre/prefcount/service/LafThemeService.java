@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -14,28 +14,24 @@
 
 package net.curre.prefcount.service;
 
-import javax.swing.LookAndFeel;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import java.awt.Frame;
-import java.util.logging.Level;
+import javax.validation.constraints.NotNull;
+import java.awt.Color;
+import java.awt.Window;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import net.curre.prefcount.gui.theme.skin.AquaSkin;
-import net.curre.prefcount.gui.theme.skin.BusinessSkin;
-import net.curre.prefcount.gui.theme.skin.CremeSkin;
-import net.curre.prefcount.gui.theme.skin.DefaultSkin;
-import net.curre.prefcount.gui.theme.skin.FieldOfWheatSkin;
-import net.curre.prefcount.gui.theme.skin.FindingNemoSkin;
-import net.curre.prefcount.gui.theme.skin.GreenMagicSkin;
-import net.curre.prefcount.gui.theme.skin.MangoSkin;
-import net.curre.prefcount.gui.theme.skin.ModerateSkin;
-import net.curre.prefcount.gui.theme.skin.NebulaSkin;
-import net.curre.prefcount.gui.theme.skin.OfficeBlue2007Skin;
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
+import net.curre.prefcount.gui.theme.DefaultTheme;
+import net.curre.prefcount.gui.theme.FlatDarkTheme;
+import net.curre.prefcount.gui.theme.FlatLightTheme;
+import net.curre.prefcount.gui.theme.FlatMacDarkTheme;
+import net.curre.prefcount.gui.theme.LafTheme;
+import net.curre.prefcount.gui.theme.LafThemeId;
+import net.curre.prefcount.gui.theme.NimbusTheme;
 import net.curre.prefcount.util.Utilities;
-
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * This is a helper class to assist with
@@ -48,174 +44,170 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 public class LafThemeService {
 
   /** Private class logger. */
-  private static Logger log = Logger.getLogger(LafThemeService.class.toString());
+  private static final Logger log = Logger.getLogger(LafThemeService.class.toString());
 
-  /** Array of available themes/skins. */
-  public static final PrefSkin[] AVAILABLE_SKINS = {
-      new DefaultSkin(), new AquaSkin(), new BusinessSkin(),
-      new ModerateSkin(), new NebulaSkin(), new OfficeBlue2007Skin(),
-      new GreenMagicSkin(), new MangoSkin(), new CremeSkin(),
-      new FieldOfWheatSkin(), new FindingNemoSkin()
-  };
+  /** Default LAF theme. */
+  public static final LafThemeId DEFAULT_LAF_THEME_ID = LafThemeId.DEFAULT;
 
-  /** This holds a reference to the singleton instance. */
-  private static LafThemeService instance = new LafThemeService();
+  /** List of available themes/skins. */
+  private final ArrayList<LafTheme> supportedLafThemes;
 
-  /** Reference to the substance LAF object. */
-  private SubstanceLookAndFeel substanceLaf;
+  /**
+   * Reference to the known Window UI components, UI tree roots to update.
+   * We handle it "manually" because Frame.getFrames doesn't have them all.
+   */
+  private final ArrayList<Window> componentsRegistry;
 
-  /** Reference to the current skin; */
-  private PrefSkin currentSkin;
-
-  /** Reference to the pending skin; */
-  private PrefSkin pendingSkin;
-
-  /** Flag to indicate that Substance LaF is active. */
-  private boolean substanceLafActive;
+  /** Current theme ID. */
+  private LafThemeId currentLafThemeId;
 
   /** Private constructor. */
-  private LafThemeService() {
-    this.currentSkin = AVAILABLE_SKINS[0];
+  public LafThemeService() {
+    this.currentLafThemeId = DEFAULT_LAF_THEME_ID;
+    this.componentsRegistry = new ArrayList<>();
+    this.supportedLafThemes = new ArrayList<>();
+
+    // For macOS, do a few extra things - https://www.formdev.com/flatlaf/macos/
+    if (Utilities.isMacOs()) {
+      // Moves the menu bar to the top of the screen.
+      System.setProperty("apple.laf.useScreenMenuBar", "true");
+      ResourceBundle bundle = ResourceBundle.getBundle("default");
+      System.setProperty("apple.awt.application.name", bundle.getString("pref.app.name"));
+
+      // Support of the system dark/light theme.
+      System.setProperty( "apple.awt.application.appearance", "system" );
+    }
   }
 
   /**
-   * Returns an instance of this class to use.
-   *
-   * @return singleton instance of this class to use.
+   * Gets verified, supported LAF themes that could be used by the app.
+   * @return supported LAF themes
    */
-  public static LafThemeService getInstance() {
-    return instance;
+  public ArrayList<LafTheme> getSupportedThemes() {
+    synchronized (this) {
+      if (this.supportedLafThemes.isEmpty()) {
+        this.supportedLafThemes.add(new DefaultTheme());
+        this.supportedLafThemes.add(new FlatLightTheme());
+        this.supportedLafThemes.add(new FlatDarkTheme());
+        if (this.systemLafThemePresent(NimbusTheme.LAF_CLASS_NAME)) {
+          this.supportedLafThemes.add(new NimbusTheme());
+        }
+        if (Utilities.isMacOs()) {
+          this.supportedLafThemes.add(new FlatMacDarkTheme());
+        }
+      }
+    }
+    return this.supportedLafThemes;
   }
 
   /**
-   * Returns reference to the current skin.
-   *
-   * @return reference to the current skin.
+   * Gets the current LAF theme ID.
+   * @return current LAF theme ID
    */
-  public PrefSkin getCurrentSkin() {
-    return this.currentSkin;
+  public LafThemeId getCurrentLafThemeId() {
+    return this.currentLafThemeId;
   }
 
   /**
-   * Returns reference to the pending skin -
-   * the skin that was chosen but was activated yet.
-   *
-   * @return reference to the pending skin.
+   * Gets the current LAF theme.
+   * @return current LAF theme
    */
-  public PrefSkin getPendingSkin() {
-    return this.pendingSkin;
-  }
-
-  /** Clear the pending skin change (sets the pendingSkin to null). */
-  public void clearPendingSkin() {
-    this.pendingSkin = null;
-  }
-
-  /**
-   * Sets the Look and Feel according to the
-   * passed theme/skin name.
-   *
-   * @param skinId     Theme/skin ID (resource key) to set the LaF to.
-   * @param isFirstRun Flag to indicate the first run of this method (when true).
-   */
-  public void setLookAndFeel(final String skinId, boolean isFirstRun) {
-
-    // fetch the skin object given its ID
+  public LafTheme getCurrentLafTheme() {
     try {
-      if (isFirstRun) {
-        this.pendingSkin = null;
+      return findLafThemeById(this.currentLafThemeId);
+    } catch (ServiceException e) {
+      // This should never occur, only at development time.
+//      log.log(Level.FATAL, "Unable to set LAF theme: " + this.currentLafThemeId, e);
+      System.exit(1);
+    }
+    return null;
+  }
 
-        // checking which Laf manager to set Substance or system default
-        if (DefaultSkin.NAME_KEY.equals(skinId)) {
-          UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+  /**
+   * UI tree of the window components registered here will be updated on
+   * LAF theme changes.
+   * @param component window UI component to register
+   */
+  public void registerUITreeForUpdates(Window component) {
+    this.componentsRegistry.add(component);
+  }
 
-        } else {
-          UIManager.setLookAndFeel(getSubstanceLaf());
-          setCurrentSkinHelper(skinId);
+  /**
+   * Sets the Look and Feel to the passed theme and updates the UI.
+   * @param lafThemeId Theme ID to set the LaF to.
+   */
+  public void activateLafTheme(final LafThemeId lafThemeId) {
+    JFrame.setDefaultLookAndFeelDecorated(true);
+    try {
+//      logger.info("Activating LAF theme " + lafThemeId);
+      if (findLafThemeById(lafThemeId).activateTheme()) {
+        this.currentLafThemeId = lafThemeId;
+
+        // Updating the UI of registered components (fyi, Frame.getFrames doesn't have them all).
+        for (Window component : this.componentsRegistry) {
+          SwingUtilities.updateComponentTreeUI(component);
+          component.pack();
         }
-
       } else {
-
-        // checking if the new skin is different
-        if (this.currentSkin.getNameResourceKey().equals(skinId) == false) {
-
-          // we can't switch from one theme to another if current  UI manager is Substance
-          // and we are switching to the system default theme or to the default Substance theme (Aqua);
-          // we need to restart application for this change take effect
-          if (DefaultSkin.NAME_KEY.equals(skinId) ||
-              this.substanceLafActive && AquaSkin.NAME_KEY.equals(skinId)) {
-            if (this.pendingSkin == null ||
-                this.pendingSkin.getNameResourceKey().equals(skinId) == false) {
-              this.pendingSkin = findSkinById(skinId);
-              if (Utilities.displayOkCancelMessage("pref.settings.skin.needsRestart",
-                                                   "pref.dialog.buttons.yes",
-                                                   "pref.dialog.buttons.no")) {
-                MainService.doQuit();
-              }
-            }
-
-          } else {
-            if (this.substanceLafActive == false) {
-              UIManager.setLookAndFeel(getSubstanceLaf());
-            }
-            setCurrentSkinHelper(skinId);
-          }
-        }
+        log.warning("Unable to set LAF theme: " + lafThemeId);
       }
-
     } catch (Exception e) {
-      log.log(Level.WARNING, "Unable to set LAF", e);
+//      log.log(Level.WARN, "Unable to set LAF theme: " + lafThemeId, e);
     }
   }
 
   /**
-   * Returns the skin given its ID (resource key).
-   *
-   * @param skinId Skin ID (resource key).
-   * @return The skin with the given ID (resource key).
-   * @throws ServiceException If skin with given ID was not found.
+   * Creates a new color that is lighter or darker than the passed color.
+   * @param color model color
+   * @param change value to be added to or subracted from the RGB channels of the model color
+   * @return the new, lighter color
    */
-  public static PrefSkin findSkinById(String skinId) throws ServiceException {
-    for (PrefSkin skin : AVAILABLE_SKINS) {
-      if (skin.getNameResourceKey().equals(skinId)) {
-        return skin;
+  public static @NotNull Color createAdjustedColor(@NotNull Color color, int change) {
+    return new Color(getSafeColor(color.getRed() + change),
+        getSafeColor(color.getGreen() + change),
+        getSafeColor(color.getBlue() + change));
+  }
+
+  /**
+   * Checks if the passed LAF theme is present in the UIManager.
+   * @param lafClassName class name of the theme class
+   * @return true if the passed theme is installed in UIManager; false if otherwise
+   */
+  private boolean systemLafThemePresent(String lafClassName) {
+    for (UIManager.LookAndFeelInfo installedLaf : UIManager.getInstalledLookAndFeels()) {
+      if (lafClassName.equals(installedLaf.getClassName())) {
+        return true;
       }
     }
-    throw new ServiceException("Skin with id \"" + skinId + "\" was not found!");
+    return false;
   }
 
   /**
-   * Helper method to lazy-load the substance Laf.
-   *
-   * @return Substance Laf object.
+   * Returns the LAF theme given its ID.
+   * @param lafThemeId theme ID
+   * @return The theme with the given ID
+   * @throws ServiceException If theme with given ID was not found
    */
-  private synchronized LookAndFeel getSubstanceLaf() {
-    if (this.substanceLaf == null) {
-      this.substanceLaf = new SubstanceLookAndFeel();
-      this.substanceLafActive = true;
+  private @NotNull LafTheme findLafThemeById(LafThemeId lafThemeId) throws ServiceException {
+    for (LafTheme theme : this.getSupportedThemes()) {
+      if (theme.getId().equals(lafThemeId)) {
+        return theme;
+      }
     }
-    return this.substanceLaf;
+    throw new ServiceException("Theme with id \"" + lafThemeId + "\" was not found!");
   }
 
   /**
-   * Assists with changing the skin (for Substance LaF only).
-   *
-   * @param skinId skin id.
-   * @throws ServiceException on error.
+   * Gets a safe color value withing the "0 >= value <= 255" bounds.
+   * @param color color value to test
+   * @return safe color value
    */
-  private void setCurrentSkinHelper(String skinId) throws ServiceException {
-    this.pendingSkin = null;
-    this.currentSkin = findSkinById(skinId);
-
-    // no need to set the skin for the default substance theme - Aqua
-    if (AquaSkin.NAME_KEY.equals(skinId) == false) {
-      SubstanceLookAndFeel.setSkin(this.currentSkin.getSubstanceSkinClassName());
+  private static int getSafeColor(int color) {
+    if (color < 0) {
+      return 0;
+    } else if (color > 255) {
+      return 255;
     }
-
-    // updating component tree for all frames
-    for (Frame frame : Frame.getFrames()) {
-      SwingUtilities.updateComponentTreeUI(frame);
-    }
+    return color;
   }
-
 }
