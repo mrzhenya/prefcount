@@ -64,8 +64,8 @@ import static net.curre.prefcount.gui.type.WindowComponent.MAIN_4_PLAYERS;
 import static net.curre.prefcount.gui.type.WindowComponent.SOCHINKA;
 
 import net.curre.prefcount.service.MainService;
+import net.curre.prefcount.service.UiService;
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
@@ -318,8 +318,8 @@ public class MainWindow extends JFrame implements Printable {
       g2.setPaint(lafTheme.getPlayerNameColor());
       g2.setStroke(lafTheme.getPlayerNameStroke());
       g2.setFont(lafTheme.getPlayerNameFont());
-      Dimension headerSize = Utilities.determineSizeOfString(g2, header);
-      g2.drawString(header, Utilities.computeCenterX(width, (int) headerSize.getWidth()), y);
+      Dimension headerSize = UiService.determineSizeOfString(g2, header);
+      g2.drawString(header, UiService.computeCenterX(width, (int) headerSize.getWidth()), y);
 
       // drawing the score table only if the final scores are ready
       int nextY = y + g2.getFontMetrics().getHeight() + 5;
@@ -327,7 +327,7 @@ public class MainWindow extends JFrame implements Printable {
       GameResultBean resultBean = PrefCountRegistry.getInstance().getGameResultBean();
       if (resultBean.isFinalScoresReady()) {
         JPanel table = this.playerDialogFrame.lastInputPanel.tablePanel;
-        int tableX = Utilities.computeCenterX(width, table.getWidth());
+        int tableX = UiService.computeCenterX(width, table.getWidth());
         g2.translate(tableX, 0);
         table.paintComponents(g2);
         g2.translate(-tableX, table.getHeight() + 15);
@@ -336,7 +336,7 @@ public class MainWindow extends JFrame implements Printable {
       // drawing the score board
       final int minSize = Math.min(height, width) - 50;
       final LafTheme printTheme = new PrintTheme();
-      this.scoreBoardPanel.drawScoreBoard(g2, minSize, minSize, Utilities.computeCenterX(width, minSize),
+      this.scoreBoardPanel.drawScoreBoard(g2, minSize, minSize, UiService.computeCenterX(width, minSize),
                                           0, null, printTheme);
       g2.translate(0, minSize + 15);
 
@@ -344,7 +344,7 @@ public class MainWindow extends JFrame implements Printable {
       String date = new SimpleDateFormat("HH:mm, dd MMMM yyyy (EEEE)").format(new Date());
       g2.setStroke(new BasicStroke(1));
       g2.setFont(new Font("Arial", Font.ITALIC, 12));
-      Dimension dateSize = Utilities.determineSizeOfString(g2, date);
+      Dimension dateSize = UiService.determineSizeOfString(g2, date);
       g2.drawString(date, (width - (int) dateSize.getWidth() - 70), 30);
 
       return (PAGE_EXISTS);

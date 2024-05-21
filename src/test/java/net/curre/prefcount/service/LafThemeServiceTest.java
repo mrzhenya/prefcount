@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -14,12 +14,11 @@
 
 package net.curre.prefcount.service;
 
-import java.util.logging.Logger;
-
-import net.curre.prefcount.gui.theme.skin.DefaultSkin;
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
-import net.curre.prefcount.gui.theme.skin.AquaSkin;
+import net.curre.prefcount.gui.theme.LafTheme;
+import net.curre.prefcount.gui.theme.LafThemeId;
 import net.curre.prefcount.test.BaseTestCase;
+
+import java.util.ArrayList;
 
 /**
  * This is a junit test for testing LAF service.
@@ -30,57 +29,19 @@ import net.curre.prefcount.test.BaseTestCase;
  */
 public class LafThemeServiceTest extends BaseTestCase {
 
-  /** Private class logger. */
-  private static Logger log = Logger.getLogger(LafThemeServiceTest.class.toString());
-
   /**
-   * Test main settings service functionality.
-   *
-   * @throws Exception on error.
+   * Tests initialization of the default object state.
    */
-  public void testAll() throws Exception {
+  public void testDefault() {
+    LafThemeService testLafService = new LafThemeService();
+    ArrayList<LafTheme> themes = testLafService.getSupportedThemes();
+    assertNotNull("Null LAF themes list", themes);
+    assertTrue("Should be at least 3 supported themes", themes.size() >= 3);
 
-    log.info("Running testAll()...");
-
-    PrefSkin[] skins = LafThemeService.AVAILABLE_SKINS;
-    assertNotNull("PrefSkin array is null", skins);
-    assertTrue("PrefSkin array is empty", skins.length > 0);
-    for (PrefSkin skin : skins) {
-      assertNotNull("PrefSkin \"" + skin + "\" is null", skin);
-      assertNotNull("PrefSkin \"" + skin + "\" boardBackgroundPaint is null", skin.getBoardBackgroundPaint());
-      assertNotNull("PrefSkin \"" + skin + "\" boardLineColor is null", skin.getBoardLineColor());
-      assertNotNull("PrefSkin \"" + skin + "\" boardLineStroke is null", skin.getBoardLineStroke());
-      assertNotNull("PrefSkin \"" + skin + "\" mainBackgroundColor is null", skin.getMainBackgroundColor());
-      assertNotNull("PrefSkin \"" + skin + "\" nameResourceKey is null", skin.getNameResourceKey());
-      assertNotNull("PrefSkin \"" + skin + "\" playerNameColor is null", skin.getPlayerNameColor());
-      assertNotNull("PrefSkin \"" + skin + "\" playerNameFont is null", skin.getPlayerNameFont());
-      assertNotNull("PrefSkin \"" + skin + "\" playerNameStroke is null", skin.getPlayerNameStroke());
-      assertNotNull("PrefSkin \"" + skin + "\" playerTotalsColor is null", skin.getPlayerTotalsColor());
-      assertNotNull("PrefSkin \"" + skin + "\" playerTotalsFont is null", skin.getPlayerTotalsFont());
-      assertNotNull("PrefSkin \"" + skin + "\" playerTotalsStroke is null", skin.getPlayerTotalsStroke());
-      if (skin instanceof DefaultSkin || skin instanceof AquaSkin) {
-        assertNull("PrefSkin \"" + skin + "\" should have substanceSkinClassName set to null.", skin.getSubstanceSkinClassName());
-      } else {
-        assertNotNull("PrefSkin \"" + skin + "\" substanceSkinClassName is null", skin.getSubstanceSkinClassName());
-      }
-    }
-
-    LafThemeService service = LafThemeService.getInstance();
-    assertNotNull("LafThemeService is null", service);
-    PrefSkin prefSkin = service.getCurrentSkin();
-    assertNotNull("Current skin is null", prefSkin);
-    assertTrue("Default current skin must be DefaultSkin", prefSkin instanceof DefaultSkin);
-
-    // checking finding skin method
-    PrefSkin skin = LafThemeService.findSkinById(skins[0].getNameResourceKey());
-    assertNotNull("Unable to find skin by ID \"" + skins[0].getNameResourceKey() + "\"", skin);
-    assertEquals("Wrong skin found", skins[0].getNameResourceKey(), skin.getNameResourceKey());
-    try {
-      LafThemeService.findSkinById("noSuchSkinId");
-      fail("Expected ServiceException for ID \"noSuchSkinId\" parameter.");
-    } catch (ServiceException e) {
-      // expected
-    }
+    LafTheme lafTheme = testLafService.getCurrentLafTheme();
+    assertNotNull("Current theme is null", lafTheme);
+    LafThemeId lafThemeId = testLafService.getCurrentLafThemeId();
+    assertNotNull("Current theme Id is null", lafThemeId);
+    assertEquals("Theme and theme id don't match", lafTheme.getId(), lafThemeId);
   }
-
 }

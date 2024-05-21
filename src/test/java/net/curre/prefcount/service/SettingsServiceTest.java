@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -15,12 +15,16 @@
 package net.curre.prefcount.service;
 
 import java.io.File;
-import java.util.logging.Logger;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.bean.Settings;
-import net.curre.prefcount.gui.theme.skin.PrefSkin;
+import net.curre.prefcount.gui.theme.LafThemeId;
+import net.curre.prefcount.gui.type.WindowComponent;
 import net.curre.prefcount.test.BaseTestCase;
+
+import static net.curre.prefcount.service.LafThemeService.DEFAULT_LAF_THEME_ID;
 
 /**
  * This is a junit test for testing settings service.
@@ -31,8 +35,9 @@ import net.curre.prefcount.test.BaseTestCase;
  */
 public class SettingsServiceTest extends BaseTestCase {
 
-  /** Private class logger. */
-  private static Logger log = Logger.getLogger(SettingsServiceTest.class.toString());
+  /** Path to the test settings directory. */
+  private static final String TEST_SETTINGS_PATH =
+      "target" + File.separatorChar + "test" + File.separatorChar + "settings" + File.separatorChar;
 
   /** Value for the main window frame width. */
   private static final int SETTINGS_MAIN_FRAME_WIDTH = 615;
@@ -46,11 +51,23 @@ public class SettingsServiceTest extends BaseTestCase {
   /** Value for the dialog window frame height. */
   private static final int SETTINGS_DIALOG_FRAME_HEIGHT = 333;
 
-  /** Value for the Look and Feel theme/skin. */
-  private static final PrefSkin SETTINGS_LAF_SKIN = LafThemeService.AVAILABLE_SKINS[2];
+  /** Value for the LAF theme ID. */
+  private static final LafThemeId DEFAULT_SETTINGS_LAF = LafThemeId.FLAT_LIGHT;
 
-  /** Value for the locale ID (case insensitive language name). */
+  /** Value for the locale ID (case-insensitive language name). */
   private static final String SETTINGS_LOCALE_ID = "us";
+
+  /** Value for the Divisible By. */
+  private static final String SETTINGS_DIVISIBLE_BY = WindowComponent.DIVISIBLE_BY_N.name();
+
+  /** Value for the Players Number. */
+  private static final String SETTINGS_PLAYERS_NUMBER = WindowComponent.MAIN_4_PLAYERS.name();
+
+  /** Value for the Pref Type. */
+  private static final String SETTINGS_PREF_TYPE = WindowComponent.SOCHINKA.name();
+
+  /** Absolute path to the default test settings file. */
+  private String testSettingsFilePath;
 
   /**
    * {@inheritDoc}
@@ -61,144 +78,52 @@ public class SettingsServiceTest extends BaseTestCase {
    *
    * @throws Exception on error.
    */
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    PrefCountRegistry.getInstance().setSettingsFilePath(SETTINGS_FILE);
-    deleteTestSettingsFile();
+
+    File testSettingsDir = new File(TEST_SETTINGS_PATH);
+    testSettingsDir.mkdirs();
+
+    // Initialize the default test setting file path.
+    File testSettingsFile = new File(TEST_SETTINGS_PATH + "testFile.ser");
+    this.testSettingsFilePath = testSettingsFile.getAbsolutePath();
+
+    // Delete the file if it exists.
+    File file = new File(this.testSettingsFilePath);
+    if (file.exists()) {
+      file.delete();
+    }
+
     PrefCountRegistry.getInstance().setMainWindow(null);
   }
 
   /**
-   * {@inheritDoc}
-   * <p/>
-   * Deletes test settings file.
-   *
-   * @throws Exception on error.
+   * Test main settings service functionality.
    */
-  @Override
-  protected void tearDown() throws Exception {
-    super.tearDown();
-    PrefCountRegistry.getInstance().setSettingsFilePath(SETTINGS_FILE);
-    deleteTestSettingsFile();
+  public void testDefaultTestSettings() {
+    SettingsService service = new SettingsService(this.testSettingsFilePath);
+    Settings settings = service.getSettings();
+    checkSettings(settings, Settings.DEFAULT_MAIN_FRAME_WIDTH, Settings.DEFAULT_MAIN_FRAME_HEIGHT,
+        Settings.DEFAULT_DIALOG_FRAME_WIDTH, Settings.DEFAULT_DIALOG_FRAME_HEIGHT,
+        DEFAULT_LAF_THEME_ID, PrefCountRegistry.DEFAULT_LOCALE_ID, Settings.DEFAULT_PREF_TYPE,
+        Settings.DEFAULT_PLAYERS_NUMBER, Settings.DEFAULT_DIVISIBLE_BY);
   }
 
   /**
    * Test main settings service functionality.
-   *
-   * @throws Exception on error.
    */
-  public void testAll() throws Exception {
+  public void testPersistSettings() {
+    persistTestSettings(this.testSettingsFilePath);
+    SettingsService service = new SettingsService(this.testSettingsFilePath);
 
-    log.info("Running testAll()...");
-
-    // testing default settings
-    Settings settings = SettingsService.getSettings();
-    checkSettings(settings, Settings.DEFAULT_MAIN_FRAME_WIDTH, Settings.DEFAULT_MAIN_FRAME_HEIGHT,
-                  Settings.DEFAULT_DIALOG_FRAME_WIDTH, Settings.DEFAULT_DIALOG_FRAME_HEIGHT,
-                  Settings.DEFAULT_LAF_SKIN_ID, PrefCountRegistry.DEFAULT_LOCALE_ID);
-    File file = new File(SETTINGS_FILE);
-    assertFalse("Settings file must not have been created", file.exists());
-
-    // saving and testing new settings
-    settings.setMainFrameWidth(SETTINGS_MAIN_FRAME_WIDTH);
-    settings.setMainFrameHeight(SETTINGS_MAIN_FRAME_HEIGHT);
-    settings.setDialogFrameWidth(SETTINGS_DIALOG_FRAME_WIDTH);
-    settings.setDialogFrameHeight(SETTINGS_DIALOG_FRAME_HEIGHT);
-    SettingsService.updateSkin(SETTINGS_LAF_SKIN);
-    PrefCountRegistry.getInstance().setCurrentLocale(SETTINGS_LOCALE_ID);
-    SettingsService.saveSettings();
-    assertTrue("Settings file hasn't been created", file.exists());
-    settings = SettingsService.loadSettings();
+    Settings settings = service.getSettings();
     checkSettings(settings, SETTINGS_MAIN_FRAME_WIDTH, SETTINGS_MAIN_FRAME_HEIGHT,
-                  SETTINGS_DIALOG_FRAME_WIDTH, SETTINGS_DIALOG_FRAME_HEIGHT,
-                  SETTINGS_LAF_SKIN.getNameResourceKey(), SETTINGS_LOCALE_ID);
-
-    // testing settings reset functionality
-    SettingsService.resetSettings();
-    assertTrue("Settings file is not present", file.exists());
-    settings = SettingsService.loadSettings();
-    checkSettings(settings, Settings.DEFAULT_MAIN_FRAME_WIDTH, Settings.DEFAULT_MAIN_FRAME_HEIGHT,
-                  Settings.DEFAULT_DIALOG_FRAME_WIDTH, Settings.DEFAULT_DIALOG_FRAME_HEIGHT,
-                  Settings.DEFAULT_LAF_SKIN_ID, PrefCountRegistry.DEFAULT_LOCALE_ID);
-
-    // testing errors
-    assertTrue("Internal error - unable to set file read only", file.setReadOnly());
-    try {
-      SettingsService.saveSettings();
-      fail("saveSettings() should have thrown a ServiceException!");
-    } catch (ServiceException e) {
-      // expected
-    }
+        SETTINGS_DIALOG_FRAME_WIDTH, SETTINGS_DIALOG_FRAME_HEIGHT,
+        DEFAULT_SETTINGS_LAF, SETTINGS_LOCALE_ID, SETTINGS_PREF_TYPE,
+        SETTINGS_PLAYERS_NUMBER, SETTINGS_DIVISIBLE_BY);
   }
-
-  /**
-   * Test settings service functionality using real frames.
-   *
-   * @throws Exception on error.
-   */
-/*
-  public void testSettingsWithFrames() throws Exception {
-
-    log.info("Running testSettingsWithFrames()...");
-
-    MainWindow main = new MainWindow(false);
-    main.setSize(SETTINGS_MAIN_FRAME_WIDTH, SETTINGS_MAIN_FRAME_HEIGHT);
-    PrefCountRegistry.getInstance().setMainWindow(main);
-
-    // saving and testing new settings
-    SettingsService.updateSkin(SETTINGS_LAF_SKIN);
-    PrefCountRegistry.setCurrentLocale(SETTINGS_LOCALE_ID);
-    SettingsService.saveSettings();
-    File file = new File(SETTINGS_FILE);
-    assertTrue("Settings file can not be located", file.exists());
-    Settings settings = SettingsService.loadSettings();
-    checkSettings(settings, SETTINGS_MAIN_FRAME_WIDTH, SETTINGS_MAIN_FRAME_HEIGHT,
-                  Settings.DEFAULT_DIALOG_FRAME_WIDTH, Settings.DEFAULT_DIALOG_FRAME_HEIGHT,
-                  SETTINGS_LAF_SKIN.getNameResourceKey(), SETTINGS_LOCALE_ID);
-
-    main.playerDialogFrame = new PlayerDialogBaseFrame(3, main);
-    main.playerDialogFrame.setSize(SETTINGS_DIALOG_FRAME_WIDTH, SETTINGS_DIALOG_FRAME_HEIGHT);
-    SettingsService.saveSettings();
-    settings = SettingsService.loadSettings();
-    checkSettings(settings, SETTINGS_MAIN_FRAME_WIDTH, SETTINGS_MAIN_FRAME_HEIGHT,
-                  SETTINGS_DIALOG_FRAME_WIDTH, SETTINGS_DIALOG_FRAME_HEIGHT,
-                  SETTINGS_LAF_SKIN.getNameResourceKey(), SETTINGS_LOCALE_ID);
-  }
-*/
-
-  /**
-   * Test settings service functionality in regards to
-   * dealing with old and stale settings files.
-   *
-   * @throws Exception on error.
-   */
-/*
-  public void testOldSettings() throws Exception {
-
-    log.info("Running testOldSettings()...");
-
-    // test loading old settings (without localeId field)
-    PrefCountRegistry.getInstance().setSettingsFilePath(OLD_SETTINGS_FILE);
-    File file = new File(OLD_SETTINGS_FILE);
-    assertTrue("Old settings file can not be located", file.exists());
-    Settings settings = SettingsService.loadSettings();
-    checkSettings(settings, Settings.DEFAULT_MAIN_FRAME_WIDTH, Settings.DEFAULT_MAIN_FRAME_HEIGHT,
-                  Settings.DEFAULT_DIALOG_FRAME_WIDTH, Settings.DEFAULT_DIALOG_FRAME_HEIGHT,
-                  Settings.DEFAULT_LAF_SKIN_ID, PrefCountRegistry.DEFAULT_LOCALE_ID);
-
-    // test loading stale settings (with a different serialVersionUID)
-    PrefCountRegistry.getInstance().setSettingsFilePath(STALE_SETTINGS_FILE);
-    file = new File(STALE_SETTINGS_FILE);
-    assertTrue("Stale settings file can not be located", file.exists());
-    settings = SettingsService.loadSettings();
-    checkSettings(settings, Settings.DEFAULT_MAIN_FRAME_WIDTH, Settings.DEFAULT_MAIN_FRAME_HEIGHT,
-                  Settings.DEFAULT_DIALOG_FRAME_WIDTH, Settings.DEFAULT_DIALOG_FRAME_HEIGHT,
-                  Settings.DEFAULT_LAF_SKIN_ID, PrefCountRegistry.DEFAULT_LOCALE_ID);
-  }
-*/
-
-  /** Private methods ***********************/
 
   /**
    * Tests the passed settings object.
@@ -208,20 +133,47 @@ public class SettingsServiceTest extends BaseTestCase {
    * @param mainFrameHeight   Expected main frame height.
    * @param dialogFrameWidth  Expected dialog frame width.
    * @param dialogFrameHeight Expected dialog frame height.
-   * @param lafSkinId         Expected LAF skin ID.
+   * @param lafThemeId         Expected LAF skin ID.
    * @param localeId          Expected locale ID.
-   * @throws Exception On error.
    */
   private void checkSettings(Settings settings, int mainFrameWidth, int mainFrameHeight,
-                             int dialogFrameWidth, int dialogFrameHeight, String lafSkinId,
-                             String localeId) throws Exception {
+                             int dialogFrameWidth, int dialogFrameHeight, LafThemeId lafThemeId,
+                             String localeId, String prefType, String playersNumber, String divisibleBy) {
     assertNotNull("Settings must not be null", settings);
     assertEquals("Settings has a wrong Main frame width", mainFrameWidth, settings.getMainFrameWidth());
     assertEquals("Settings has a wrong Main frame height", mainFrameHeight, settings.getMainFrameHeight());
     assertEquals("Settings has a wrong Dialog frame width", dialogFrameWidth, settings.getDialogFrameWidth());
     assertEquals("Settings has a wrong Dialog frame height", dialogFrameHeight, settings.getDialogFrameHeight());
-    assertEquals("Settings has a wrong LAF skin ID", lafSkinId, settings.getLafSkinId());
+    assertEquals("Settings has a wrong LAF skin ID", lafThemeId, settings.getLafThemeId());
     assertEquals("Settings has a wrong Locale ID", localeId, settings.getLocaleId());
+    assertEquals("Settings has a wrong Pref Type", prefType, settings.getPrefType());
+    assertEquals("Settings has a wrong Players Number", playersNumber, settings.getPlayersNumber());
+    assertEquals("Settings has a wrong Divisible By", divisibleBy, settings.getDivisibleBy());
   }
 
+  /**
+   * Creates and persists default test settings file in a default test directory.
+   * @param settingsFilePath test settings file path
+   */
+  private static void persistTestSettings(String settingsFilePath) {
+    Settings settings = new Settings();
+    settings.setDivisibleBy(SETTINGS_DIVISIBLE_BY);
+    settings.setPrefType(SETTINGS_PREF_TYPE);
+    settings.setPlayersNumber(SETTINGS_PLAYERS_NUMBER);
+    settings.setLocaleId(SETTINGS_LOCALE_ID);
+    settings.setLafThemeId(DEFAULT_SETTINGS_LAF);
+    settings.setDialogFrameHeight(SETTINGS_DIALOG_FRAME_HEIGHT);
+    settings.setDialogFrameWidth(SETTINGS_DIALOG_FRAME_WIDTH);
+    settings.setMainFrameHeight(SETTINGS_MAIN_FRAME_HEIGHT);
+    settings.setMainFrameWidth(SETTINGS_MAIN_FRAME_WIDTH);
+
+    try {
+      File file = new File(settingsFilePath);
+      FileOutputStream fStream = new FileOutputStream(file);
+      ObjectOutputStream oStream = new ObjectOutputStream(fStream);
+      oStream.writeObject(settings);
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to persist default test settings", e);
+    }
+  }
 }

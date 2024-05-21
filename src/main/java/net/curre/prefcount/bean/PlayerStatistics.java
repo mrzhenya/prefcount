@@ -19,7 +19,7 @@ import java.util.TreeMap;
 import javax.swing.JTextField;
 
 import net.curre.prefcount.gui.type.Place;
-import net.curre.prefcount.util.Utilities;
+import net.curre.prefcount.service.UiService;
 
 /**
  * Object of this class represents various
@@ -183,7 +183,7 @@ public class PlayerStatistics {
    * @param field <code>JTextField</code> to use to fetch the mountain value.
    */
   public void setMountainFromField(JTextField field) {
-    this.mountain = Utilities.parseIntFromTextField(field);
+    this.mountain = UiService.parseIntFromTextField(field);
   }
 
   /**
@@ -231,7 +231,7 @@ public class PlayerStatistics {
    * @param field <code>JTextField</code> to use to fetch the pool value.
    */
   public void setPoolFromField(JTextField field) {
-    this.pool = Utilities.parseIntFromTextField(field);
+    this.pool = UiService.parseIntFromTextField(field);
   }
 
   /**
@@ -243,7 +243,7 @@ public class PlayerStatistics {
    * @return Fetched whists value as an <code>Integer</code> object.
    */
   public Integer setWhistsForPlayerFromField(Place place, JTextField field) {
-    int val = Utilities.parseIntFromTextField(field);
+    int val = UiService.parseIntFromTextField(field);
     this.whistsMap.put(place, val);
     return val;
   }

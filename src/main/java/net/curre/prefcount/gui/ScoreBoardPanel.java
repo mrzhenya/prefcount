@@ -57,8 +57,9 @@ import static net.curre.prefcount.gui.type.ScoreItem.WHIST_NORTH_SALDO;
 import static net.curre.prefcount.gui.type.ScoreItem.WHIST_SALDO_TOTAL;
 import static net.curre.prefcount.gui.type.ScoreItem.WHIST_SOUTH_SALDO;
 import static net.curre.prefcount.gui.type.ScoreItem.WHIST_WEST_SALDO;
+
+import net.curre.prefcount.service.UiService;
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -175,10 +176,10 @@ public class ScoreBoardPanel extends AAJPanel {
     final int poolMountY = this.locationsMap.poolMountDividerY;
 
     // drawing nice borders
-    Color bordColor = Utilities.createDarkerColor(lafTheme.getMainBackgroundColor(), 20);
+    Color bordColor = UiService.createDarkerColor(lafTheme.getMainBackgroundColor(), 20);
     g2.setColor(bordColor);
     g2.drawRect(4 + offsetX, 4 + offsetY, width - 8, height - 8);
-    bordColor = Utilities.createDarkerColor(bordColor, 20);
+    bordColor = UiService.createDarkerColor(bordColor, 20);
     g2.setColor(bordColor);
     g2.drawRect(5 + offsetX, 5 + offsetY, width - 10, height - 10);
 
@@ -421,7 +422,7 @@ public class ScoreBoardPanel extends AAJPanel {
                               final Point2D.Double point, final boolean vertical, Place place) {
     GameResultBean resultBean = PrefCountRegistry.getInstance().getGameResultBean();
     final String str = getStringFromInt(resultBean.getMaxPool());
-    final float width = (float) Utilities.determineSizeOfString(g2, stats.getPool().toString()).getWidth();
+    final float width = (float) UiService.determineSizeOfString(g2, stats.getPool().toString()).getWidth();
     final float x = (float) point.getX();
     final float y = (float) point.getY();
     Stroke tempStroke = g2.getStroke();
@@ -457,7 +458,7 @@ public class ScoreBoardPanel extends AAJPanel {
                                final Point2D.Double point, final boolean vertical, Place place) {
     int newMount = stats.getNewMountain();
     final String newMountStr = getStringFromInt(newMount);
-    final float width1 = (float) Utilities.determineSizeOfString(g2, stats.getMountain().toString()).getWidth();
+    final float width1 = (float) UiService.determineSizeOfString(g2, stats.getMountain().toString()).getWidth();
     final int amnistMount = newMount - stats.getMinMountain();
     final String amnistMountStr = amnistMount + ".";
     final String mountFixStr = stats.getMountFix() == null ? null :
@@ -483,14 +484,14 @@ public class ScoreBoardPanel extends AAJPanel {
       }
     } else {
       final float mountX = x + width1 + 7f;
-      final float width2 = (float) Utilities.determineSizeOfString(g2, newMountStr).getWidth();
+      final float width2 = (float) UiService.determineSizeOfString(g2, newMountStr).getWidth();
       g2.drawString(newMountStr, mountX, y);
       newMountPoint = new Point2D.Double(mountX, y);
       final float amnX = mountX + width2 + 2f;
       g2.drawString(amnistMountStr, amnX, y);
       amnistMountPoint = new Point2D.Double(amnX, y);
       if (mountFixStr != null) {
-        final float width3 = (float) Utilities.determineSizeOfString(g2, mountFixStr).getWidth();
+        final float width3 = (float) UiService.determineSizeOfString(g2, mountFixStr).getWidth();
         final float fixX = mountX + width2 + width3 + 4f;
         g2.drawString(mountFixStr, fixX, y);
         fixMountPoint = new Point2D.Double(fixX, y);
@@ -548,7 +549,7 @@ public class ScoreBoardPanel extends AAJPanel {
     final String score = String.valueOf(stats.getFinalScoreInWhists());
     g2.drawString(score, x, y);
 
-    final Dimension corrSize = Utilities.determineSizeOfString(g2, score);
+    final Dimension corrSize = UiService.determineSizeOfString(g2, score);
     final float halfWidth = (float) corrSize.getWidth() / 2;
     final float halfHeight = (float) corrSize.getHeight() / 2;
     final float realCenterX = x + halfWidth;
@@ -661,7 +662,7 @@ public class ScoreBoardPanel extends AAJPanel {
         Integer fix = stats.getWhistFixesMap().get(other.place);
         if (fix != null) {
           String fixStr = (stats.getWhistsAgainstPlayer(other.place) + fix) + ".";
-          float fixX = (float) (point.getX() + 2 + Utilities.determineSizeOfString(g2, whistStr).getWidth());
+          float fixX = (float) (point.getX() + 2 + UiService.determineSizeOfString(g2, whistStr).getWidth());
           g2.drawString(fixStr, fixX, (float) point.getY());
           Point2D.Double fPoint = new Point2D.Double(fixX, point.getY());
           this.ttLocationsMap.addRectangleLocation(otherFix, place, g2, fPoint, fixStr);

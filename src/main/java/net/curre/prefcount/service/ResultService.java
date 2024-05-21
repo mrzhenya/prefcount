@@ -15,13 +15,12 @@
 package net.curre.prefcount.service;
 
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import net.curre.prefcount.bean.GameResultBean;
 import net.curre.prefcount.bean.PlayerStatistics;
 import net.curre.prefcount.gui.type.Place;
 import net.curre.prefcount.PrefCountRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This service bean is responsible for computing game results.
@@ -33,7 +32,7 @@ import net.curre.prefcount.PrefCountRegistry;
 public class ResultService {
 
   /** Private class logger. */
-  private static final Logger log = Logger.getLogger(ResultService.class.toString());
+  private static final Logger logger = LogManager.getLogger(ResultService.class.getName());
 
   /**
    * Generates the final player scores. Note that the target
@@ -43,10 +42,7 @@ public class ResultService {
    *              all necessary game data.
    */
   public static void generateFinalResults(GameResultBean rBean) {
-
-    if (log.isLoggable(Level.FINE)) {
-      log.fine("Generating final results for Bean: " + rBean);
-    }
+    logger.trace("Generating final results for Bean: {}", rBean);
 
     // computing the average and minimum mountain
     int min = Integer.MAX_VALUE;
@@ -204,7 +200,7 @@ public class ResultService {
 
   /**
    * Adds whist (additional whist fixes for the "divisible by N" option)
-   * agains all other players provided the current player index.
+   * against all other players provided the current player index.
    *
    * @param playerStats list of player statistics beans.
    * @param place       current player place.
@@ -222,7 +218,7 @@ public class ResultService {
 
   /**
    * Adds whist (additional whist fixes for the "divisible by N" option)
-   * for all players agains the given player.
+   * for all players against the given player.
    *
    * @param playerStats list of player statistics beans.
    * @param place       current player place.

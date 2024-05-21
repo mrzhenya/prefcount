@@ -22,12 +22,13 @@ import java.io.ObjectOutputStream;
 
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.bean.Settings;
-import net.curre.prefcount.util.Utilities;
+import net.curre.prefcount.util.PlatformType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import static net.curre.prefcount.bean.Settings.*;
 import static net.curre.prefcount.service.LafThemeService.DEFAULT_LAF_THEME_ID;
@@ -61,7 +62,7 @@ public class SettingsService {
    * Ctor.
    * @param settingsFilePath path to the settings file (for test) or null if default should be used
    */
-  public SettingsService(String settingsFilePath) {
+  public SettingsService(@Null String settingsFilePath) {
     if (settingsFilePath == null) {
       settingsFilePath = getVerifiedSettingsDirectoryPath() + File.separatorChar + SETTINGS_FILENAME;
     }
@@ -75,17 +76,6 @@ public class SettingsService {
    */
   public Settings getSettings() {
     return this.settings;
-  }
-
-  /**
-   * Method to reset user settings.
-   * The settings are recreated and saved.
-   *
-   * @throws ServiceException If there was an error when resetting settings.
-   */
-  public void resetSettings() throws ServiceException {
-    this.settings.reset();
-    persistSettings();
   }
 
   /** Persists the current settings. */
@@ -107,7 +97,7 @@ public class SettingsService {
    */
   public static @NotNull String getVerifiedSettingsDirectoryPath() {
     StringBuilder path = new StringBuilder(System.getProperties().getProperty("user.home"));
-    switch (Utilities.getPlatformType()) {
+    switch (PlatformType.getPlatformType()) {
       case MAC_OS:
         path.append(File.separatorChar).append("Library").
             append(File.separatorChar).append("Application Support");
@@ -158,7 +148,7 @@ public class SettingsService {
     File dir = new File(path.toString());
     if (!dir.exists()) {
       if (!dir.mkdir()) {
-        logger.log(Level.WARN, "Unable to create a directory: " + path);
+        logger.warn("Unable to create a directory: {}", path);
       }
     }
   }

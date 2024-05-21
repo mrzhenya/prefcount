@@ -17,7 +17,6 @@ package net.curre.prefcount.service;
 import java.awt.MenuBar;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
@@ -29,7 +28,9 @@ import net.curre.prefcount.gui.menu.AwtMenuBar;
 import net.curre.prefcount.gui.menu.PrefCountMenuBar;
 import net.curre.prefcount.gui.menu.SwingMenuBar;
 import net.curre.prefcount.gui.type.WindowComponent;
-import net.curre.prefcount.util.Utilities;
+import net.curre.prefcount.util.PlatformType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This service bean is responsible for
@@ -42,7 +43,7 @@ import net.curre.prefcount.util.Utilities;
 public class MainService {
 
   /** Private class logger. */
-  private static final Logger log = Logger.getLogger(MainService.class.toString());
+  private static final Logger logger = LogManager.getLogger(MainService.class.getName());
 
   /** Reference to the help frame. */
   private static HelpFrame helpFrame;
@@ -74,7 +75,7 @@ public class MainService {
       try {
         printJob.print();
       } catch (PrinterException e) {
-        log.severe("Error printing: " + e);
+        logger.error("Error while printing", e);
       }
     }
   }
@@ -92,7 +93,7 @@ public class MainService {
       try {
         printJob.print();
       } catch (PrinterException e) {
-        log.severe("Error printing: " + e);
+        logger.error("Error while printing template", e);
       }
     }
   }
@@ -128,7 +129,7 @@ public class MainService {
    */
   public static PrefCountMenuBar addPlayerDialogMenuBar(JFrame frame) {
     PrefCountMenuBar menuBar = null;
-    if (Utilities.isMacOs()) {
+    if (PlatformType.isMacOs()) {
       menuBar = new AwtMenuBar(PrefCountMenuBar.MenuBarType.PLAYER_DIALOG);
       frame.setMenuBar((MenuBar) menuBar);
     }
@@ -147,7 +148,7 @@ public class MainService {
    */
   public static PrefCountMenuBar addMainWindowMenuBar(JFrame frame) {
     PrefCountMenuBar menuBar;
-    if (Utilities.isMacOs()) {
+    if (PlatformType.isMacOs()) {
       menuBar = new AwtMenuBar(PrefCountMenuBar.MenuBarType.MAIN_WINDOW);
       frame.setMenuBar((MenuBar) menuBar);
     } else {

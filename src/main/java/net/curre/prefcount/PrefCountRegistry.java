@@ -16,7 +16,6 @@ package net.curre.prefcount;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import net.curre.prefcount.bean.GameResultBean;
 import net.curre.prefcount.event.MainController;
@@ -29,6 +28,8 @@ import net.curre.prefcount.service.LafThemeService;
 import net.curre.prefcount.service.ServiceException;
 import net.curre.prefcount.service.SettingsService;
 import net.curre.prefcount.util.LocaleExt;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the central place for all prefcount
@@ -41,7 +42,7 @@ import net.curre.prefcount.util.LocaleExt;
 public class PrefCountRegistry {
 
   /** Private class logger. */
-  private static final Logger log = Logger.getLogger(PrefCountRegistry.class.toString());
+  private static final Logger logger = LogManager.getLogger(PrefCountRegistry.class.getName());
 
   /** Location of the images' directory. */
   public static final String IMAGES_DIR = "images";
@@ -153,11 +154,11 @@ public class PrefCountRegistry {
     try {
       locale = findLocaleById(localeId);
     } catch (ServiceException e) {
-      log.warning("Error: " + e.getMessage() + " setting locale to default.");
+      logger.warn("Error: {} setting locale to default.", e.getMessage());
       try {
         locale = findLocaleById(PrefCountRegistry.DEFAULT_LOCALE_ID);
       } catch (ServiceException e1) {
-        log.severe("Error: " + e1.getMessage() + " - unable to set locale to default.");
+        logger.error("Error: {} - unable to set locale to default.", e1.getMessage());
         System.exit(1);
         throw new NullPointerException();
       }

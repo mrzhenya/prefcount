@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -15,13 +15,14 @@
 package net.curre.prefcount.util;
 
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.test.BaseTestCase;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * This is a junit test for testing <code>LocaleExt</code> class.
@@ -32,19 +33,11 @@ import org.apache.commons.lang.StringUtils;
  */
 public class LocaleExtTest extends BaseTestCase {
 
-  /** Private class logger. */
-  private static Logger log = Logger.getLogger(LocaleExtTest.class.toString());
-
   /**
-   * Tests constructor.
-   *
-   * @throws Exception on error.
+   * Tests the constructor.
    */
-  public void testConstructor() throws Exception {
-
-    log.info("Running testConstructor()...");
-
-    final String dispLang = "\u0420\u0443\u0441\u0441\u043A\u0438\u0439";
+  public void testConstructor() {
+    final String dispLang = "Русский";
     LocaleExt loc = new LocaleExt("ru", "RU", dispLang);
     assertNotNull("Locale is null", loc.getLocale());
     assertEquals("Wrong locale's country", "RU", loc.getLocale().getCountry());
@@ -55,14 +48,9 @@ public class LocaleExtTest extends BaseTestCase {
 
   /**
    * Tests the equals method.
-   *
-   * @throws Exception on error.
    */
-  public void testEquals() throws Exception {
-
-    log.info("Running testEquals()...");
-
-    LocaleExt loc0 = new LocaleExt("ru", "RU", "\u0420\u0443\u0441\u0441\u043A\u0438\u0439");
+  public void testEquals() {
+    LocaleExt loc0 = new LocaleExt("ru", "RU", "Русский");
     assertNotNull("RU locale is null", loc0.getLocale());
 
     LocaleExt loc1 = new LocaleExt("us", "US", "English US");
@@ -71,24 +59,16 @@ public class LocaleExtTest extends BaseTestCase {
     LocaleExt loc2 = new LocaleExt("us", "US", "Another English US");
     assertNotNull("Second US locale is null", loc2.getLocale());
 
-    assertFalse("RU and US locales should not be equal", loc0.equals(loc1));
-    assertTrue("Locale should be equal to itself", loc0.equals(loc0));
-    assertTrue("Different display language should not make locale different", loc1.equals(loc2));
-    Object o = "TESTY";
-    assertFalse("Locale should not be equal to a string", loc0.equals(o));
-    o = null;
-    assertFalse("Locale should not be equal to null", loc0.equals(o));
+    assertNotEquals("RU and US locales should not be equal", loc0, loc1);
+    assertEquals("Locale should be equal to itself", loc0, loc0);
+    assertEquals("Different display language should not make locale different", loc1, loc2);
+    assertNotEquals("Locale should not be equal to null", null, loc0);
   }
 
   /**
    * Tests the hashCode method.
-   *
-   * @throws Exception on error.
    */
-  public void testHashCode() throws Exception {
-
-    log.info("Running testHashCode()...");
-
+  public void testHashCode() {
     LocaleExt loc = new LocaleExt("us", "US", "English US");
     assertNotNull("US locale is null", loc.getLocale());
 
@@ -97,15 +77,10 @@ public class LocaleExtTest extends BaseTestCase {
   }
 
   /**
-   * Tests component registering/unregistering/reregistering
+   * Tests component registering/unregistering/re-registering
    * functionality.
-   *
-   * @throws Exception on error.
    */
-  public void testRegistering() throws Exception {
-
-    log.info("Running testRegistering()...");
-
+  public void testRegistering() {
     JLabel label1 = new JLabel();
     LocaleExt.registerComponent(label1, "pref.dialog.namePrefix");
 
@@ -130,22 +105,14 @@ public class LocaleExtTest extends BaseTestCase {
     LocaleExt.reregisterComponent(label2, "pref.dialog.namePrefix", "Z");
     LocaleExt.fireLocaleChangeEvent();
 
-    assertFalse("Button's text is not refreshed!", whistText.equals(label2.getText()));
+    assertNotEquals("Button's text is not refreshed!", whistText, label2.getText());
   }
 
   /**
    * Tests miscellaneous functionality.
-   *
-   * @throws Exception on error.
    */
-  public void testMiscellaneous() throws Exception {
-
-    log.info("Running testMiscellaneous()...");
-
+  public void testMiscellaneous() {
     LocaleExt loc = new LocaleExt("us", "US", "English US");
     assertTrue("toString() is blank", StringUtils.isNotBlank(loc.toString()));
   }
-
-  /** Private methods ***********************/
-
 }

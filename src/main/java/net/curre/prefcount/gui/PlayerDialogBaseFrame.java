@@ -50,7 +50,7 @@ import static net.curre.prefcount.gui.type.WindowComponent.DIALOG_BACK;
 import static net.curre.prefcount.gui.type.WindowComponent.DIALOG_FORWARD;
 import net.curre.prefcount.service.MainService;
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
+import net.curre.prefcount.util.PlatformType;
 
 /**
  * Object of this class represents a player question panel
@@ -321,7 +321,7 @@ public class PlayerDialogBaseFrame extends JFrame {
     // macOS will have a menu for every frame (with a Quit shortcut)
     JPanel mainContentPanel = new JPanel();
     mainContentPanel.setOpaque(false);
-    if (!Utilities.isMacOs()) {
+    if (!PlatformType.isMacOs()) {
       mainContentPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
           .put(KeyStroke.getKeyStroke("control Q"), "exitAppAction");
       mainContentPanel.getActionMap().put("exitAppAction", new QuitActionListener());
@@ -340,7 +340,7 @@ public class PlayerDialogBaseFrame extends JFrame {
       // adding the button shortcuts (only if we are not running on macOS);
       // we assume here, that for macOS, all button shortcuts are added to
       // the frame's menu bar
-      JPanel pane = Utilities.isMacOs() ? null : this.questionsPane;
+      JPanel pane = PlatformType.isMacOs() ? null : this.questionsPane;
 
       //---- backButton ----
       this.backButton = menuItemsBean.getJButton(DIALOG_BACK, pane);

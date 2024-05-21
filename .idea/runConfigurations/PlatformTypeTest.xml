@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PlatformTypeTest" type="JUnit" factoryName="JUnit">
+    <module name="prefcount" />
+    <option name="PACKAGE_NAME" value="net.curre.prefcount.util" />
+    <option name="MAIN_CLASS_NAME" value="net.curre.prefcount.util.PlatformTypeTest" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -27,9 +27,8 @@ import net.curre.prefcount.bean.PlayerStatistics;
 import net.curre.prefcount.gui.aa.AAJLabel;
 import net.curre.prefcount.gui.aa.AAJTextField;
 import net.curre.prefcount.gui.type.Place;
+import net.curre.prefcount.service.UiService;
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
-import static net.curre.prefcount.util.Utilities.FieldType.INTEGER;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
@@ -139,13 +138,13 @@ public class PlayerDataPanel extends DialogInnerPanel {
   @Override
   public boolean validateFields() {
     currErrorField = null;
-    if (!Utilities.validateTextField(mountField, INTEGER)) {
+    if (!UiService.validateTextField(mountField, UiService.FieldType.INTEGER)) {
       currErrorField = mountField;
-    } else if (!Utilities.validateTextField(poolField, INTEGER)) {
+    } else if (!UiService.validateTextField(poolField, UiService.FieldType.INTEGER)) {
       currErrorField = poolField;
     } else {
       for (JTextField fieldWhist : whistFields.values()) {
-        if (!Utilities.validateTextField(fieldWhist, INTEGER)) {
+        if (!UiService.validateTextField(fieldWhist, UiService.FieldType.INTEGER)) {
           currErrorField = fieldWhist;
         }
       }

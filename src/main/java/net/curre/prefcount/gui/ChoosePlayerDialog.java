@@ -38,6 +38,7 @@ import java.awt.BorderLayout;
 
 import info.clearthought.layout.TableLayoutConstraints;
 import info.clearthought.layout.TableLayout;
+import net.curre.prefcount.util.PlatformType;
 
 /**
  * Object of this class represents a modal dialog
@@ -50,6 +51,12 @@ import info.clearthought.layout.TableLayout;
 public class ChoosePlayerDialog extends JDialog {
   public ChoosePlayerDialog(Frame owner) {
     super(owner);
+
+		if (PlatformType.isMacOs()) {
+			// Remove application name for the frame panel.
+			this.getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
+		}
+
     initComponents();
   }
 

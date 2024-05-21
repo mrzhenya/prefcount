@@ -43,8 +43,10 @@ import net.curre.prefcount.event.MainController;
 import net.curre.prefcount.gui.aa.AAJButton;
 import net.curre.prefcount.gui.type.WindowComponent;
 import static net.curre.prefcount.gui.type.WindowComponent.DIALOG_FORWARD2;
+
+import net.curre.prefcount.service.UiService;
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
+import net.curre.prefcount.util.PlatformType;
 
 /**
  * Object of this class represents menu items bean to
@@ -204,7 +206,7 @@ public class MenuItemsBean {
   public JRadioButton getJRadioButton(WindowComponent itemEnum) {
     JRadioButton button = this.radioButtons.get(itemEnum);
     if (button == null) {
-      button = new JRadioButton(Utilities.generateButtonText(itemEnum));
+      button = new JRadioButton(UiService.generateButtonText(itemEnum));
       LocaleExt.registerComponent(button, itemEnum);
       button.addActionListener(new ItemActionListener(itemEnum));
       this.radioButtons.put(itemEnum, button);
@@ -239,12 +241,12 @@ public class MenuItemsBean {
   public JButton getJButton(WindowComponent itemEnum, JPanel pane) {
     JButton button = this.jButtons.get(itemEnum);
     if (button == null) {
-      button = new AAJButton(Utilities.generateButtonText(itemEnum));
+      button = new AAJButton(UiService.generateButtonText(itemEnum));
       ItemActionListener listener = new ItemActionListener(itemEnum);
       button.addActionListener(listener);
 
       // win key listener produces "double click", so don't add it
-      if (Utilities.getPlatformType() != Utilities.PlatformType.WINDOWS) {
+      if (PlatformType.getPlatformType() != PlatformType.WINDOWS) {
         button.addKeyListener(listener);
       }
         
@@ -279,19 +281,19 @@ public class MenuItemsBean {
    */
   public JButton createJButtonForChoosePlayerDialog(JPanel pane) {
     WindowComponent itemEnum = DIALOG_FORWARD2;
-    JButton button = new AAJButton(Utilities.generateButtonText(itemEnum));
+    JButton button = new AAJButton(UiService.generateButtonText(itemEnum));
     ItemActionListener listener = new ItemActionListener(itemEnum);
     button.addActionListener(listener);
 
     // win key listener produces "double click", so don't add it
-    if (Utilities.getPlatformType() != Utilities.PlatformType.WINDOWS) {
+    if (PlatformType.getPlatformType() != PlatformType.WINDOWS) {
       button.addKeyListener(listener);
     }
 
     final String shortcutKey = itemEnum.getShortcutKey();
     if (shortcutKey != null) {
       char mnemonicCode = LocaleExt.getString(itemEnum.getShortcutKey()).charAt(0);
-      final String shortcut = (Utilities.isMacOs() ? "meta " : "control ") + mnemonicCode;
+      final String shortcut = (PlatformType.isMacOs() ? "meta " : "control ") + mnemonicCode;
       pane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
           .put(KeyStroke.getKeyStroke(shortcut), "moveForward");
       pane.getActionMap().put("moveForward", listener);

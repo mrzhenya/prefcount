@@ -35,8 +35,8 @@ import net.curre.prefcount.gui.aa.AAJPanel;
 import net.curre.prefcount.gui.aa.AAJTextField;
 import net.curre.prefcount.gui.type.Place;
 import net.curre.prefcount.service.ResultService;
+import net.curre.prefcount.service.UiService;
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
@@ -180,7 +180,7 @@ public class LastInputPanel extends DialogInnerPanel {
       return true;
     }
     // if there is text, it must be a double and be >= 0
-    if (Utilities.validateTextField(this.pointCost, Utilities.FieldType.DOUBLE)) {
+    if (UiService.validateTextField(this.pointCost, UiService.FieldType.DOUBLE)) {
       double cost = Double.parseDouble(this.pointCost.getText().trim());
       if (cost < 0) {
         this.dialogWindow.toggleErrorField("pref.dialog.errorLabel.negPointCost");
@@ -234,7 +234,7 @@ public class LastInputPanel extends DialogInnerPanel {
    * @return Point cost text input field value.
    */
   public int getPointCostValue() {
-    return Utilities.parseIntFromTextField(this.pointCost);
+    return UiService.parseIntFromTextField(this.pointCost);
   }
 
   /**

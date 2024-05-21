@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -17,15 +17,16 @@ package net.curre.prefcount;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import net.curre.prefcount.event.AllEventsTest;
 import net.curre.prefcount.gui.DialogInnerPanelTest;
-import net.curre.prefcount.gui.GeneralTest;
-import net.curre.prefcount.gui.PrefSkinsTest;
+import net.curre.prefcount.gui.theme.LafThemeTest;
 import net.curre.prefcount.service.LafThemeServiceTest;
 import net.curre.prefcount.service.ResultServiceTest;
 import net.curre.prefcount.service.SettingsServiceTest;
+import net.curre.prefcount.service.UiServiceTest;
+import net.curre.prefcount.util.DebugUtilities;
+import net.curre.prefcount.util.DebugUtilitiesTest;
 import net.curre.prefcount.util.LocaleExtTest;
-import net.curre.prefcount.util.UtilitiesTest;
+import net.curre.prefcount.util.PlatformTypeTest;
 
 /**
  * Unit test suite for prefCount application.
@@ -45,18 +46,17 @@ public class AppTest extends TestCase {
 
     // creating test suite
     TestSuite suite = new TestSuite();
-    suite.addTestSuite(PrefCountRegistryTest.class);
-    suite.addTestSuite(SettingsServiceTest.class);
-    suite.addTestSuite(ResultServiceTest.class);
-    suite.addTestSuite(LafThemeServiceTest.class);
-    suite.addTestSuite(LocaleExtTest.class);
-    suite.addTestSuite(UtilitiesTest.class);
-    suite.addTestSuite(GeneralTest.class);
+    suite.addTestSuite(LafThemeTest.class);
     suite.addTestSuite(DialogInnerPanelTest.class);
-    suite.addTestSuite(PrefSkinsTest.class);
-    suite.addTestSuite(AllEventsTest.class);
+    suite.addTestSuite(LafThemeServiceTest.class);
+    suite.addTestSuite(ResultServiceTest.class);
+    suite.addTestSuite(SettingsServiceTest.class);
+    suite.addTestSuite(UiServiceTest.class);
+    suite.addTestSuite(DebugUtilitiesTest.class);
+    suite.addTestSuite(LocaleExtTest.class);
+    suite.addTestSuite(PlatformTypeTest.class);
+    suite.addTestSuite(PrefCountRegistryTest.class);
 
     return suite;
   }
-
 }

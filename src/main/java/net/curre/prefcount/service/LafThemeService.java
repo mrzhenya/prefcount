@@ -22,7 +22,6 @@ import java.awt.Color;
 import java.awt.Window;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 import net.curre.prefcount.gui.theme.DefaultTheme;
 import net.curre.prefcount.gui.theme.FlatDarkTheme;
@@ -31,7 +30,9 @@ import net.curre.prefcount.gui.theme.FlatMacDarkTheme;
 import net.curre.prefcount.gui.theme.LafTheme;
 import net.curre.prefcount.gui.theme.LafThemeId;
 import net.curre.prefcount.gui.theme.NimbusTheme;
-import net.curre.prefcount.util.Utilities;
+import net.curre.prefcount.util.PlatformType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is a helper class to assist with
@@ -44,7 +45,7 @@ import net.curre.prefcount.util.Utilities;
 public class LafThemeService {
 
   /** Private class logger. */
-  private static final Logger log = Logger.getLogger(LafThemeService.class.toString());
+  private static final Logger logger = LogManager.getLogger(LafThemeService.class.getName());
 
   /** Default LAF theme. */
   public static final LafThemeId DEFAULT_LAF_THEME_ID = LafThemeId.DEFAULT;
@@ -68,7 +69,7 @@ public class LafThemeService {
     this.supportedLafThemes = new ArrayList<>();
 
     // For macOS, do a few extra things - https://www.formdev.com/flatlaf/macos/
-    if (Utilities.isMacOs()) {
+    if (PlatformType.isMacOs()) {
       // Moves the menu bar to the top of the screen.
       System.setProperty("apple.laf.useScreenMenuBar", "true");
       ResourceBundle bundle = ResourceBundle.getBundle("default");
@@ -92,7 +93,7 @@ public class LafThemeService {
         if (this.systemLafThemePresent(NimbusTheme.LAF_CLASS_NAME)) {
           this.supportedLafThemes.add(new NimbusTheme());
         }
-        if (Utilities.isMacOs()) {
+        if (PlatformType.isMacOs()) {
           this.supportedLafThemes.add(new FlatMacDarkTheme());
         }
       }
@@ -117,7 +118,7 @@ public class LafThemeService {
       return findLafThemeById(this.currentLafThemeId);
     } catch (ServiceException e) {
       // This should never occur, only at development time.
-//      log.log(Level.FATAL, "Unable to set LAF theme: " + this.currentLafThemeId, e);
+      logger.fatal("Unable to set LAF theme: {}", this.currentLafThemeId, e);
       System.exit(1);
     }
     return null;
@@ -139,7 +140,7 @@ public class LafThemeService {
   public void activateLafTheme(final LafThemeId lafThemeId) {
     JFrame.setDefaultLookAndFeelDecorated(true);
     try {
-//      logger.info("Activating LAF theme " + lafThemeId);
+      logger.info("Activating LAF theme {}", lafThemeId);
       if (findLafThemeById(lafThemeId).activateTheme()) {
         this.currentLafThemeId = lafThemeId;
 
@@ -149,17 +150,17 @@ public class LafThemeService {
           component.pack();
         }
       } else {
-        log.warning("Unable to set LAF theme: " + lafThemeId);
+        logger.warn("Unable to set LAF theme: {}", lafThemeId);
       }
     } catch (Exception e) {
-//      log.log(Level.WARN, "Unable to set LAF theme: " + lafThemeId, e);
+      logger.warn("Unable to set LAF theme: {}", lafThemeId, e);
     }
   }
 
   /**
    * Creates a new color that is lighter or darker than the passed color.
    * @param color model color
-   * @param change value to be added to or subracted from the RGB channels of the model color
+   * @param change value to be added to or subtracted from the RGB channels of the model color
    * @return the new, lighter color
    */
   public static @NotNull Color createAdjustedColor(@NotNull Color color, int change) {

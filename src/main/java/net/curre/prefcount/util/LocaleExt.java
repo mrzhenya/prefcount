@@ -31,7 +31,7 @@ import java.awt.Frame;
 import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.MenuShortcut;
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,10 +43,11 @@ import java.util.Set;
 
 import net.curre.prefcount.gui.type.WindowComponent;
 
+import net.curre.prefcount.service.UiService;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Object of this class represents locale
+ * Object of this class represents a locale
  * with extended functionality/properties.
  * <p/>
  * Created date: Jun 2, 2007
@@ -82,7 +83,7 @@ public class LocaleExt {
                    String displayLanguage) {
     this.locale = new Locale(language, country);
     this.displayLanguage = displayLanguage;
-    this.localeIcon = Utilities.createImage(language);
+    this.localeIcon = UiService.createImage(language);
   }
 
   /**
@@ -166,8 +167,8 @@ public class LocaleExt {
   }
 
   /**
-   * Registers a "locale-sensitive" component so
-   * it's label is updated when the application locale changes.
+   * Registers a "locale-sensitive" component so that
+   * its label is updated when the application locale changes.
    *
    * @param component reference to the component.
    * @param keyEnum   WindowComponent enum that represents the component.
@@ -188,8 +189,8 @@ public class LocaleExt {
   }
 
   /**
-   * Registers a "locale-sensitive" component so
-   * it's label is updated when the application locale changes.
+   * Registers a "locale-sensitive" component, so that
+   * its label is updated when the application locale changes.
    *
    * @param component reference to the component.
    * @param key       string resource key for the component.
@@ -210,8 +211,8 @@ public class LocaleExt {
   }
 
   /**
-   * Reregisters a "locale-sensitive" component so
-   * it's label is updated when the application locale changes.
+   * Registers a "locale-sensitive" component so that
+   * its label is updated when the application locale changes.
    *
    * @param component reference to the component.
    * @param key       string resource key for the component.
@@ -248,20 +249,9 @@ public class LocaleExt {
    */
   public static void unregisterComponents(Collection<Component> components) {
     for (Component c : components) {
-      if (resourceKeysSet.remove(new Triple(c, "")) == false) {
+      if (!resourceKeysSet.remove(new Triple(c, ""))) {
         throw new RuntimeException("Component " + c + " is not found!");
       }
-    }
-  }
-
-  /**
-   * Unregisters locale sensitive component.
-   *
-   * @param component component to unregister.
-   */
-  public static void unregisterComponent(Component component) {
-    if (resourceKeysSet.remove(new Triple(component, "")) == false) {
-      throw new RuntimeException("Component " + component + " is not found!");
     }
   }
 
@@ -275,11 +265,7 @@ public class LocaleExt {
       final Object component = triple.component;
 
       if (component instanceof LocaleExec) {
-        SwingUtilities.invokeLater(new Runnable() {
-          public void run() {
-            ((LocaleExec) component).doChange();
-          }
-        });
+        SwingUtilities.invokeLater(() -> ((LocaleExec) component).doChange());
 
       } else if (component instanceof JRadioButton) {
         ((JRadioButton) component).setText(getButtonText(triple));
@@ -289,6 +275,9 @@ public class LocaleExt {
 
       } else if (component instanceof JButton) {
         ((JButton) component).setText(getButtonText(triple));
+
+      } else if (component instanceof CheckboxMenuItem) {
+        ((CheckboxMenuItem) component).setLabel(getText(triple));
 
       } else if (component instanceof JRadioButtonMenuItem) {
         ((JRadioButtonMenuItem) component).setText(getMenuItemText(triple));
@@ -308,9 +297,6 @@ public class LocaleExt {
       } else if (component instanceof MenuItem) {
         ((MenuItem) component).setLabel(getText(triple));
 
-      } else if (component instanceof CheckboxMenuItem) {
-        ((CheckboxMenuItem) component).setLabel(getText(triple));
-
       } else {
         throw new UnsupportedOperationException(
             "Component class " + triple.component.getClass() + " is not supported!");
@@ -320,7 +306,7 @@ public class LocaleExt {
       if (triple.keyEnum != null && triple.keyEnum.getShortcutKey() != null) {
         if (component instanceof JMenuItem) {
           ((JMenuItem) component).setAccelerator(KeyStroke.getKeyStroke(
-              LocaleExt.getString(triple.keyEnum.getShortcutKey()).charAt(0), ActionEvent.CTRL_MASK));
+              LocaleExt.getString(triple.keyEnum.getShortcutKey()).charAt(0), InputEvent.CTRL_MASK));
 
         } else if (component instanceof CheckboxMenuItem) {
           ((CheckboxMenuItem) component).setShortcut(new MenuShortcut(
@@ -340,7 +326,7 @@ public class LocaleExt {
       }
     }
 
-    // refreshing shorcuts
+    // refreshing shortcuts
     for (Object[] currKeys : inputMapList) {
       InputMap map = (InputMap) currKeys[0];
       map.clear();
@@ -353,7 +339,7 @@ public class LocaleExt {
 
   /**
    * This method will register shortcuts with the given input map.
-   * We support only Ctrl+ shortcuts here and assume that the shotcut
+   * We support only Ctrl+ shortcuts here and assume that the shortcut
    * action has been added to the same component's action map using
    * the shortcut resource key as a map key.
    *
@@ -412,7 +398,7 @@ public class LocaleExt {
   private static String getButtonText(Triple triple) {
     String label;
     if (triple.keyEnum != null) {
-      label = Utilities.generateButtonText(triple.keyEnum);
+      label = UiService.generateButtonText(triple.keyEnum);
     } else {
       label = getString(triple.keyStr, triple.keyArgs);
     }

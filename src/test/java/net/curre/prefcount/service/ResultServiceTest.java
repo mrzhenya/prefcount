@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -16,7 +16,6 @@ package net.curre.prefcount.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import net.curre.prefcount.bean.GameResultBean;
 import net.curre.prefcount.bean.PlayerStatistics;
@@ -37,19 +36,11 @@ import net.curre.prefcount.test.BaseTestCase;
  */
 public class ResultServiceTest extends BaseTestCase {
 
-  /** Private class logger. */
-  private static Logger log = Logger.getLogger(ResultServiceTest.class.toString());
-
   /**
    * Tests GameResultBean and PlayerStatistics beans methods
    * (simple code that contains simple computing functionality).
-   *
-   * @throws Exception On error.
    */
-  public void testGameResultBean() throws Exception {
-
-    log.info("Running testGameResultBean()...");
-
+  public void testGameResultBean() {
     GameResultBean rBean = new GameResultBean();
     rBean.setAverageMountain(47.0F);
     assertEquals("Wrong average mountain value", 47.0F, rBean.getAverageMountain());
@@ -104,19 +95,14 @@ public class ResultServiceTest extends BaseTestCase {
 
   /**
    * Tests the generateFinalResults() method.
-   *
-   * @throws Exception On error.
    */
-  public void testGenerateFinalResults() throws Exception {
-
-    log.info("Running testGenerateFinalResults()...");
-
+  public void testGenerateFinalResults() {
     GameResultBean rBean = new GameResultBean();
     rBean.setLeningradka(true);
     rBean.setMountDivisibleByN(false);
 
     // creating game data for 4 players
-    Map<Place, PlayerStatistics> stats = new HashMap<Place, PlayerStatistics>();
+    Map<Place, PlayerStatistics> stats = new HashMap<>();
     stats.put(EAST, createPlayerStatHelper(rBean, 4, EAST, "dima", 76, 74,
                                            Whist.n(NORTH, "34"),
                                            Whist.n(SOUTH, "84"),
@@ -140,7 +126,7 @@ public class ResultServiceTest extends BaseTestCase {
 
     // generating and testing final results
     ResultService.generateFinalResults(rBean);
-    assertEquals("Wrong finalScoreReady value", true, rBean.isFinalScoresReady());
+    assertTrue("Wrong finalScoreReady value", rBean.isFinalScoresReady());
     assertEquals("Wrong number of players", 4, rBean.getNumberOfPlayers());
     assertEquals("Wrong computed average mountain value", 47.00F, rBean.getAverageMountain());
     assertEquals("Wrong computed minimum mountain value", Integer.valueOf(64), rBean.getMinMountain());
@@ -165,7 +151,7 @@ public class ResultServiceTest extends BaseTestCase {
 
     // creating game data for 3 players
     rBean = new GameResultBean();
-    stats = new HashMap<Place, PlayerStatistics>();
+    stats = new HashMap<>();
     stats.put(EAST, createPlayerStatHelper(rBean, 3, EAST, "dariya", 56, 22,
                                            Whist.n(SOUTH, "24"),
                                            Whist.n(WEST, "32")));
@@ -181,7 +167,7 @@ public class ResultServiceTest extends BaseTestCase {
 
     // generating and testing final results
     ResultService.generateFinalResults(rBean);
-    assertEquals("Wrong finalScoreReady value", true, rBean.isFinalScoresReady());
+    assertTrue("Wrong finalScoreReady value", rBean.isFinalScoresReady());
     assertEquals("Wrong number of players", 3, rBean.getNumberOfPlayers());
     assertEquals("Wrong computed average mountain value", 56.00F, rBean.getAverageMountain());
     assertEquals("Wrong computed minimum mountain value", Integer.valueOf(22), rBean.getMinMountain());
@@ -195,7 +181,7 @@ public class ResultServiceTest extends BaseTestCase {
     // changing the game type and testing again
     rBean.setLeningradka(false);
     ResultService.generateFinalResults(rBean);
-    assertEquals("Wrong finalScoreReady value", true, rBean.isFinalScoresReady());
+    assertTrue("Wrong finalScoreReady value", rBean.isFinalScoresReady());
     assertEquals("Wrong number of players", 3, rBean.getNumberOfPlayers());
     assertEquals("Wrong computed average mountain value", 30.00F, rBean.getAverageMountain());
     assertEquals("Wrong computed minimum mountain value", Integer.valueOf(22), rBean.getMinMountain());
@@ -210,19 +196,14 @@ public class ResultServiceTest extends BaseTestCase {
   /**
    * Tests the generateFinalResults() method
    * with more cases (using the divisible by N option).
-   *
-   * @throws Exception On error.
    */
-  public void testGenerateFinalResults3() throws Exception {
-
-    log.info("Running testGenerateFinalResults3()...");
-
+  public void testGenerateFinalResults3() {
     GameResultBean rBean = new GameResultBean();
     rBean.setLeningradka(true);
     rBean.setMountDivisibleByN(false);
 
     // creating game data for 3 players
-    Map<Place, PlayerStatistics> stats = new HashMap<Place, PlayerStatistics>();
+    Map<Place, PlayerStatistics> stats = new HashMap<>();
     stats.put(EAST, createPlayerStatHelper(rBean, 3, EAST, "Zhenya", 14, 38,
                                            Whist.n(SOUTH, "148"),
                                            Whist.n(WEST, "10")));
@@ -238,7 +219,7 @@ public class ResultServiceTest extends BaseTestCase {
 
     // generating and testing final results
     ResultService.generateFinalResults(rBean);
-    assertEquals("Wrong finalScoreReady value", true, rBean.isFinalScoresReady());
+    assertTrue("Wrong finalScoreReady value", rBean.isFinalScoresReady());
     assertEquals("Wrong number of players", 3, rBean.getNumberOfPlayers());
     assertEquals("Wrong computed average mountain value", 13.33F, rBean.getAverageMountain());
     assertEquals("Wrong computed minimum mountain value", Integer.valueOf(41), rBean.getMinMountain());
@@ -257,7 +238,7 @@ public class ResultServiceTest extends BaseTestCase {
     // now, the same but with the mount "divisible by N" option
     rBean.setMountDivisibleByN(true);
     ResultService.generateFinalResults(rBean);
-    assertEquals("Wrong finalScoreReady value", true, rBean.isFinalScoresReady());
+    assertTrue("Wrong finalScoreReady value", rBean.isFinalScoresReady());
     assertEquals("Wrong number of players", 3, rBean.getNumberOfPlayers());
     assertEquals("Wrong computed average mountain value", 13.00F, rBean.getAverageMountain());
     assertEquals("Wrong computed minimum mountain value", Integer.valueOf(41), rBean.getMinMountain());
@@ -281,20 +262,15 @@ public class ResultServiceTest extends BaseTestCase {
 
   /**
    * Tests the generateFinalResults() method
-   * with even more more cases (using the divisible by N option).
-   *
-   * @throws Exception On error.
+   * with even more cases (using the divisible by N option).
    */
-  public void testGenerateFinalResults4() throws Exception {
-
-    log.info("Running testGenerateFinalResults4()...");
-
+  public void testGenerateFinalResults4() {
     GameResultBean rBean = new GameResultBean();
     rBean.setLeningradka(true);
     rBean.setMountDivisibleByN(false);
 
     // creating game data for 4 players
-    Map<Place, PlayerStatistics> stats = new HashMap<Place, PlayerStatistics>();
+    Map<Place, PlayerStatistics> stats = new HashMap<>();
     stats.put(EAST, createPlayerStatHelper(rBean, 4, EAST, "Bob", 76, 74,
                                            Whist.n(SOUTH, "172"),
                                            Whist.n(WEST, "84"),
@@ -318,7 +294,7 @@ public class ResultServiceTest extends BaseTestCase {
 
     // generating and testing final results
     ResultService.generateFinalResults(rBean);
-    assertEquals("Wrong finalScoreReady value", true, rBean.isFinalScoresReady());
+    assertTrue("Wrong finalScoreReady value", rBean.isFinalScoresReady());
     assertEquals("Wrong number of players", 4, rBean.getNumberOfPlayers());
     assertEquals("Wrong computed average mountain value", 47.0F, rBean.getAverageMountain());
     assertEquals("Wrong computed minimum mountain value", Integer.valueOf(64), rBean.getMinMountain());
@@ -339,7 +315,7 @@ public class ResultServiceTest extends BaseTestCase {
     // now, the same but with the mount "divisible by N" option
     rBean.setMountDivisibleByN(true);
     ResultService.generateFinalResults(rBean);
-    assertEquals("Wrong finalScoreReady value", true, rBean.isFinalScoresReady());
+    assertTrue("Wrong finalScoreReady value", rBean.isFinalScoresReady());
     assertEquals("Wrong number of players", 4, rBean.getNumberOfPlayers());
     assertEquals("Wrong computed average mountain value", 47.0F, rBean.getAverageMountain());
     assertEquals("Wrong computed minimum mountain value", Integer.valueOf(64), rBean.getMinMountain());
@@ -356,7 +332,7 @@ public class ResultServiceTest extends BaseTestCase {
     // changing the mount to make the mount sum not divisible by 4
     // by adding one to the NORTH player's mount
     final PlayerStatistics north = stats.get(NORTH);
-    north.setMountain(Integer.valueOf(77));
+    north.setMountain(77);
     ResultService.generateFinalResults(rBean);
 
     // testing the fix values (mount fix and whist fixes)
@@ -376,10 +352,10 @@ public class ResultServiceTest extends BaseTestCase {
                      Whist.n(EAST, "-53"), Whist.n(SOUTH, "44"), Whist.n(WEST, "-144"));
 
     // adding one more point to the NORTH player's mount
-    north.setMountain(Integer.valueOf(78));
+    north.setMountain(78);
     ResultService.generateFinalResults(rBean);
 
-    // testing the fix values (for 2 players if should be cleared)
+    // testing the fix values (for 2 players, should be cleared)
     checkFixValuesCleared(stats, 4);
 
     // testing the players' scores
@@ -393,7 +369,7 @@ public class ResultServiceTest extends BaseTestCase {
                      Whist.n(EAST, "-56"), Whist.n(SOUTH, "44"), Whist.n(WEST, "-144"));
 
     // adding one more point to the NORTH player's mount
-    north.setMountain(Integer.valueOf(79));
+    north.setMountain(79);
     rBean.setDivisibleByNPlayer(SOUTH);
     ResultService.generateFinalResults(rBean);
 
@@ -418,8 +394,6 @@ public class ResultServiceTest extends BaseTestCase {
     checkFixValuesCleared(stats, 4);
   }
 
-  /** Private methods ***********************/
-
   /**
    * Checks the whist fixes for the given player.
    *
@@ -427,6 +401,7 @@ public class ResultServiceTest extends BaseTestCase {
    * @param expWhistFix expected whist fix value.
    * @param otherPlaces other players' places.
    */
+  @SuppressWarnings("SameParameterValue")
   private static void checkWhistFixesForPlayer(PlayerStatistics s, Integer expWhistFix, Place... otherPlaces) {
     Place place = s.getPlayerPlace();
     Map<Place, Integer> whistFixes = s.getWhistFixesMap();
@@ -512,7 +487,7 @@ public class ResultServiceTest extends BaseTestCase {
       assertNull("Mount fix for NORTH must not be set", s.getMountFix());
       whistFixes = s.getWhistFixesMap();
       assertNotNull("Whist fixes map must not be null", whistFixes);
-      assertEquals("Whist fixes map for NORHT was not cleared", 0, whistFixes.size());
+      assertEquals("Whist fixes map for NORTH was not cleared", 0, whistFixes.size());
     }
   }
 
@@ -548,5 +523,4 @@ public class ResultServiceTest extends BaseTestCase {
       assertEquals(place + "'s whist saldo against " + w.place + " is wrong", w.whist, saldo.toString());
     }
   }
-
 }

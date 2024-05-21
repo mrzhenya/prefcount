@@ -118,7 +118,7 @@ public class GameResultBean {
    */
   public void setAverageMountain(Float averageMountain) {
     if (averageMountain != null) {
-      averageMountain = Float.valueOf(Math.round(averageMountain * 100) / 100F);
+      averageMountain = Math.round(averageMountain * 100) / 100F;
     }
     this.averageMountain = averageMountain;
   }
@@ -235,7 +235,6 @@ public class GameResultBean {
   public void clearResults() {
     divisibleByNPlayer = Settings.DEFAULT_ADJ_PLAYER;
     this.finalScoresReady = false;
-
   }
 
   /** {@inheritDoc} */

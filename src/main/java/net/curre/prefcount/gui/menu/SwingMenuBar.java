@@ -36,7 +36,7 @@ import static net.curre.prefcount.gui.type.WindowComponent.SOCHINKA;
 import net.curre.prefcount.gui.theme.LafTheme;
 import net.curre.prefcount.service.LafThemeService;
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
+import net.curre.prefcount.util.PlatformType;
 
 /**
  * Object of this class represents a menu bar that for
@@ -66,7 +66,7 @@ public class SwingMenuBar extends JMenuBar implements PrefCountMenuBar {
    * @throws UnsupportedOperationException When running on macOS.
    */
   public SwingMenuBar() {
-    if (Utilities.isMacOs()) {
+    if (PlatformType.isMacOs()) {
       throw new UnsupportedOperationException("SwingMenuBar should not be created for Mac OS");
     }
 

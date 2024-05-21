@@ -1,4 +1,4 @@
-/**
+/*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
@@ -21,7 +21,7 @@ import net.curre.prefcount.bean.PlayerStatistics;
 import net.curre.prefcount.gui.aa.AAJTextField;
 import net.curre.prefcount.gui.type.Place;
 import net.curre.prefcount.util.LocaleExt;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,9 +41,6 @@ import java.util.logging.*;
  * @author Yevgeny Nyden
  */
 abstract public class BaseTestCase extends TestCase {
-
-  /** Test settings file path relative to the root project directory. */
-  protected final static String SETTINGS_FILE = "target/testSettings.ser";
 
   /** Application test log file path. */
   protected static final String TEST_LOG_PATH = "target/prefcount-test.log";
@@ -72,7 +69,7 @@ abstract public class BaseTestCase extends TestCase {
    */
   public static void assertValidResource(String msg, String key) {
     assertNotNull(msg + " - the key is null", msg);
-    assertTrue(msg + " - the key is empty", msg.trim().length() != 0);
+    assertFalse(msg + " - the key is empty", msg.trim().isEmpty());
     LocaleExt origLocale = PrefCountRegistry.getCurrentLocale();
     assertNotNull("Current locale is null", origLocale);
     String currLang = PrefCountRegistry.AVAILABLE_LOCALES[0].getDisplayLanguage();
@@ -210,14 +207,6 @@ abstract public class BaseTestCase extends TestCase {
   public static void assertTextNotBlank(String message, JLabel label) {
     assertNotNull("Label should not be null", label);
     assertTrue(message, StringUtils.isNotBlank(label.getText()));
-  }
-
-  /** Deletes test settings file. */
-  protected void deleteTestSettingsFile() {
-    File file = new File(SETTINGS_FILE);
-    if (file.exists()) {
-      file.delete();
-    }
   }
 
   /**

@@ -12,64 +12,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.curre.prefcount.util;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.util.Calendar;
-import java.util.Objects;
-import java.util.logging.Logger;
+package net.curre.prefcount.service;
 
 import net.curre.prefcount.App;
 import net.curre.prefcount.PrefCountRegistry;
-import net.curre.prefcount.gui.aa.AAJLabel;
-import net.curre.prefcount.gui.aa.AAJPanel;
 import net.curre.prefcount.gui.type.UIItem;
-
+import net.curre.prefcount.util.LocaleExt;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.util.Objects;
 
 /**
- * Object of this class represents a set of
- * common utilities for prefcount.
- * <p/>
- * Created date: Apr 7, 2007
+ * Service responsible for common UI tasks like opening dialogs.
  *
  * @author Yevgeny Nyden
  */
-public class Utilities {
-
-  /** Private class logger. */
-  private static final Logger log = Logger.getLogger(Utilities.class.toString());
+public class UiService {
 
   /** Enumeration tha represents a field type. */
   public enum FieldType {
-
     UNDEFINED, INTEGER, DOUBLE
   }
 
-  /** Enumeration tha represents a platform/os type. */
-  public enum PlatformType {
-
-    MAC_OS, LINUX, WINDOWS, UNKNOWN
-  }
-
-  /** Helper object to be used in the printTime() method. */
-  public static Calendar lastTime = Calendar.getInstance();
+  /** Private class logger. */
+  private static final Logger logger = LogManager.getLogger(UiService.class.getName());
 
   /**
    * Validates if the passed component value is valid.
@@ -91,7 +70,7 @@ public class Utilities {
           return false;
         }
       default:
-        log.severe("ERROR: validateTextField: Unknown type: " + type);
+        logger.error("ERROR: validateTextField: Unknown type: {}", type);
     }
     return false;
   }
@@ -190,7 +169,7 @@ public class Utilities {
    * passed color according to the passed int parameter.
    *
    * @param color    Model color.
-   * @param decrease Value to be subtracted from the RGB chanels of the model color.
+   * @param decrease Value to be subtracted from the RGB channels of the model color.
    * @return New darker color.
    */
   public static Color createDarkerColor(Color color, int decrease) {
@@ -207,7 +186,7 @@ public class Utilities {
    * @param yesKey     Yes button test key.
    * @param cancelKey  Cancel button text key.
    * @return return true if the user has chosen to continue (hit the OK button);
-   *         false if the CANCEL optoins was chosen.
+   *         false if the CANCEL options was chosen.
    */
   public static boolean displayOkCancelMessage(String messageKey, String yesKey, String cancelKey) {
     String msg = LocaleExt.getString(messageKey);
@@ -219,84 +198,6 @@ public class Utilities {
         JOptionPane.WARNING_MESSAGE, null, new Object[]{yes, cancel}, cancel);
 
     return answer == JOptionPane.OK_OPTION;
-  }
-
-  /**
-   * This method is used for debugging purposes
-   * to print timestamps and the elapsed time since the last
-   * call to this method.
-   *
-   * @param msg Message to add to the print statement.
-   */
-  public static void printTime(String msg) {
-    Calendar currTime = Calendar.getInstance();
-    Calendar diff = Calendar.getInstance();
-    long currMls = currTime.getTimeInMillis();
-    diff.setTimeInMillis(currMls - lastTime.getTimeInMillis());
-    FastDateFormat f = FastDateFormat.getInstance("mm:ss:SSS");
-    System.out.println("TIME:::::: " + f.format(currTime.getTime()) +
-        " (" + f.format(diff) + ") - " + msg);
-    lastTime.setTimeInMillis(currMls);
-  }
-
-  /** Prints available looks and feels. */
-  public static void printLookAndFeels() {
-    UIManager.LookAndFeelInfo[] laf = UIManager.getInstalledLookAndFeels();
-    for (UIManager.LookAndFeelInfo lookAndFeelInfo : laf) {
-      System.out.print("LAF Name: " + lookAndFeelInfo.getName() + "\t");
-      System.out.println("  LAF Class name: " + lookAndFeelInfo.getClassName());
-    }
-  }
-
-  /** Displays available fonts in a frame. */
-  public static void printAvailableFonts() {
-    JFrame f = new JFrame("Testing Fonts");
-    f.setSize(400, 400);
-    JPanel mainPanel = new AAJPanel();
-    f.add(mainPanel);
-    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    String[] fontNames = ge.getAvailableFontFamilyNames();
-    for (String fontName : fontNames) {
-      JPanel panel = new JPanel();
-      JLabel label = new AAJLabel(fontName);
-      label.setFont(new Font(fontName, Font.PLAIN, 16));
-      panel.add(label);
-      mainPanel.add(panel);
-
-      System.out.println(fontName);
-    }
-    f.pack();
-    f.setVisible(true);
-  }
-
-  /**
-   * Determines the platform/os type we are running on.
-   *
-   * @return A PlatformType enumeration that represents the platform/os.
-   */
-  public static PlatformType getPlatformType() {
-    if (System.getProperty("mrj.version") == null) {
-      String osProp = System.getProperty("os.name").toLowerCase();
-      if (osProp.startsWith("windows")) {
-        return PlatformType.WINDOWS;
-      } else if (osProp.startsWith("mac")) {
-        return PlatformType.MAC_OS;
-      } else if (osProp.startsWith("linux")) {
-        return PlatformType.LINUX;
-      } else {
-        return PlatformType.UNKNOWN;
-      }
-    }
-    return PlatformType.MAC_OS;
-  }
-
-  /**
-   * Returns true if we are running on macOS; false otherwise.
-   *
-   * @return True if we are on macOS; false otherwise.
-   */
-  public static boolean isMacOs() {
-    return getPlatformType() == PlatformType.MAC_OS;
   }
 
   /**
@@ -336,10 +237,10 @@ public class Utilities {
         int index = Integer.parseInt(shortcutIndex);
         if (index < 0) {
           label += " (" + shortcut + ")";
-          label = Utilities.underlineLetter(label, label.lastIndexOf(shortcut));
+          label = underlineLetter(label, label.lastIndexOf(shortcut));
 
         } else {
-          label = Utilities.underlineLetter(label, index);
+          label = underlineLetter(label, index);
         }
       }
     }

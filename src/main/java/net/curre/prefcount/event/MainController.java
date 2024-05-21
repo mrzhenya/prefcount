@@ -27,7 +27,7 @@ import static net.curre.prefcount.gui.type.WindowComponent.MAIN_4_PLAYERS;
 import static net.curre.prefcount.gui.type.WindowComponent.SAVE_SETTINGS_ACTION;
 import net.curre.prefcount.service.MainService;
 import net.curre.prefcount.service.ResultService;
-import net.curre.prefcount.util.Utilities;
+import net.curre.prefcount.service.UiService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -196,7 +196,7 @@ public class MainController implements ActionListener {
 
       // need to check if we are not erasing any data
       if (this.playerDialog.isSomeDataEntered()) {
-        if (Utilities.displayOkCancelMessage("pref.dialog.warn.resetData",
+        if (UiService.displayOkCancelMessage("pref.dialog.warn.resetData",
                                              "pref.dialog.buttons.yes",
                                              "pref.dialog.buttons.cancel")) {
           settings.setPlayersNumber(itemEnum.name());

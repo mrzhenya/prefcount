@@ -30,7 +30,7 @@ import static net.curre.prefcount.gui.type.WindowComponent.*;
 import net.curre.prefcount.gui.theme.LafTheme;
 import net.curre.prefcount.service.LafThemeService;
 import net.curre.prefcount.util.LocaleExt;
-import net.curre.prefcount.util.Utilities;
+import net.curre.prefcount.util.PlatformType;
 
 /**
  * Object of this class represents a menu bar for macOS.
@@ -74,7 +74,7 @@ public class AwtMenuBar extends MenuBar implements PrefCountMenuBar {
     if (menuBarType != MAIN_WINDOW && menuBarType != PLAYER_DIALOG) {
       throw new IllegalArgumentException("Unsupported menu bar type: " + menuBarType);
     }
-    if (!Utilities.isMacOs()) {
+    if (!PlatformType.isMacOs()) {
       throw new UnsupportedOperationException("AwtMenuBar should only be created for Mac OS");
     }
 
