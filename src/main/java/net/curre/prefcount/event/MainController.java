@@ -24,7 +24,6 @@ import static net.curre.prefcount.gui.type.WindowComponent.DIVISIBLE_BY_N;
 import static net.curre.prefcount.gui.type.WindowComponent.LENINGRAD;
 import static net.curre.prefcount.gui.type.WindowComponent.MAIN_3_PLAYERS;
 import static net.curre.prefcount.gui.type.WindowComponent.MAIN_4_PLAYERS;
-import static net.curre.prefcount.gui.type.WindowComponent.SAVE_SETTINGS_ACTION;
 import net.curre.prefcount.service.MainService;
 import net.curre.prefcount.service.ResultService;
 import net.curre.prefcount.service.UiService;
@@ -127,11 +126,6 @@ public class MainController implements ActionListener {
         registry.disposeChoosePlayerDialog();
         break;
 
-      case SAVE_SETTINGS_ACTION:
-      case RESET_SETTINGS_ACTION:
-        saveResetActionHelper(SAVE_SETTINGS_ACTION.equals(itemEnum));
-        break;
-
       case PRINT_SCORES_ACTION:
         MainService.doPrint();
         break;
@@ -215,32 +209,5 @@ public class MainController implements ActionListener {
         this.mainWindow.initializeNumberOfPlayers();
       }
     }
-  }
-
-  /**
-   * Assists with the save/reset settings actions.
-   *
-   * @param isSave true if this is a save action; false - reset action.
-   */
-  private void saveResetActionHelper(boolean isSave) {
-    // TODO - not sure, deprecate reset? what is save? why not automatically save?
-/*
-    try {
-      if (isSave) {
-        SettingsService.saveSettings();
-      } else {
-
-        // warn the user first tha we need to quit
-        if (Utilities.displayOkCancelMessage("pref.settings.restart",
-                                             "pref.dialog.buttons.yes",
-                                             "pref.dialog.buttons.no")) {
-          SettingsService.resetSettings();
-          MainService.quitApp();
-        }
-      }
-    } catch (ServiceException e) {
-      log.log(Level.WARNING, "Unable to perform save/reset action!", e);
-    }
-*/
   }
 }

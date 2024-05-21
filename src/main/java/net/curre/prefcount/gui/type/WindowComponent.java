@@ -74,16 +74,6 @@ public enum WindowComponent implements UIItem {
                  "pref.dialog.nextButton.index",
                  "DIALOG_FORWARD2", null),
 
-  /** Represents the save settings action item. */
-  SAVE_SETTINGS_ACTION("pref.mainMenu.settings.save",
-                       "pref.mainMenu.settings.save.shortcut",
-                       null, "SAVE_SETTINGS_ACTION", null),
-
-  /** Represents the reset settings action item. */
-  RESET_SETTINGS_ACTION("pref.mainMenu.settings.reset",
-                        "pref.mainMenu.settings.reset.shortcut",
-                        null, "RESET_SETTINGS_ACTION", null),
-
   /** Represents the print action item. */
   PRINT_SCORES_ACTION("pref.mainMenu.print.scores",
                       "pref.mainMenu.print.scores.shortcut",

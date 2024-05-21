@@ -173,11 +173,6 @@ public class AwtMenuBar extends MenuBar implements PrefCountMenuBar {
     printMenu.add(menuItemsBean.getMenuItem(PRINT_TEMPLATE4_ACTION));
     mainMenu.add(printMenu);
 
-    mainMenu.addSeparator();
-
-    mainMenu.add(menuItemsBean.getMenuItem(SAVE_SETTINGS_ACTION));
-    mainMenu.add(menuItemsBean.getMenuItem(RESET_SETTINGS_ACTION));
-
     return mainMenu;
   }
 

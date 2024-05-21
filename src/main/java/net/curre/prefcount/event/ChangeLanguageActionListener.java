@@ -20,6 +20,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import net.curre.prefcount.PrefCountRegistry;
+import net.curre.prefcount.service.SettingsService;
 
 /**
  * Object of this class represents an action listener
@@ -73,6 +74,10 @@ public class ChangeLanguageActionListener
 
   /** Helper method that changes the language. */
   private void changeLanguage() {
-    PrefCountRegistry.getInstance().setCurrentLocale(localeId);
+    PrefCountRegistry registry = PrefCountRegistry.getInstance();
+    registry.setCurrentLocale(this.localeId);
+    SettingsService settingsService = registry.getSettingsService();
+    settingsService.getSettings().setLocaleId(this.localeId);
+    settingsService.persistSettings();
   }
 }

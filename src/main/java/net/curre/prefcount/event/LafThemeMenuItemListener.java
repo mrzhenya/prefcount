@@ -63,7 +63,7 @@ public class LafThemeMenuItemListener implements ActionListener, ItemListener {
     if (itemEvent.getStateChange() == ItemEvent.DESELECTED) {
       ((CheckboxMenuItem) itemEvent.getSource()).setState(true);
     }
-    changeSkin();
+    changeLafTheme();
   }
 
   /**
@@ -74,11 +74,11 @@ public class LafThemeMenuItemListener implements ActionListener, ItemListener {
    * {@inheritDoc}
    */
   public void actionPerformed(ActionEvent actionEvent) {
-    changeSkin();
+    changeLafTheme();
   }
 
   /** Helper method that performs LAF skin change. */
-  private void changeSkin() {
+  private void changeLafTheme() {
     try {
       PrefCountRegistry registry = PrefCountRegistry.getInstance();
       LafThemeService lafService = registry.getLafThemeService();

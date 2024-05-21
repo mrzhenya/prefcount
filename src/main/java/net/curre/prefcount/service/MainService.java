@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
 import net.curre.prefcount.PrefCountRegistry;
+import net.curre.prefcount.bean.Settings;
 import net.curre.prefcount.gui.HelpFrame;
 import net.curre.prefcount.gui.MainWindow;
 import net.curre.prefcount.gui.Template;
@@ -105,13 +106,25 @@ public class MainService {
       helpFrame.dispose();
     }
 
-    MainWindow window = PrefCountRegistry.getInstance().getMainWindow();
-    window.setVisible(false);
+    PrefCountRegistry registry = PrefCountRegistry.getInstance();
+    MainWindow window = registry.getMainWindow();
+
+    // Storing the main window and the player dialog size settings,
+    // then, disposing the components.
+    Settings settings = registry.getSettingsService().getSettings();
+    settings.setMainFrameHeight(window.getHeight());
+    settings.setMainFrameWidth(window.getWidth());
 
     if (window.playerDialogFrame != null) {
+      settings.setDialogFrameHeight(window.playerDialogFrame.getHeight());
+      settings.setDialogFrameWidth(window.playerDialogFrame.getWidth());
+
       window.playerDialogFrame.setVisible(false);
       window.playerDialogFrame.dispose();
     }
+    registry.getSettingsService().persistSettings();
+
+    window.setVisible(false);
     window.dispose();
 
     System.exit(0);

@@ -29,8 +29,6 @@ import static net.curre.prefcount.gui.type.WindowComponent.PRINT_SCORES_ACTION;
 import static net.curre.prefcount.gui.type.WindowComponent.PRINT_TEMPLATE3_ACTION;
 import static net.curre.prefcount.gui.type.WindowComponent.PRINT_TEMPLATE4_ACTION;
 import static net.curre.prefcount.gui.type.WindowComponent.QUIT_ACTION;
-import static net.curre.prefcount.gui.type.WindowComponent.RESET_SETTINGS_ACTION;
-import static net.curre.prefcount.gui.type.WindowComponent.SAVE_SETTINGS_ACTION;
 import static net.curre.prefcount.gui.type.WindowComponent.SOCHINKA;
 
 import net.curre.prefcount.gui.theme.LafTheme;
@@ -169,10 +167,6 @@ public class SwingMenuBar extends JMenuBar implements PrefCountMenuBar {
     printMenu.add(menuItemsBean.getJMenuItem(PRINT_TEMPLATE4_ACTION));
     mainMenu.add(printMenu);
 
-    mainMenu.addSeparator();
-
-    mainMenu.add(menuItemsBean.getJMenuItem(SAVE_SETTINGS_ACTION));
-    mainMenu.add(menuItemsBean.getJMenuItem(RESET_SETTINGS_ACTION));
     mainMenu.addSeparator();
 
     mainMenu.add(menuItemsBean.getJMenuItem(QUIT_ACTION));
