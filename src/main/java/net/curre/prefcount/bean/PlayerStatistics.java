@@ -88,6 +88,15 @@ public class PlayerStatistics {
     this.whistFixesMap = new TreeMap<>();
     this.resultBean = resultBean;
     this.playerPlace = playerPlace;
+    this.playerName = "";
+  }
+
+  /** @inheritDoc */
+  @Override
+  public String toString() {
+    return this.playerPlace + " (" + this.playerName + ") " +
+        "pool=" + this.pool +
+        "mount=" + this.mountain;
   }
 
   /**
@@ -177,7 +186,7 @@ public class PlayerStatistics {
   }
 
   /**
-   * Setter for the player's mounatain that is fetched
+   * Setter for the player's mountain that is fetched
    * from the passed <code>JTextField</code> argument.
    *
    * @param field <code>JTextField</code> to use to fetch the mountain value.
@@ -236,7 +245,7 @@ public class PlayerStatistics {
 
   /**
    * Setter for the player's whists that this player
-   * has against the player refered by its index argument.
+   * has against the player referred by its index argument.
    *
    * @param place Other player's place that this player has whists against.
    * @param field <code>JTextField</code> to use to fetch the whists value.
@@ -253,22 +262,22 @@ public class PlayerStatistics {
    * has against the given player.
    *
    * @param place Player's place to fetch the whists for.
-   * @return whist that this player has agains the other player.
+   * @return whist that this player has against the other player.
    */
   public Integer getWhistsAgainstPlayer(Place place) {
     return this.whistsMap.get(place);
   }
 
   /**
-   * Returns whists for the given player (refered by its index);
+   * Returns whists for the given player (referred by its index);
    * value is returned as a string terminated with a period.
    *
    * @param place Player's place to fetch the whists for.
-   * @return whists value that this player has agains the other player.
+   * @return whists value that this player has against the other player.
    */
   public String getWhistsStringForPlayer(Place place) {
     Integer val = getWhistsAgainstPlayer(place);
-    return val == null ? "" : String.valueOf(val) + ".";
+    return val == null ? "" : val + ".";
   }
 
   /**
@@ -291,7 +300,7 @@ public class PlayerStatistics {
    * same (as the player's place) key.
    *
    * @return Map of whist saldo values that the player has
-   *         against other playes.
+   *         against other players.
    */
   public Map<Place, Integer> getWhistSaldoMap() {
     return this.whistSaldoMap;

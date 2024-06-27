@@ -79,17 +79,13 @@ public class LafThemeMenuItemListener implements ActionListener, ItemListener {
 
   /** Helper method that performs LAF skin change. */
   private void changeLafTheme() {
+    PrefCountRegistry registry = PrefCountRegistry.getInstance();
     try {
-      PrefCountRegistry registry = PrefCountRegistry.getInstance();
       LafThemeService lafService = registry.getLafThemeService();
       lafService.activateLafTheme(this.lafTheme.getId());
       SettingsService settingsService = registry.getSettingsService();
       settingsService.getSettings().setLafThemeId(lafService.getCurrentLafThemeId());
       settingsService.persistSettings();
-      // TODO - update the registered UI components.
-//      registry.getLandingUi().updateLandingUi();
-      // TODO - show the restart dialog.
-//      registry.getUiService().showRestartGameDialog();
     } catch (Exception e) {
       logger.log(Level.WARN,"Unable to save settings.", e);
     }

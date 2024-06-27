@@ -15,59 +15,49 @@
 package net.curre.prefcount.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
 import net.curre.prefcount.App;
 import net.curre.prefcount.PrefCountRegistry;
-import net.curre.prefcount.gui.type.WindowComponent;
+import net.curre.prefcount.gui.type.HelpType;
 import net.curre.prefcount.util.LocaleExt;
 
 /**
- * Object of this class represents a frame with help information.
+ * A dialog that displays help information.
  * <p/>
  * Created date: Jun 18, 2008
  *
  * @author Yevgeny Nyden
  */
-public class HelpFrame extends JFrame {
-
-  /** Name of the how to count help file (w/o extension). */
-  private static final String HOW_TO_COUNT_FILENAME = "howToCount";
-
-  /** Name of the preference reference help file (w/o extension). */
-  private static final String PREF_REFERENCE_FILENAME = "prefReference";
-
-  /** Name of the common rules help file (w/o extension). */
-  private static final String COMMON_RULES_FILENAME = "commonRules";
+public class HelpDialog extends JDialog {
 
   /** Reference to the text pane object. */
   private final JTextPane textPane;
 
-  /** Current help type enum. */
-  private WindowComponent currHelpEnum;
-
   /** Constructs a new <code>HelpFrame</code> object. */
-  public HelpFrame() {
-
+  public HelpDialog() {
     super.setLayout(new BorderLayout());
+    this.setModal(true);
 
     this.textPane = new JTextPane();
     this.textPane.setMargin(new Insets(0, 20, 20, 10));
     this.textPane.setEditable(false);
+    this.textPane.setBackground(Color.WHITE);
 
     JScrollPane scrollPane = new JScrollPane(this.textPane);
     super.setPreferredSize(new Dimension(600, 600));
     super.add(scrollPane, BorderLayout.CENTER);
 
-    // close action only makes the frame not visible
+    // Сlose action only hides the dialog.
     super.addWindowListener(new WindowAdapter() {
       /** {@inheritDoc} */
       @Override
@@ -75,63 +65,27 @@ public class HelpFrame extends JFrame {
         setVisible(false);
       }
     });
-
-    LocaleExt.registerComponent(new LocaleExt.LocaleExec() {
-      /** {@inheritDoc} */
-      public void doChange() {
-        if (HelpFrame.this.isVisible() && HelpFrame.this.currHelpEnum != null) {
-          refreshText(HelpFrame.this.currHelpEnum);
-        }
-      }
-    }, "HELP_FRAME_KEY");
   }
 
   /**
-   * Refreshes the title and the text.
+   * Shows help dialog.
    *
-   * @param itemEnum enum that represents type of help.
-   * @throws IllegalArgumentException for an unsupported type of help.
+   * @param type the type of help to display.
    */
-  public void refreshText(WindowComponent itemEnum) {
-
-    final String title = LocaleExt.getString(itemEnum.getTextKey());
-    super.setTitle(title);
-
-    String fileName;
-    switch (itemEnum) {
-      case HELP_COUNT_ACTION:
-      case HELP_COUNT_ACTION2:
-        fileName = HOW_TO_COUNT_FILENAME;
-        break;
-
-      case HELP_PREF_ACTION:
-      case HELP_PREF_ACTION2:
-        fileName = PREF_REFERENCE_FILENAME;
-        break;
-
-      case HELP_COMMON_ACTION:
-      case HELP_COMMON_ACTION2:
-        fileName = COMMON_RULES_FILENAME;
-        break;
-
-      default:
-        throw new IllegalArgumentException("Unsupported help type: " + itemEnum);
-    }
-
-    this.currHelpEnum = itemEnum;
-
+  public void showHelp(HelpType type) {
+    super.setTitle(type.getTitle());
     try {
       this.textPane.setContentType("text/rtf");
       String localeStr = PrefCountRegistry.getCurrentLocale().getLocale().getLanguage();
-      InputStream resource = App.class.getResourceAsStream("help/" + localeStr + "/" + fileName + ".rtf");
+      InputStream resource = App.class.getResourceAsStream("help/" + localeStr + "/" + type.getFilename());
       this.textPane.read(resource, null);
+      assert resource != null;
       resource.close();
-
     } catch (IOException e) {
       this.textPane.setText(LocaleExt.getString("pref.countHelp.error"));
     }
-
     super.pack();
+    super.setLocationRelativeTo(PrefCountRegistry.getInstance().getMainWindow());
     super.setVisible(true);
   }
 }

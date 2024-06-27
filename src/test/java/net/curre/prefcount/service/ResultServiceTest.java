@@ -19,13 +19,14 @@ import java.util.Map;
 
 import net.curre.prefcount.bean.GameResultBean;
 import net.curre.prefcount.bean.PlayerStatistics;
-import net.curre.prefcount.gui.aa.AAJTextField;
 import net.curre.prefcount.gui.type.Place;
 import static net.curre.prefcount.gui.type.Place.EAST;
 import static net.curre.prefcount.gui.type.Place.NORTH;
 import static net.curre.prefcount.gui.type.Place.SOUTH;
 import static net.curre.prefcount.gui.type.Place.WEST;
 import net.curre.prefcount.test.BaseTestCase;
+
+import javax.swing.JTextField;
 
 /**
  * This is a junit test for testing result service.
@@ -59,7 +60,7 @@ public class ResultServiceTest extends BaseTestCase {
     // testing pool related functionality
     player.setPool(10);
     assertEquals("Wrong pool value", Integer.valueOf(10), player.getPool());
-    player.setPoolFromField(new AAJTextField("76"));
+    player.setPoolFromField(new JTextField("76"));
     assertEquals("Wrong pool value", Integer.valueOf(76), player.getPool());
 
     // testing mountain related functionality
@@ -68,9 +69,9 @@ public class ResultServiceTest extends BaseTestCase {
     player.setMountainFromField(null);
     assertEquals("Wrong mountain value", Integer.valueOf(0), player.getMountain());
     player.setMountain(74);
-    player.setMountainFromField(new AAJTextField(""));
+    player.setMountainFromField(new JTextField(""));
     assertEquals("Wrong mountain value", Integer.valueOf(0), player.getMountain());
-    player.setMountainFromField(new AAJTextField("74"));
+    player.setMountainFromField(new JTextField("74"));
     assertEquals("Wrong mountain value", Integer.valueOf(74), player.getMountain());
     assertEquals("Wrong max pool value", Integer.valueOf(0), rBean.getMaxPool());
     assertEquals("Wrong computed new mountain value for Leningradka", -78, player.getNewMountain());
@@ -78,10 +79,10 @@ public class ResultServiceTest extends BaseTestCase {
                  1370, player.getFinalMountainInWhists());
 
     // testing whists related functionality
-    player.setWhistsForPlayerFromField(SOUTH, new AAJTextField("72"));
+    player.setWhistsForPlayerFromField(SOUTH, new JTextField("72"));
     assertEquals("Wrong whists for player 1", Integer.valueOf(72), player.getWhistsAgainstPlayer(SOUTH));
     assertEquals("Wrong whists string for player 2", "", player.getWhistsStringForPlayer(WEST));
-    player.setWhistsForPlayerFromField(WEST, new AAJTextField("84"));
+    player.setWhistsForPlayerFromField(WEST, new JTextField("84"));
     assertEquals("Wrong whists string for player 2", "84.", player.getWhistsStringForPlayer(WEST));
 
     // remember that player's index is 0, so, his whists saldo is
@@ -99,7 +100,7 @@ public class ResultServiceTest extends BaseTestCase {
   public void testGenerateFinalResults() {
     GameResultBean rBean = new GameResultBean();
     rBean.setLeningradka(true);
-    rBean.setMountDivisibleByN(false);
+    rBean.setMountDivisibleByN(null);
 
     // creating game data for 4 players
     Map<Place, PlayerStatistics> stats = new HashMap<>();
@@ -200,7 +201,7 @@ public class ResultServiceTest extends BaseTestCase {
   public void testGenerateFinalResults3() {
     GameResultBean rBean = new GameResultBean();
     rBean.setLeningradka(true);
-    rBean.setMountDivisibleByN(false);
+    rBean.setMountDivisibleByN(null);
 
     // creating game data for 3 players
     Map<Place, PlayerStatistics> stats = new HashMap<>();
@@ -231,12 +232,12 @@ public class ResultServiceTest extends BaseTestCase {
                      Whist.n(SOUTH, "94"), Whist.n(EAST, "36"));
 
     // testing the individual whist saldos
-    rBean.setMountDivisibleByN(false);
+    rBean.setMountDivisibleByN(null);
     ResultService.generateFinalResults(rBean);
     checkFixValuesCleared(stats, 3);
 
     // now, the same but with the mount "divisible by N" option
-    rBean.setMountDivisibleByN(true);
+    rBean.setMountDivisibleByN(EAST);
     ResultService.generateFinalResults(rBean);
     assertTrue("Wrong finalScoreReady value", rBean.isFinalScoresReady());
     assertEquals("Wrong number of players", 3, rBean.getNumberOfPlayers());
@@ -255,7 +256,7 @@ public class ResultServiceTest extends BaseTestCase {
     checkFixValuesSet(stats, WEST, EAST, 3, null);
 
     // testing that the fix values are cleared on a new count
-    rBean.setMountDivisibleByN(false);
+    rBean.setMountDivisibleByN(null);
     ResultService.generateFinalResults(rBean);
     checkFixValuesCleared(stats, 3);
   }
@@ -267,7 +268,7 @@ public class ResultServiceTest extends BaseTestCase {
   public void testGenerateFinalResults4() {
     GameResultBean rBean = new GameResultBean();
     rBean.setLeningradka(true);
-    rBean.setMountDivisibleByN(false);
+    rBean.setMountDivisibleByN(null);
 
     // creating game data for 4 players
     Map<Place, PlayerStatistics> stats = new HashMap<>();
@@ -308,12 +309,12 @@ public class ResultServiceTest extends BaseTestCase {
                      Whist.n(EAST, "-56"), Whist.n(SOUTH, "44"), Whist.n(WEST, "-144"));
 
     // testing the individual whist saldos
-    rBean.setMountDivisibleByN(false);
+    rBean.setMountDivisibleByN(null);
     ResultService.generateFinalResults(rBean);
     checkFixValuesCleared(stats, 4);
 
     // now, the same but with the mount "divisible by N" option
-    rBean.setMountDivisibleByN(true);
+    rBean.setMountDivisibleByN(EAST);
     ResultService.generateFinalResults(rBean);
     assertTrue("Wrong finalScoreReady value", rBean.isFinalScoresReady());
     assertEquals("Wrong number of players", 4, rBean.getNumberOfPlayers());
@@ -370,7 +371,7 @@ public class ResultServiceTest extends BaseTestCase {
 
     // adding one more point to the NORTH player's mount
     north.setMountain(79);
-    rBean.setDivisibleByNPlayer(SOUTH);
+    rBean.setMountDivisibleByN(SOUTH);
     ResultService.generateFinalResults(rBean);
 
     // testing the fix values (mount fix and whist fixes)
@@ -389,7 +390,7 @@ public class ResultServiceTest extends BaseTestCase {
                      Whist.n(EAST, "-56"), Whist.n(SOUTH, "41"), Whist.n(WEST, "-144"));
 
     // testing that the fix values are cleared on a new count
-    rBean.setMountDivisibleByN(false);
+    rBean.setMountDivisibleByN(null);
     ResultService.generateFinalResults(rBean);
     checkFixValuesCleared(stats, 4);
   }

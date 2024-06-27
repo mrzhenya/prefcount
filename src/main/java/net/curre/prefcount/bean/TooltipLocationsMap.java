@@ -115,5 +115,4 @@ public class TooltipLocationsMap extends HashMap<ScoreItem, Map<Place, Shape>> {
     final double y = point.getY() - height + 3D;
     return new Rectangle2D.Double(x, y, width, height);
   }
-
 }

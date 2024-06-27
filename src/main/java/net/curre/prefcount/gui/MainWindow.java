@@ -16,59 +16,37 @@ package net.curre.prefcount.gui;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.SwingUtilities;
-import javax.swing.border.TitledBorder;
 
 import net.curre.prefcount.App;
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.bean.GameResultBean;
-import net.curre.prefcount.bean.PlayerStatistics;
 import net.curre.prefcount.bean.Settings;
-import net.curre.prefcount.event.MainController;
-import net.curre.prefcount.gui.menu.MenuItemsBean;
+import net.curre.prefcount.event.ClosingWindowListener;
+import net.curre.prefcount.gui.game.DataCardsContainerPanel;
 import net.curre.prefcount.gui.menu.PrefCountMenuBar;
 import net.curre.prefcount.gui.theme.LafTheme;
 import net.curre.prefcount.gui.theme.PrintTheme;
-import net.curre.prefcount.gui.type.Place;
-import net.curre.prefcount.gui.type.WindowComponent;
-import static net.curre.prefcount.gui.type.WindowComponent.DIVISIBLE_BY_N;
-import static net.curre.prefcount.gui.type.WindowComponent.DIVISIBLE_IGNORE;
-import static net.curre.prefcount.gui.type.WindowComponent.LENINGRAD;
-import static net.curre.prefcount.gui.type.WindowComponent.MAIN_3_PLAYERS;
-import static net.curre.prefcount.gui.type.WindowComponent.MAIN_4_PLAYERS;
-import static net.curre.prefcount.gui.type.WindowComponent.SOCHINKA;
 
 import net.curre.prefcount.service.MainService;
 import net.curre.prefcount.service.UiService;
 import net.curre.prefcount.util.LocaleExt;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstraints;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -85,135 +63,60 @@ public class MainWindow extends JFrame implements Printable {
   /** Private class logger. */
   private static final Logger logger = LogManager.getLogger(MainWindow.class.getName());
 
-  /** Reference to the player dialog frame. */
-  public PlayerDialogBaseFrame playerDialogFrame;
-
-  /** Reference to the options panel object. */
-  protected JPanel optionsPanel;
+  /** Reference to the game options cards panel (which contains all the data input fields). */
+  protected DataCardsContainerPanel inputDataPanel;
 
   /** Reference to the score board panel (when the scores are drawn). */
   protected ScoreBoardPanel scoreBoardPanel;
 
-  /** Reference to the "3 players" radio buttons. */
-  protected JRadioButton players3Button;
-
-  /** Reference to the "4 players" radio buttons. */
-  protected JRadioButton players4Button;
-
   /** Reference to the menu bar. */
   private final PrefCountMenuBar prefCountMenuBar;
 
-  /** Default constructor. */
-  public MainWindow() {
-    this(true);
-  }
-
   /**
    * Constructor that sets frame visibility.
-   *
-   * @param isVisible True when the frame should be made visible by default;
-   *                  false when the frame should be invisible instead.
    */
-  public MainWindow(boolean isVisible) {
+  public MainWindow() {
     super(LocaleExt.getString("pref.scoreboard.title"));
 
     logger.info("Creating main window");
+    PrefCountRegistry registry = PrefCountRegistry.getInstance();
+    Settings settings = registry.getSettingsService().getSettings();
 
-    LocaleExt.registerComponent(this, "pref.scoreboard.title");
-
-    // creating and setting the windows icon
-    Image appImg = Toolkit.getDefaultToolkit().createImage(App.class.getResource("images/PrefCount-16x16.png"));
-    super.setIconImage(appImg);
-
-    MenuItemsBean menuItemsBean = PrefCountRegistry.getInstance().getMenuItemsBean();
+    super.setIconImage(Toolkit.getDefaultToolkit().createImage(
+        App.class.getResource("images/PrefCount-16x16.png")));
+    super.setSize(settings.getMainWindowWidth(), settings.getMainWindowHeight());
+    super.setPreferredSize(new Dimension(settings.getMainWindowWidth(), settings.getMainWindowHeight()));
     super.setResizable(true);
+    super.addWindowListener(new ClosingWindowListener(MainService::quitApp));
 
-    // creating the pref type options
-    JRadioButton leningradButton = menuItemsBean.getJRadioButton(LENINGRAD);
-    JRadioButton sochiButton = menuItemsBean.getJRadioButton(SOCHINKA);
-    JPanel prefTypePanel = createOptionSubPanel("pref.scoreboard.prefType.title",
-                                                new JRadioButton[]{leningradButton, sochiButton});
+    Container contentPane = super.getContentPane();
+    contentPane.setLayout(new BorderLayout());
 
-    // creating the number of players options
-    players3Button = menuItemsBean.getJRadioButton(MAIN_3_PLAYERS);
-    players4Button = menuItemsBean.getJRadioButton(MAIN_4_PLAYERS);
-    JPanel playerNumberPanel = createOptionSubPanel("pref.scoreboard.players.title",
-                                                    new JRadioButton[]{players3Button, players4Button});
+    // Panel that contains player data input UI.
+    this.inputDataPanel = new DataCardsContainerPanel(this);
+    contentPane.add(this.inputDataPanel, BorderLayout.NORTH);
 
-    // creating the divisibility options
-    JRadioButton divisibleBy3Button = menuItemsBean.getJRadioButton(DIVISIBLE_IGNORE);
-    JRadioButton divisibleBy4Button = menuItemsBean.getJRadioButton(DIVISIBLE_BY_N);
-    JPanel divisibilityPanel = createOptionSubPanel("pref.scoreboard.divisible.title",
-                                                    new JRadioButton[]{divisibleBy3Button, divisibleBy4Button});
-
-    this.optionsPanel = new JPanel(new FlowLayout());
-    this.optionsPanel.add(prefTypePanel);
-    this.optionsPanel.add(playerNumberPanel);
-    this.optionsPanel.add(divisibilityPanel);
-
+    // Panel where we draw the board and scores.
     this.scoreBoardPanel = new ScoreBoardPanel();
+    contentPane.add(this.scoreBoardPanel, BorderLayout.CENTER);
 
-    super.getContentPane().add(this.optionsPanel, BorderLayout.NORTH);
-    super.getContentPane().add(this.scoreBoardPanel, BorderLayout.CENTER);
+    // Window's menu bar.
+    this.prefCountMenuBar = new PrefCountMenuBar();
+    this.setJMenuBar(this.prefCountMenuBar);
 
-    this.prefCountMenuBar = MainService.addMainWindowMenuBar(this);
-
-    this.playerDialogFrame = new PlayerDialogBaseFrame(3, this);
-    PrefCountRegistry.getInstance().setPlayerDialogFrame(this.playerDialogFrame);
-
-    // action listener to save selection in the current settings
-    MainController mainController = new MainController(this, this.playerDialogFrame);
-    menuItemsBean.setActionListener(mainController);
-    PrefCountRegistry.getInstance().setMainController(mainController);
-
-    // reading the current settings
-    readFromCurrentSettings();
-    initializeNumberOfPlayers();
-
-    // adding window close listener
-    super.addWindowListener(new WindowAdapter() {
-      /** {@inheritDoc} */
-      @Override
-      public void windowClosing(WindowEvent event) {
-        MainService.quitApp();
-      }
-    });
-
-    // setting the visibility of the two frames
-    super.setVisible(isVisible);
-    this.playerDialogFrame.setVisible(isVisible);
+    // Update the scoreboard with the number of players read from the settings.
+    updateNumberOfPlayers(settings.getNumberOfPlayers());
+    this.setLocationRelativeTo(null);
+    registry.getLafThemeService().registerUITreeForUpdates(this);
   }
 
-  /** Initializes number of players. */
-  public void initializeNumberOfPlayers() {
-
-    // determining the number of players and
-    // disabling the player numbers radio buttons
-    int numberOfPlayers = 4;
-    if (this.players3Button.isSelected()) {
-      numberOfPlayers = 3;
-    }
-
+  /**
+   * Initializes number of players.
+   *
+   * @param numberOfPlayers current number of players.
+   */
+  public void updateNumberOfPlayers(int numberOfPlayers) {
     this.scoreBoardPanel.initializeNumberOfPlayers(numberOfPlayers);
-
-    GameResultBean resultBean = PrefCountRegistry.getInstance().getGameResultBean();
-    resultBean.clearResults();
-
-    // creating the stats
-    Map<Place, PlayerStatistics> stats = new HashMap<>();
-    for (Place place : Place.getPlaces(numberOfPlayers)) {
-      PlayerStatistics stat = new PlayerStatistics(resultBean, place);
-      stat.setPlayerName("");
-      stats.put(place, stat);
-    }
-    resultBean.setPlayerStats(stats);
-
-    InputMap map = this.optionsPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    map.clear();
-
-    this.playerDialogFrame.initializeNumberOfPlayers(numberOfPlayers);
-    this.playerDialogFrame.setVisible(this.isVisible());
-
     super.invalidate();
     super.validate();
     super.repaint();
@@ -224,15 +127,7 @@ public class MainWindow extends JFrame implements Printable {
    * This method is called on a locale change event.
    */
   public void refreshComponents() {
-    SwingUtilities.invokeLater(new Runnable() {
-      /** {@inheritDoc} */
-      public void run() {
-        LocaleExt.fireLocaleChangeEvent();
-        prefCountMenuBar.refreshLanguageIcon();
-        playerDialogFrame.refreshTable();
-        repaint();
-      }
-    });
+    SwingUtilities.invokeLater(this::repaint);
   }
 
   /** Displays the about information pane. */
@@ -247,55 +142,12 @@ public class MainWindow extends JFrame implements Printable {
   }
 
   /**
-   * This method reads values from the current Settings
-   * object, changes the MainWindow's settings accordingly,
-   * and asks the PlayerDialogBasePanel to do the same
-   * (calls PlayerDialogBasePanel.readFromCurrentSettings()).
-   * Settings that are read and reset:
-   * <ul>
-   * <li>Current Look-and-Feel;</li>
-   * <li>MainWindow size;</li>
-   * <li>Option panel's radio buttons;</li>
-   * <li>Menu bar option menu items;</li>
-   * </ul>
+   * Enables the print scores menu button.
    *
-   * @see PlayerDialogBaseFrame#readFromCurrentSettings()
+   * @param enable true to enable the button; false if otherwise.
    */
-  public void readFromCurrentSettings() {
-    // this is the current settings
-    PrefCountRegistry registry = PrefCountRegistry.getInstance();
-    Settings settings = registry.getSettingsService().getSettings();
-    MenuItemsBean menuItemsBean = PrefCountRegistry.getInstance().getMenuItemsBean();
-
-    // setting the frame size
-    try {
-      super.setSize(settings.getMainFrameWidth(), settings.getMainFrameHeight());
-    } catch (Exception e) {
-      super.setSize(Settings.DEFAULT_MAIN_FRAME_WIDTH, Settings.DEFAULT_MAIN_FRAME_HEIGHT);
-    }
-
-    // selecting the game options buttons in the options panel
-    try {
-      WindowComponent comp = WindowComponent.valueOf(settings.getPrefType());
-      menuItemsBean.setSelected(comp, true);
-    } catch (Exception e) {
-      menuItemsBean.setSelected(WindowComponent.valueOf(Settings.DEFAULT_PREF_TYPE), true);
-    }
-    try {
-      WindowComponent comp = WindowComponent.valueOf(settings.getPlayersNumber());
-      menuItemsBean.setSelected(comp, true);
-    } catch (Exception e) {
-      menuItemsBean.setSelected(WindowComponent.valueOf(Settings.DEFAULT_PLAYERS_NUMBER), true);
-    }
-    try {
-      WindowComponent comp = WindowComponent.valueOf(settings.getDivisibleBy());
-      menuItemsBean.setSelected(comp, true);
-    } catch (Exception e) {
-      menuItemsBean.setSelected(WindowComponent.valueOf(Settings.DEFAULT_DIVISIBLE_BY), true);
-    }
-
-    // asking the player dialog window to read settings
-    playerDialogFrame.readFromCurrentSettings();
+  public void enablePrintingScores(boolean enable) {
+    this.prefCountMenuBar.enablePrintingScores(enable);
   }
 
   /** {@inheritDoc} */
@@ -326,11 +178,14 @@ public class MainWindow extends JFrame implements Printable {
       g2.translate(0, nextY);
       GameResultBean resultBean = PrefCountRegistry.getInstance().getGameResultBean();
       if (resultBean.isFinalScoresReady()) {
+        // TODO = fix this, read the final data from the new place
+/*
         JPanel table = this.playerDialogFrame.lastInputPanel.tablePanel;
         int tableX = UiService.computeCenterX(width, table.getWidth());
         g2.translate(tableX, 0);
         table.paintComponents(g2);
         g2.translate(-tableX, table.getHeight() + 15);
+*/
       }
 
       // drawing the score board
@@ -349,45 +204,5 @@ public class MainWindow extends JFrame implements Printable {
 
       return (PAGE_EXISTS);
     }
-  }
-
-  /**
-   * Getter for the main window's menu bar.
-   *
-   * @return <code>PrefCountMenuBar</code> reference.
-   */
-  public PrefCountMenuBar getPrefCountMenuBar() {
-    return this.prefCountMenuBar;
-  }
-
-  /**
-   * Creates an option panel (one of the three).
-   *
-   * @param titleKey header title key.
-   * @param buttons  radio buttons to add.
-   * @return created panel.
-   */
-  private JPanel createOptionSubPanel(String titleKey,
-                                      JRadioButton[] buttons) {
-    String title = LocaleExt.getString(titleKey);
-    JPanel outerPanel = new JPanel(
-        new TableLayout(new double[][]{{TableLayout.FILL},
-                                       {TableLayout.PREFERRED, TableLayout.PREFERRED}}));
-
-    TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
-    LocaleExt.registerComponent(titledBorder, titleKey);
-    titledBorder.setTitleFont(new Font("Arial", Font.PLAIN, 11));
-    outerPanel.setBorder(titledBorder);
-
-    int row = 0;
-    for (JRadioButton button : buttons) {
-      button.setFont(new Font("Arial", Font.PLAIN, 11));
-      outerPanel.add(button, new TableLayoutConstraints(0, row, 0, row,
-                                                        TableLayoutConstraints.LEFT,
-                                                        TableLayoutConstraints.FULL));
-      ++row;
-    }
-
-    return outerPanel;
   }
 }

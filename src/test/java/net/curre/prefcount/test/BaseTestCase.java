@@ -18,14 +18,12 @@ import junit.framework.TestCase;
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.bean.GameResultBean;
 import net.curre.prefcount.bean.PlayerStatistics;
-import net.curre.prefcount.gui.aa.AAJTextField;
 import net.curre.prefcount.gui.type.Place;
 import net.curre.prefcount.util.LocaleExt;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -56,7 +54,6 @@ abstract public class BaseTestCase extends TestCase {
   protected void setUp() throws Exception {
     initLogging();
     super.setUp();
-    LocaleExt.unregisterAllComponents();
   }
 
   /**
@@ -274,7 +271,7 @@ abstract public class BaseTestCase extends TestCase {
     player.setPool(pool);
     player.setMountain(mountain);
     for (Place other : Place.getOtherPlayersWhistPlaces(place, numberOfPlayers)) {
-      player.setWhistsForPlayerFromField(other, new AAJTextField(whists.get(other)));
+      player.setWhistsForPlayerFromField(other, new JTextField(whists.get(other)));
     }
 
     return player;

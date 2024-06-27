@@ -16,7 +16,6 @@ package net.curre.prefcount.service;
 
 import net.curre.prefcount.App;
 import net.curre.prefcount.PrefCountRegistry;
-import net.curre.prefcount.gui.type.UIItem;
 import net.curre.prefcount.util.LocaleExt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -24,15 +23,11 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Rectangle;
 import java.util.Objects;
 
 /**
@@ -73,6 +68,19 @@ public class UiService {
         logger.error("ERROR: validateTextField: Unknown type: {}", type);
     }
     return false;
+  }
+
+  /**
+   * Validates if the passed text field value is a valid integer or an empty string.
+   *
+   * @param field Input text field to validate.
+   * @return true If the component's text value is a valid integer or an empty string; false otherwise.
+   */
+  public static boolean validateIntTextField(JTextField field) {
+    if (StringUtils.isBlank(field.getText())) {
+      return true;
+    }
+    return StringUtils.isNumeric(field.getText().trim());
   }
 
   /**
@@ -198,53 +206,5 @@ public class UiService {
         JOptionPane.WARNING_MESSAGE, null, new Object[]{yes, cancel}, cancel);
 
     return answer == JOptionPane.OK_OPTION;
-  }
-
-  /**
-   * Computes preferred size.
-   *
-   * @param panel panel to compute the preferred size of.
-   * @return dimension object that represent the size.
-   */
-  public static Dimension getPreferredSize(JPanel panel) {
-    Dimension preferredSize = new Dimension();
-    for (Component component : panel.getComponents()) {
-      Rectangle bounds = component.getBounds();
-      preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-      preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-    }
-    Insets insets = panel.getInsets();
-    preferredSize.width += insets.right;
-    preferredSize.height += insets.bottom;
-    return preferredSize;
-  }
-
-  /**
-   * Generates button label text for the given UI item.
-   *
-   * @param item UI item to generate text for.
-   * @return label according to the current locale.
-   */
-  public static String generateButtonText(UIItem item) {
-    String label = LocaleExt.getString(item.getTextKey());
-
-    String shortcutKey = item.getShortcutKey();
-    if (shortcutKey != null) {
-      String shortcut = LocaleExt.getString(shortcutKey);
-      String shortcutIndexKey = item.getShortcutIndexKey();
-      if (shortcutIndexKey != null) {
-        String shortcutIndex = LocaleExt.getString(shortcutIndexKey);
-        int index = Integer.parseInt(shortcutIndex);
-        if (index < 0) {
-          label += " (" + shortcut + ")";
-          label = underlineLetter(label, label.lastIndexOf(shortcut));
-
-        } else {
-          label = underlineLetter(label, index);
-        }
-      }
-    }
-
-    return label;
   }
 }

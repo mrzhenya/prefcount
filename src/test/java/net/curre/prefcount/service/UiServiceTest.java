@@ -14,7 +14,6 @@
 
 package net.curre.prefcount.service;
 
-import net.curre.prefcount.gui.aa.AAJTextField;
 import net.curre.prefcount.test.BaseTestCase;
 
 import javax.swing.ImageIcon;
@@ -37,7 +36,7 @@ public class UiServiceTest extends BaseTestCase {
    * Tests the testValidateTextField() method.
    */
   public void testValidateTextField() {
-    JTextField field = new AAJTextField();
+    JTextField field = new JTextField();
 
     field.setText("123");
     boolean result = UiService.validateTextField(field, UiService.FieldType.INTEGER);
@@ -64,7 +63,7 @@ public class UiServiceTest extends BaseTestCase {
    * Tests the getFirstLetterFromField() method.
    */
   public void testGetFirstLetterFromField() {
-    JTextField field = new AAJTextField();
+    JTextField field = new JTextField();
 
     String letter = UiService.getFirstLetterFromField(field);
     assertNull("Null is expected for a null field", letter);

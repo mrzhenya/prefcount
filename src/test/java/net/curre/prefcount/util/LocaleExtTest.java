@@ -77,38 +77,6 @@ public class LocaleExtTest extends BaseTestCase {
   }
 
   /**
-   * Tests component registering/unregistering/re-registering
-   * functionality.
-   */
-  public void testRegistering() {
-    JLabel label1 = new JLabel();
-    LocaleExt.registerComponent(label1, "pref.dialog.namePrefix");
-
-    JLabel label2 = new JLabel();
-    LocaleExt.registerComponent(label2, "pref.dialog.whistsFor");
-
-    try {
-      LocaleExt.registerComponent(label1, "pref.dialog.namePrefix");
-      fail("Should not be able to register component twice!");
-    } catch (Exception e) {
-      // expected
-    }
-
-    PrefCountRegistry.getInstance().setCurrentLocale(PrefCountRegistry.DEFAULT_LOCALE_ID);
-    LocaleExt.fireLocaleChangeEvent();
-
-    ResourceBundle bundle = ResourceBundle.getBundle("default");
-    final String whistText = bundle.getString("pref.dialog.namePrefix");
-
-    assertEquals("Button's text is wrong (wasn't set?).", whistText, label1.getText());
-
-    LocaleExt.reregisterComponent(label2, "pref.dialog.namePrefix", "Z");
-    LocaleExt.fireLocaleChangeEvent();
-
-    assertNotEquals("Button's text is not refreshed!", whistText, label2.getText());
-  }
-
-  /**
    * Tests miscellaneous functionality.
    */
   public void testMiscellaneous() {

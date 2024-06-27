@@ -18,14 +18,14 @@ import java.io.Serializable;
 
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.gui.theme.LafThemeId;
-import net.curre.prefcount.gui.type.WindowComponent;
+import net.curre.prefcount.gui.type.PrefType;
 import net.curre.prefcount.gui.type.Place;
 
 import static net.curre.prefcount.service.LafThemeService.DEFAULT_LAF_THEME_ID;
 
 /**
- * Object of this class represents a bean for storing
- * application settings (window size, theme, default locale, etc.).
+ * Application default settings (window size, theme, default locale, etc.)
+ * that are persisted to disk.
  * <p/>
  * Created date: Jun 10, 2007
  *
@@ -34,7 +34,7 @@ import static net.curre.prefcount.service.LafThemeService.DEFAULT_LAF_THEME_ID;
 public class Settings implements Serializable {
 
   /** Serial version number. */
-  private static final long serialVersionUID = 39036452918252735L;
+  private static final long serialVersionUID = 39036452918252737L;
 
   /** Default value for the main window frame width. */
   public static final int DEFAULT_MAIN_FRAME_WIDTH = 520;
@@ -42,35 +42,23 @@ public class Settings implements Serializable {
   /** Default value for the main window frame height. */
   public static final int DEFAULT_MAIN_FRAME_HEIGHT = 600;
 
-  /** Default value for the dialog window frame width. */
-  public static final int DEFAULT_DIALOG_FRAME_WIDTH = 300;
-
-  /** Default value for the dialog window frame height. */
-  public static final int DEFAULT_DIALOG_FRAME_HEIGHT = 340;
-
   /** Default preferance type option. */
-  public static final String DEFAULT_PREF_TYPE = WindowComponent.LENINGRAD.name();
+  public static final PrefType DEFAULT_PREF_TYPE = PrefType.LENINGRAD;
 
   /** Default number of players option. */
-  public static final String DEFAULT_PLAYERS_NUMBER = WindowComponent.MAIN_3_PLAYERS.name();
+  public static final int DEFAULT_PLAYERS_NUMBER = 3;
 
-  /** Default divisible by option. */
-  public static final String DEFAULT_DIVISIBLE_BY = WindowComponent.DIVISIBLE_IGNORE.name();
+  /** Default divisible by N option. */
+  public static final boolean DEFAULT_DIVISIBLE_BY = true;
 
   /** Default player for the "Divisible by N" mount adjustment. */
   public static final Place DEFAULT_ADJ_PLAYER = Place.EAST;
 
   /** The main window frame width. */
-  private int mainFrameWidth;
+  private int mainWindowWidth;
 
   /** The main window frame height. */
-  private int mainFrameHeight;
-
-  /** The dialog window frame width. */
-  private int dialogFrameWidth;
-
-  /** The dialog window frame height. */
-  private int dialogFrameHeight;
+  private int mainWindowHeight;
 
   /** Look and Feel theme/skin ID. */
   private LafThemeId lafThemeId;
@@ -78,14 +66,11 @@ public class Settings implements Serializable {
   /** Locale identifier (case insensitive language name). */
   private String localeId;
 
-  /** Preferance type (a WindowComponent enum name). */
-  private String prefType;
+  /** Preferance type. */
+  private PrefType prefType;
 
-  /** Number of players in the game (a WindowComponent enum name). */
-  private String playersNumber;
-
-  /** Divisible By option (a WindowComponent enum name). */
-  private String divisibleBy;
+  /** Number of players in the game. */
+  private int numberOfPlayers;
 
   /**
    * Default constructor that initializes
@@ -100,17 +85,17 @@ public class Settings implements Serializable {
    *
    * @return The main window frame width.
    */
-  public int getMainFrameWidth() {
-    return mainFrameWidth;
+  public int getMainWindowWidth() {
+    return mainWindowWidth;
   }
 
   /**
    * Setter for the main window frame width.
    *
-   * @param mainFrameWidth Main window frame width.
+   * @param mainWindowWidth Main window frame width.
    */
-  public void setMainFrameWidth(int mainFrameWidth) {
-    this.mainFrameWidth = mainFrameWidth;
+  public void setMainWindowWidth(int mainWindowWidth) {
+    this.mainWindowWidth = mainWindowWidth;
   }
 
   /**
@@ -118,57 +103,22 @@ public class Settings implements Serializable {
    *
    * @return The main window frame height.
    */
-  public int getMainFrameHeight() {
-    return mainFrameHeight;
+  public int getMainWindowHeight() {
+    return mainWindowHeight;
   }
 
   /**
    * Setter for the main window frame height.
    *
-   * @param mainFrameHeight Main window frame height.
+   * @param mainWindowHeight Main window frame height.
    */
-  public void setMainFrameHeight(int mainFrameHeight) {
-    this.mainFrameHeight = mainFrameHeight;
-  }
-
-  /**
-   * Getter for the dialog window frame width.
-   *
-   * @return The dialog window frame width.
-   */
-  public int getDialogFrameWidth() {
-    return dialogFrameWidth;
-  }
-
-  /**
-   * Setter for the dialog window frame width.
-   *
-   * @param dialogFrameWidth Dialog window frame width.
-   */
-  public void setDialogFrameWidth(int dialogFrameWidth) {
-    this.dialogFrameWidth = dialogFrameWidth;
-  }
-
-  /**
-   * Getter for the dialog window frame height.
-   *
-   * @return The dialog window frame height.
-   */
-  public int getDialogFrameHeight() {
-    return dialogFrameHeight;
-  }
-
-  /**
-   * Setter for the dialog window frame height.
-   *
-   * @param dialogFrameHeight Dialog window frame height.
-   */
-  public void setDialogFrameHeight(int dialogFrameHeight) {
-    this.dialogFrameHeight = dialogFrameHeight;
+  public void setMainWindowHeight(int mainWindowHeight) {
+    this.mainWindowHeight = mainWindowHeight;
   }
 
   /**
    * Getter for the Look and Feel theme ID.
+   *
    * @return The Look and Feel theme ID
    */
   public LafThemeId getLafThemeId() {
@@ -177,6 +127,7 @@ public class Settings implements Serializable {
 
   /**
    * Setter for the Look and Feel theme/skin ID (resource key).
+   *
    * @param lafThemeId The Look and Feel theme/skin ID (resource key)
    */
   public void setLafThemeId(LafThemeId lafThemeId) {
@@ -204,60 +155,40 @@ public class Settings implements Serializable {
   /**
    * Getter for the Preferance type option.
    *
-   * @return WindowComponent enum name that represents the Preferance type option.
+   * @return the Preferance type option.
    */
-  public String getPrefType() {
+  public PrefType getPrefType() {
     return this.prefType;
   }
 
   /**
    * Setter for property 'prefType'.
    *
-   * @param prefType WindowComponent enum name that represents the Preferance type option.
+   * @param prefType the new Preferance type option.
    */
-  public void setPrefType(String prefType) {
+  public void setPrefType(PrefType prefType) {
     this.prefType = prefType;
   }
 
   /**
    * Getter for the Number of players option.
    *
-   * @return WindowComponent enum name that represents the Number of players option.
+   * @return the number of players in the game.
    */
-  public String getPlayersNumber() {
-    return this.playersNumber;
+  public int getNumberOfPlayers() {
+    return this.numberOfPlayers;
   }
 
   /**
-   * Setter for property 'playersNumber'.
+   * Setter the number of players in the game
    *
-   * @param playersNumber WindowComponent enum name that represents the Number of players option.
+   * @param numberOfPlayers the number of players in the game.
    */
-  public void setPlayersNumber(String playersNumber) {
-    this.playersNumber = playersNumber;
-  }
-
-  /**
-   * Getter for the Divisible By option (a WindowComponent enum name).
-   *
-   * @return WindowComponent enum name that represents the Divisible By option.
-   */
-  public String getDivisibleBy() {
-    return this.divisibleBy;
-  }
-
-  /**
-   * Setter for property 'divisibleBy'.
-   *
-   * @param divisibleBy WindowComponent enum name that represents the Divisible By option.
-   */
-  public void setDivisibleBy(String divisibleBy) {
-    this.divisibleBy = divisibleBy;
-  }
-
-  /** Method to reset the settings to default values. */
-  public void reset() {
-    initializeToDefaults();
+  public void setNumberOfPlayers(int numberOfPlayers) {
+    if (numberOfPlayers != 3 && numberOfPlayers != 4) {
+      throw new IllegalArgumentException("Number of players " + numberOfPlayers + " is not supported!");
+    }
+    this.numberOfPlayers = numberOfPlayers;
   }
 
   /**
@@ -265,14 +196,11 @@ public class Settings implements Serializable {
    * properties to default values.
    */
   private void initializeToDefaults() {
-    this.mainFrameWidth = DEFAULT_MAIN_FRAME_WIDTH;
-    this.mainFrameHeight = DEFAULT_MAIN_FRAME_HEIGHT;
-    this.dialogFrameWidth = DEFAULT_DIALOG_FRAME_WIDTH;
-    this.dialogFrameHeight = DEFAULT_DIALOG_FRAME_HEIGHT;
+    this.mainWindowWidth = DEFAULT_MAIN_FRAME_WIDTH;
+    this.mainWindowHeight = DEFAULT_MAIN_FRAME_HEIGHT;
     this.lafThemeId = DEFAULT_LAF_THEME_ID;
     this.localeId = PrefCountRegistry.DEFAULT_LOCALE_ID;
     this.prefType = DEFAULT_PREF_TYPE;
-    this.playersNumber = DEFAULT_PLAYERS_NUMBER;
-    this.divisibleBy = DEFAULT_DIVISIBLE_BY;
+    this.numberOfPlayers = DEFAULT_PLAYERS_NUMBER;
   }
 }

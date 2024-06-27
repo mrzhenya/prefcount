@@ -14,20 +14,28 @@
 
 package net.curre.prefcount.bean;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.gui.type.Place;
-import net.curre.prefcount.gui.type.WindowComponent;
+import net.curre.prefcount.gui.type.PrefType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.validation.constraints.Null;
 
 /**
- * Object of this class represents a bean that holds all
- * score and results for a preferance card game.
+ * A container for all players scores and results for a preferance card game.
  * <p/>
  * Created date: Apr 9, 2007
  *
  * @author Yevgeny Nyden
  */
 public class GameResultBean {
+
+  /** Private class logger. */
+  private static final Logger logger = LogManager.getLogger(GameResultBean.class.getName());
 
   /** Indicates that all player data has been entered or not. */
   private boolean finalScoresReady;
@@ -46,21 +54,21 @@ public class GameResultBean {
    */
   private boolean leningradka;
 
-  /** Flag to indicate user preferences for mount divisibility. */
-  private boolean mountDivisibleByN;
-
-  /** List with player statistics. */
-  private Map<Place, PlayerStatistics> playerStats;
-
   /** Player used for the divisible by N adjustments. */
   private Place divisibleByNPlayer;
 
+  /** Map of players stats/results. */
+  private Map<Place, PlayerStatistics> playerStats;
+
   /** Default ctor. */
   public GameResultBean() {
-    this.leningradka = Settings.DEFAULT_PREF_TYPE.equals(WindowComponent.LENINGRAD.name());
-    this.mountDivisibleByN = Settings.DEFAULT_DIVISIBLE_BY.equals(WindowComponent.DIVISIBLE_BY_N.name());
-    this.divisibleByNPlayer = Settings.DEFAULT_ADJ_PLAYER;
+    Settings settings = PrefCountRegistry.getInstance().getSettingsService().getSettings();
+    this.leningradka = settings.getPrefType() == PrefType.LENINGRAD;
+    this.divisibleByNPlayer = null;
     this.minMountain = 0;
+
+    this.playerStats = new HashMap<>();
+    this.resetNumberOfPlayers(settings.getNumberOfPlayers());
   }
 
   /**
@@ -77,9 +85,11 @@ public class GameResultBean {
   /**
    * Sets the flag that indicates that the player
    * final scores are ready for display to true.
+   *
+   * @param ready true if the scores are ready; false if otherwise
    */
-  public void setFinalScoresReady() {
-    this.finalScoresReady = true;
+  public void setFinalScoresReady(boolean ready) {
+    this.finalScoresReady = ready;
   }
 
   /**
@@ -166,23 +176,31 @@ public class GameResultBean {
   }
 
   /**
-   * Getter for property 'mountNotDivisible'.
+   * Getter for property 'divisibleByNPlayer' -
+   * player used for the divisible by N adjustments.
    *
-   * @return true if mount divisibility does not matter;
-   *         false - assumes divisible by N (number of players).
+   * @return Value for property 'divisibleByNPlayer'.
+   */
+  public Place getDivisibleByNPlayer() {
+    return this.divisibleByNPlayer;
+  }
+
+  /**
+   * Determines if mount should be divisible by N.
+   *
+   * @return true if mount is divisible by N; false if divisibility of mount doesn't matter.
    */
   public boolean isMountDivisibleByN() {
-    return this.mountDivisibleByN;
+    return this.divisibleByNPlayer != null;
   }
 
   /**
    * Setter for the mount divisibility flag.
    *
-   * @param mountDivisibleByN true if divisibility does not matter;
-   *                          false - divisible by N (players number).
+   * @param divisibleByNPlayer Player's place when divisible by N; or null if divisibility does not matter.
    */
-  public void setMountDivisibleByN(boolean mountDivisibleByN) {
-    this.mountDivisibleByN = mountDivisibleByN;
+  public void setMountDivisibleByN(@Null Place divisibleByNPlayer) {
+    this.divisibleByNPlayer = divisibleByNPlayer;
   }
 
   /**
@@ -195,33 +213,40 @@ public class GameResultBean {
   }
 
   /**
-   * Setter for the player statistics map.
+   * Updates player stats data given an updated set of players.
    *
-   * @param playerStats Map of player statistics.
+   * @param playerNamesMap player names map.
    */
-  public void setPlayerStats(Map<Place, PlayerStatistics> playerStats) {
-    this.playerStats = playerStats;
+  public void updateNumberOfPlayers(Map<Place, String> playerNamesMap) {
+    logger.info("Updating player stats from {}", this.playerNamesMapToString(playerNamesMap));
+    // Update player names in the current stats map.
+    for (Map.Entry<Place, PlayerStatistics> entry : this.playerStats.entrySet()) {
+      String name = playerNamesMap.get(entry.getKey());
+      if (name != null) {
+        entry.getValue().setPlayerName(name);
+      }
+    }
+    // Update the stats map according to the current number of players.
+    if (playerNamesMap.size() == 4 && this.playerStats.size() == 3) {
+      this.playerStats.put(Place.NORTH, new PlayerStatistics(this, Place.NORTH));
+    } else if (playerNamesMap.size() == 3 && this.playerStats.size() == 4) {
+      this.playerStats.remove(Place.NORTH);
+    }
+
+    logger.info("The new players infos: {}", this.playerStatsToString(this.playerStats));
   }
 
   /**
-   * Setter for divisibleByNPlayer.
+   * Resets player stats data give a new number of players.
    *
-   * @param divisibleByNPlayer Player used for the divisible by N adjustments.
+   * @param numberOfPlayers new number of players.
    */
-  public void setDivisibleByNPlayer(Place divisibleByNPlayer) {
-    this.divisibleByNPlayer = divisibleByNPlayer;
+  public void resetNumberOfPlayers(int numberOfPlayers) {
+    this.playerStats.clear();
+    for (Place place : Place.getPlaces(numberOfPlayers)) {
+      this.playerStats.put(place, new PlayerStatistics(this, place));
+    }
   }
-
-  /**
-   * Getter for property 'divisibleByNPlayer' -
-   * player used for the divisible by N adjustments.
-   *
-   * @return Value for property 'divisibleByNPlayer'.
-   */
-  public Place getDivisibleByNPlayer() {
-    return divisibleByNPlayer;
-  }
-
   /**
    * Returns the number of players in the game.
    *
@@ -244,5 +269,38 @@ public class GameResultBean {
         ", averageMountain=" + this.averageMountain +
         ", minMountain=" + this.minMountain +
         ", divisibleByNPlayer=" + this.divisibleByNPlayer + ';';
+  }
+
+  /**
+   * Sets the player stats directly.
+   *
+   * @param stats player stats to set.
+   */
+  public void setPlayerStats(Map<Place, PlayerStatistics> stats) {
+    this.playerStats = stats;
+  }
+
+  /**
+   * Converts given players map to string.
+   *
+   * @param playerNamesMap place-to-name players map.
+   * @return a string that represents the given players map.
+   */
+  private String playerNamesMapToString(Map<Place, String> playerNamesMap) {
+    StringBuilder out = new StringBuilder("[").append(playerNamesMap.size()).append("]: ");
+    playerNamesMap.forEach((key, value) -> out.append(key).append("-").append(value).append(", "));
+    return out.toString();
+  }
+
+  /**
+   * Converts given player stats to string.
+   *
+   * @param playerStats player stats map to convert to string.
+   * @return a string that represents the given stats map.
+   */
+  private String playerStatsToString(Map<Place, PlayerStatistics> playerStats) {
+    StringBuilder out = new StringBuilder("[" + playerStats.size() + "]:\n");
+    playerStats.forEach((key, value) -> out.append("   ").append(key).append(": ").append(value.toString()).append("\n"));
+    return out.toString();
   }
 }

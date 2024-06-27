@@ -49,6 +49,13 @@ public interface LafThemeInterface {
   boolean activateTheme() throws Exception;
 
   /**
+   * Gets the font for the input panel title.
+   *
+   * @return the input panel title font.
+   */
+  Font getInputPanelTitleFont();
+
+  /**
    * Returns the skin resource key, which also the skin's unique identifier.
    *
    * @return the skin resource key and it's unique ID.

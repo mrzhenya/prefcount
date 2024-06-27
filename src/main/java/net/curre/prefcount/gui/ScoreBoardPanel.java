@@ -29,34 +29,17 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
-import javax.swing.ToolTipManager;
+import javax.swing.JPanel;
 
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.bean.GameResultBean;
 import net.curre.prefcount.bean.PlayerStatistics;
 import net.curre.prefcount.bean.TooltipLocationsMap;
-import net.curre.prefcount.gui.aa.AAJPanel;
 import net.curre.prefcount.gui.theme.LafTheme;
 import net.curre.prefcount.gui.type.Place;
-import static net.curre.prefcount.gui.type.Place.EAST;
-import static net.curre.prefcount.gui.type.Place.NORTH;
-import static net.curre.prefcount.gui.type.Place.SOUTH;
-import static net.curre.prefcount.gui.type.Place.WEST;
+import static net.curre.prefcount.gui.type.Place.*;
 import net.curre.prefcount.gui.type.ScoreItem;
-import static net.curre.prefcount.gui.type.ScoreItem.FINAL_MOUNT;
-import static net.curre.prefcount.gui.type.ScoreItem.FINAL_SCORE;
-import static net.curre.prefcount.gui.type.ScoreItem.PLAYER_AMNIST_MOUNT;
-import static net.curre.prefcount.gui.type.ScoreItem.PLAYER_FIXED_MOUNT;
-import static net.curre.prefcount.gui.type.ScoreItem.PLAYER_MOUNT;
-import static net.curre.prefcount.gui.type.ScoreItem.PLAYER_NAME;
-import static net.curre.prefcount.gui.type.ScoreItem.PLAYER_NEW_MOUNT;
-import static net.curre.prefcount.gui.type.ScoreItem.PLAYER_POOL;
-import static net.curre.prefcount.gui.type.ScoreItem.PLAYER_POOL_CLOSED;
-import static net.curre.prefcount.gui.type.ScoreItem.WHIST_EAST_SALDO;
-import static net.curre.prefcount.gui.type.ScoreItem.WHIST_NORTH_SALDO;
-import static net.curre.prefcount.gui.type.ScoreItem.WHIST_SALDO_TOTAL;
-import static net.curre.prefcount.gui.type.ScoreItem.WHIST_SOUTH_SALDO;
-import static net.curre.prefcount.gui.type.ScoreItem.WHIST_WEST_SALDO;
+import static net.curre.prefcount.gui.type.ScoreItem.*;
 
 import net.curre.prefcount.service.UiService;
 import net.curre.prefcount.util.LocaleExt;
@@ -64,14 +47,13 @@ import net.curre.prefcount.util.LocaleExt;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Object of this class represents the score board panel
- * where all players scores and totals are drawn.
+ * The score board panel where all players scores and totals are drawn.
  * <p/>
  * Created date: Apr 8, 2007
  *
  * @author Yevgeny Nyden
  */
-public class ScoreBoardPanel extends AAJPanel {
+public class ScoreBoardPanel extends JPanel {
 
   /**
    * Reference to the map that stores/computes
@@ -89,7 +71,6 @@ public class ScoreBoardPanel extends AAJPanel {
   public ScoreBoardPanel() {
     this.locationsMap = new ScoreBoardLocationsMap(this);
     this.ttLocationsMap = new TooltipLocationsMap();
-    ToolTipManager.sharedInstance().registerComponent(this);
   }
 
   /**

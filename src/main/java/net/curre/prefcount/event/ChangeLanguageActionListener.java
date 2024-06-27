@@ -21,10 +21,12 @@ import java.awt.event.ItemListener;
 
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.service.SettingsService;
+import net.curre.prefcount.util.LocaleExt;
+
+import javax.swing.JOptionPane;
 
 /**
- * Object of this class represents an action listener
- * to change current language.
+ * An action listener to change the current language.
  * <p/>
  * Created date: Jun 2, 2007
  *
@@ -79,5 +81,9 @@ public class ChangeLanguageActionListener
     SettingsService settingsService = registry.getSettingsService();
     settingsService.getSettings().setLocaleId(this.localeId);
     settingsService.persistSettings();
+    JOptionPane.showMessageDialog(registry.getMainWindow(),
+        LocaleExt.getString("pref.dialog.restart.message"),
+        LocaleExt.getString("pref.dialog.restart.title"),
+        JOptionPane.INFORMATION_MESSAGE);
   }
 }

@@ -35,6 +35,9 @@ public abstract class LafTheme implements LafThemeInterface {
   /** Board background paint. */
   public static final Color PAINT_BACKGROUND_BOARD = new Color(252, 252, 252);
 
+  /** Font for the input panel title. */
+  private static final Font INPUT_TITLE_FONT = new Font("Arial Black", Font.BOLD, 14);
+
   /** Color for players names. */
   private static final Color COLOR_PLAYER_NAME = new Color(10, 10, 10);
 
@@ -81,6 +84,12 @@ public abstract class LafTheme implements LafThemeInterface {
       return this.getId() == ((LafTheme) other).getId();
     }
     return false;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public Font getInputPanelTitleFont() {
+    return INPUT_TITLE_FONT;
   }
 
   /** {@inheritDoc} */

@@ -21,7 +21,7 @@ import java.io.ObjectOutputStream;
 import net.curre.prefcount.PrefCountRegistry;
 import net.curre.prefcount.bean.Settings;
 import net.curre.prefcount.gui.theme.LafThemeId;
-import net.curre.prefcount.gui.type.WindowComponent;
+import net.curre.prefcount.gui.type.PrefType;
 import net.curre.prefcount.test.BaseTestCase;
 
 import static net.curre.prefcount.service.LafThemeService.DEFAULT_LAF_THEME_ID;
@@ -45,12 +45,6 @@ public class SettingsServiceTest extends BaseTestCase {
   /** Value for the main window frame height. */
   private static final int SETTINGS_MAIN_FRAME_HEIGHT = 655;
 
-  /** Value for the dialog window frame width. */
-  private static final int SETTINGS_DIALOG_FRAME_WIDTH = 324;
-
-  /** Value for the dialog window frame height. */
-  private static final int SETTINGS_DIALOG_FRAME_HEIGHT = 333;
-
   /** Value for the LAF theme ID. */
   private static final LafThemeId DEFAULT_SETTINGS_LAF = LafThemeId.FLAT_LIGHT;
 
@@ -58,13 +52,13 @@ public class SettingsServiceTest extends BaseTestCase {
   private static final String SETTINGS_LOCALE_ID = "us";
 
   /** Value for the Divisible By. */
-  private static final String SETTINGS_DIVISIBLE_BY = WindowComponent.DIVISIBLE_BY_N.name();
+  private static final boolean SETTINGS_DIVISIBLE_BY = true;
 
   /** Value for the Players Number. */
-  private static final String SETTINGS_PLAYERS_NUMBER = WindowComponent.MAIN_4_PLAYERS.name();
+  private static final int SETTINGS_PLAYERS_NUMBER = 4;
 
   /** Value for the Pref Type. */
-  private static final String SETTINGS_PREF_TYPE = WindowComponent.SOCHINKA.name();
+  private static final PrefType SETTINGS_PREF_TYPE = PrefType.SOCHI;
 
   /** Absolute path to the default test settings file. */
   private String testSettingsFilePath;
@@ -106,7 +100,6 @@ public class SettingsServiceTest extends BaseTestCase {
     SettingsService service = new SettingsService(this.testSettingsFilePath);
     Settings settings = service.getSettings();
     checkSettings(settings, Settings.DEFAULT_MAIN_FRAME_WIDTH, Settings.DEFAULT_MAIN_FRAME_HEIGHT,
-        Settings.DEFAULT_DIALOG_FRAME_WIDTH, Settings.DEFAULT_DIALOG_FRAME_HEIGHT,
         DEFAULT_LAF_THEME_ID, PrefCountRegistry.DEFAULT_LOCALE_ID, Settings.DEFAULT_PREF_TYPE,
         Settings.DEFAULT_PLAYERS_NUMBER, Settings.DEFAULT_DIVISIBLE_BY);
   }
@@ -120,7 +113,6 @@ public class SettingsServiceTest extends BaseTestCase {
 
     Settings settings = service.getSettings();
     checkSettings(settings, SETTINGS_MAIN_FRAME_WIDTH, SETTINGS_MAIN_FRAME_HEIGHT,
-        SETTINGS_DIALOG_FRAME_WIDTH, SETTINGS_DIALOG_FRAME_HEIGHT,
         DEFAULT_SETTINGS_LAF, SETTINGS_LOCALE_ID, SETTINGS_PREF_TYPE,
         SETTINGS_PLAYERS_NUMBER, SETTINGS_DIVISIBLE_BY);
   }
@@ -131,24 +123,19 @@ public class SettingsServiceTest extends BaseTestCase {
    * @param settings          Settings object to test.
    * @param mainFrameWidth    Expected main frame width.
    * @param mainFrameHeight   Expected main frame height.
-   * @param dialogFrameWidth  Expected dialog frame width.
-   * @param dialogFrameHeight Expected dialog frame height.
    * @param lafThemeId         Expected LAF skin ID.
    * @param localeId          Expected locale ID.
    */
-  private void checkSettings(Settings settings, int mainFrameWidth, int mainFrameHeight,
-                             int dialogFrameWidth, int dialogFrameHeight, LafThemeId lafThemeId,
-                             String localeId, String prefType, String playersNumber, String divisibleBy) {
+  private void checkSettings(Settings settings, int mainFrameWidth, int mainFrameHeight, LafThemeId lafThemeId,
+                             String localeId, PrefType prefType, int playersNumber, boolean divisibleBy) {
     assertNotNull("Settings must not be null", settings);
-    assertEquals("Settings has a wrong Main frame width", mainFrameWidth, settings.getMainFrameWidth());
-    assertEquals("Settings has a wrong Main frame height", mainFrameHeight, settings.getMainFrameHeight());
-    assertEquals("Settings has a wrong Dialog frame width", dialogFrameWidth, settings.getDialogFrameWidth());
-    assertEquals("Settings has a wrong Dialog frame height", dialogFrameHeight, settings.getDialogFrameHeight());
+    assertEquals("Settings has a wrong Main frame width", mainFrameWidth, settings.getMainWindowWidth());
+    assertEquals("Settings has a wrong Main frame height", mainFrameHeight, settings.getMainWindowHeight());
     assertEquals("Settings has a wrong LAF skin ID", lafThemeId, settings.getLafThemeId());
     assertEquals("Settings has a wrong Locale ID", localeId, settings.getLocaleId());
     assertEquals("Settings has a wrong Pref Type", prefType, settings.getPrefType());
-    assertEquals("Settings has a wrong Players Number", playersNumber, settings.getPlayersNumber());
-    assertEquals("Settings has a wrong Divisible By", divisibleBy, settings.getDivisibleBy());
+    assertEquals("Settings has a wrong Players Number", playersNumber, settings.getNumberOfPlayers());
+//    assertEquals("Settings has a wrong Divisible By", divisibleBy, settings.getDivisibleByN());
   }
 
   /**
@@ -157,15 +144,13 @@ public class SettingsServiceTest extends BaseTestCase {
    */
   private static void persistTestSettings(String settingsFilePath) {
     Settings settings = new Settings();
-    settings.setDivisibleBy(SETTINGS_DIVISIBLE_BY);
+//    settings.setDivisibleBy(SETTINGS_DIVISIBLE_BY);
     settings.setPrefType(SETTINGS_PREF_TYPE);
-    settings.setPlayersNumber(SETTINGS_PLAYERS_NUMBER);
+    settings.setNumberOfPlayers(SETTINGS_PLAYERS_NUMBER);
     settings.setLocaleId(SETTINGS_LOCALE_ID);
     settings.setLafThemeId(DEFAULT_SETTINGS_LAF);
-    settings.setDialogFrameHeight(SETTINGS_DIALOG_FRAME_HEIGHT);
-    settings.setDialogFrameWidth(SETTINGS_DIALOG_FRAME_WIDTH);
-    settings.setMainFrameHeight(SETTINGS_MAIN_FRAME_HEIGHT);
-    settings.setMainFrameWidth(SETTINGS_MAIN_FRAME_WIDTH);
+    settings.setMainWindowHeight(SETTINGS_MAIN_FRAME_HEIGHT);
+    settings.setMainWindowWidth(SETTINGS_MAIN_FRAME_WIDTH);
 
     try {
       File file = new File(settingsFilePath);

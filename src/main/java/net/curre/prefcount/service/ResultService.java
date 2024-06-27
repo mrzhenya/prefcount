@@ -18,9 +18,10 @@ import java.util.Map;
 import net.curre.prefcount.bean.GameResultBean;
 import net.curre.prefcount.bean.PlayerStatistics;
 import net.curre.prefcount.gui.type.Place;
-import net.curre.prefcount.PrefCountRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * This service bean is responsible for computing game results.
@@ -68,11 +69,6 @@ public class ResultService {
     int mountFix = 0;
     if (rBean.isMountDivisibleByN()) {
       final int remainder = (sum - min * playersNum) % playersNum;
-
-      if (remainder != 0) {
-        askForAdjustmentPlayer();
-      }
-
       mountFix = doFixForDivisibleByN(remainder, rBean.getDivisibleByNPlayer(), rBean.getPlayerStats());
     }
     rBean.setAverageMountain((float) (sum + mountFix) / (float) playersNum - min);
@@ -108,7 +104,7 @@ public class ResultService {
       // saving total saldo under the same (as the player's place) key
       currStats.getWhistSaldoMap().put(currEntry.getKey(), totalSaldo);
     }
-    rBean.setFinalScoresReady();
+    rBean.setFinalScoresReady(true);
   }
 
   /**
@@ -134,7 +130,7 @@ public class ResultService {
    * @param playerStats list of player statistics beans.
    * @return computed mount fix that will make the sum of mounts divisible by N.
    */
-  private static int doFixForDivisibleByN(int remainder, Place adjustPlace,
+  private static int doFixForDivisibleByN(int remainder, @NotNull Place adjustPlace,
                                           Map<Place, PlayerStatistics> playerStats) {
     int mountFix = 0;
 
@@ -150,9 +146,6 @@ public class ResultService {
           // writing the whists against this player
           addWhistsFixAgainstSelf(playerStats, adjustPlace, 3);
 
-        } else if (remainder == 2) {
-          // nothing for the remainder 2
-
         } else if (remainder == 3) {
           // adding 1 to the adjustment player
           PlayerStatistics stats = playerStats.get(adjustPlace);
@@ -161,6 +154,7 @@ public class ResultService {
           // writing the whists against other players
           addWhistsFixAgainstOthers(playerStats, adjustPlace, 3);
         }
+        // nothing for the remainder 2
 
       } else {
         if (remainder == 1) {
@@ -169,7 +163,7 @@ public class ResultService {
           stats.setMountFix(-1);
           mountFix = -1;
           // writing the whists against this player
-          addWhistsFixAgainstSelf(playerStats, adjustPlace, 3);
+          addWhistsFixAgainstSelf(playerStats, adjustPlace, 2);
 
         } else if (remainder == 2) {
           // adding 1 to the adjustment player
@@ -177,25 +171,11 @@ public class ResultService {
           stats.setMountFix(1);
           mountFix = 1;
           // writing the whists against other players
-          addWhistsFixAgainstOthers(playerStats, adjustPlace, 3);
+          addWhistsFixAgainstOthers(playerStats, adjustPlace, 2);
         }
       }
     }
     return mountFix;
-  }
-
-  /**
-   * Assists with choosing the adjustment player for the
-   * mount divisibility "Divisible by N" option. Note, that in
-   * debug mode (when MainWindow is not visible) this player is
-   * always set to EAST.
-   */
-  private static void askForAdjustmentPlayer() {
-    PrefCountRegistry reg = PrefCountRegistry.getInstance();
-    boolean notDebug = reg.getMainWindow() != null && reg.getMainWindow().isVisible();
-    if (notDebug) {
-      PrefCountRegistry.getInstance().getChoosePlayerDialog();
-    }
   }
 
   /**

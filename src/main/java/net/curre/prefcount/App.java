@@ -64,7 +64,9 @@ public class App {
 
     SwingUtilities.invokeLater(() -> {
       // Now, start the app by showing the main UI.
-      registry.setMainWindow(new MainWindow()); // The Landing UI will get displayed shortly.
+      MainWindow mainWindow = new MainWindow();
+      registry.setMainWindow(mainWindow);
+      mainWindow.setVisible(true);
     });
   }
 

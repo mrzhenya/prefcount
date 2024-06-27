@@ -12,30 +12,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.curre.prefcount.event;
-
-import javax.swing.AbstractAction;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import net.curre.prefcount.service.MainService;
+package net.curre.prefcount.gui.type;
 
 /**
- * Object of this class represents an action listener
- * to use for quitting application.
- * <p/>
- * Created date: Jan 22, 2008
+ * Type of a Preferance game.
  *
  * @author Yevgeny Nyden
  */
-public class QuitActionListener extends AbstractAction implements ActionListener {
+public enum PrefType {
 
-  /**
-   * Disposes frames and quits application.
-   *
-   * @param actionEvent Action event.
-   */
-  public void actionPerformed(ActionEvent actionEvent) {
-    MainService.quitApp();
-  }
+  LENINGRAD,
+  SOCHI
 }

@@ -17,13 +17,11 @@ package net.curre.prefcount;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import net.curre.prefcount.gui.DialogInnerPanelTest;
 import net.curre.prefcount.gui.theme.LafThemeTest;
 import net.curre.prefcount.service.LafThemeServiceTest;
 import net.curre.prefcount.service.ResultServiceTest;
 import net.curre.prefcount.service.SettingsServiceTest;
 import net.curre.prefcount.service.UiServiceTest;
-import net.curre.prefcount.util.DebugUtilities;
 import net.curre.prefcount.util.DebugUtilitiesTest;
 import net.curre.prefcount.util.LocaleExtTest;
 import net.curre.prefcount.util.PlatformTypeTest;
@@ -47,7 +45,6 @@ public class AppTest extends TestCase {
     // creating test suite
     TestSuite suite = new TestSuite();
     suite.addTestSuite(LafThemeTest.class);
-    suite.addTestSuite(DialogInnerPanelTest.class);
     suite.addTestSuite(LafThemeServiceTest.class);
     suite.addTestSuite(ResultServiceTest.class);
     suite.addTestSuite(SettingsServiceTest.class);

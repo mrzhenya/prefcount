@@ -14,8 +14,6 @@
 
 package net.curre.prefcount.util;
 
-import net.curre.prefcount.gui.aa.AAJLabel;
-import net.curre.prefcount.gui.aa.AAJPanel;
 import org.apache.commons.lang3.time.FastDateFormat;
 
 import javax.swing.JFrame;
@@ -68,13 +66,13 @@ public class DebugUtilities {
   public static void printAvailableFonts() {
     JFrame f = new JFrame("Testing Fonts");
     f.setSize(400, 400);
-    JPanel mainPanel = new AAJPanel();
+    JPanel mainPanel = new JPanel();
     f.add(mainPanel);
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     String[] fontNames = ge.getAvailableFontFamilyNames();
     for (String fontName : fontNames) {
       JPanel panel = new JPanel();
-      JLabel label = new AAJLabel(fontName);
+      JLabel label = new JLabel(fontName);
       label.setFont(new Font(fontName, Font.PLAIN, 16));
       panel.add(label);
       mainPanel.add(panel);

@@ -14,22 +14,18 @@
 
 package net.curre.prefcount;
 
-import java.io.File;
 import java.util.Locale;
 
 import net.curre.prefcount.bean.GameResultBean;
-import net.curre.prefcount.event.MainController;
-import net.curre.prefcount.gui.LastInputPanel;
 import net.curre.prefcount.gui.MainWindow;
-import net.curre.prefcount.gui.PlayerDialogBaseFrame;
-import net.curre.prefcount.gui.ChoosePlayerDialog;
-import net.curre.prefcount.gui.menu.MenuItemsBean;
 import net.curre.prefcount.service.LafThemeService;
 import net.curre.prefcount.service.ServiceException;
 import net.curre.prefcount.service.SettingsService;
 import net.curre.prefcount.util.LocaleExt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.swing.SwingUtilities;
 
 /**
  * This is the central place for all prefcount
@@ -43,9 +39,6 @@ public class PrefCountRegistry {
 
   /** Private class logger. */
   private static final Logger logger = LogManager.getLogger(PrefCountRegistry.class.getName());
-
-  /** Location of the images' directory. */
-  public static final String IMAGES_DIR = "images";
 
   /** Default value for the locale ID (case-insensitive language name). */
   public static final String DEFAULT_LOCALE_ID = "ru";
@@ -65,9 +58,6 @@ public class PrefCountRegistry {
    */
   private static LocaleExt currentLocale = AVAILABLE_LOCALES[0];
 
-  /** Reference to the menu items bean. */
-  private final MenuItemsBean menuItemsBean;
-
   /** Reference to the game settings service. */
   private final SettingsService settingsService;
 
@@ -75,7 +65,7 @@ public class PrefCountRegistry {
   private final LafThemeService lafThemeService;
 
   /** Reference to the result bean */
-  private final GameResultBean gameResultBean;
+  private GameResultBean gameResultBean;
 
   static {
     instance = new PrefCountRegistry();
@@ -83,18 +73,6 @@ public class PrefCountRegistry {
 
   /** Reference to the main window. */
   private MainWindow mainWindow;
-
-  /** Reference to the player dialog base frame. */
-  private PlayerDialogBaseFrame playerDialogFrame;
-
-  /** Reference to the last input panel. */
-  private LastInputPanel lastInputPanel;
-
-  /** Reference to the main controller bean. */
-  private MainController mainController;
-
-  /** Reference to the choose player dialog window. */
-  private ChoosePlayerDialog choosePlayerDialog;
 
   /**
    * Returns the singleton instance of this class.
@@ -110,10 +88,13 @@ public class PrefCountRegistry {
    * the result of the getSettingsFilePathHelper() method.
    */
   private PrefCountRegistry() {
+    // Settings must be initialized (and loaded) first.
     this.settingsService = new SettingsService(null);
-    this.menuItemsBean = new MenuItemsBean();
-    this.gameResultBean = new GameResultBean();
     this.lafThemeService = new LafThemeService();
+    SwingUtilities.invokeLater(() -> {
+      // Game result bean depends on the loaded settings.
+      PrefCountRegistry.this.gameResultBean = new GameResultBean();
+    });
   }
 
   /**
@@ -172,15 +153,6 @@ public class PrefCountRegistry {
   }
 
   /**
-   * Getter for the reference to the menu items bean.
-   *
-   * @return reference to the menu items bean.
-   */
-  public MenuItemsBean getMenuItemsBean() {
-    return this.menuItemsBean;
-  }
-
-  /**
    * Getter for the game result bean.
    *
    * @return reference to the game result bean.
@@ -208,60 +180,6 @@ public class PrefCountRegistry {
   }
 
   /**
-   * Getter for the player dialog frame.
-   *
-   * @return reference to the player dialog frame.
-   */
-  public PlayerDialogBaseFrame getPlayerDialogFrame() {
-    return this.playerDialogFrame;
-  }
-
-  /**
-   * Setter for the player dialog frame.
-   *
-   * @param playerDialogFrame reference to the player dialog frame.
-   */
-  public void setPlayerDialogFrame(PlayerDialogBaseFrame playerDialogFrame) {
-    this.playerDialogFrame = playerDialogFrame;
-  }
-
-  /**
-   * Getter for the past input panel reference.
-   *
-   * @return Reference to the last input panel.
-   */
-  public LastInputPanel getLastInputPanel() {
-    return this.lastInputPanel;
-  }
-
-  /**
-   * Setter for the last input panel reference.
-   *
-   * @param lastInputPanel Reference to the last input panel to set.
-   */
-  public void setLastInputPanel(LastInputPanel lastInputPanel) {
-    this.lastInputPanel = lastInputPanel;
-  }
-
-  /**
-   * Gets reference to the main controller bean.
-   *
-   * @return reference to the main controller bean.
-   */
-  public MainController getMainController() {
-    return this.mainController;
-  }
-
-  /**
-   * Sets the main controller bean reference.
-   *
-   * @param mainController reference to the main controller bean.
-   */
-  public void setMainController(MainController mainController) {
-    this.mainController = mainController;
-  }
-
-  /**
    * Gets a <code>LocaleExt</code> object given its
    * corresponding language name (case-insensitive).
    *
@@ -277,43 +195,5 @@ public class PrefCountRegistry {
       }
     }
     throw new ServiceException("Locale with ID (language) \"" + localeId + "\" is not found!");
-  }
-
-  /**
-   * Creates a directory if it doesn't exist
-   * (only the last one in the provided path).
-   *
-   * @param path Path to the directory.
-   */
-  @SuppressWarnings("ResultOfMethodCallIgnored")
-  private static void createDirIfDoesntExist(StringBuilder path) {
-    File dir = new File(path.toString());
-    if (!dir.exists()) {
-      dir.mkdir();
-    }
-  }
-
-  /**
-   * Gets the choose player dialog (note, that it will
-   * be created if if doesn't exist).
-   *  
-   * @return reference to the choose player dialog.
-   */
-  public ChoosePlayerDialog getChoosePlayerDialog() {
-    if (this.choosePlayerDialog == null) {
-      this.choosePlayerDialog = new ChoosePlayerDialog(this.playerDialogFrame);
-      this.choosePlayerDialog.setVisible(true);
-    }
-
-    return this.choosePlayerDialog;
-  }
-
-  /** Destroys the choose player dialog. */
-  public void disposeChoosePlayerDialog() {
-    if (this.choosePlayerDialog != null) {
-      this.choosePlayerDialog.setVisible(false);
-      this.choosePlayerDialog.dispose();
-    }
-    this.choosePlayerDialog = null;
   }
 }

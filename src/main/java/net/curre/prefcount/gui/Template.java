@@ -68,6 +68,4 @@ public class Template implements Printable {
       return (PAGE_EXISTS);
     }
   }
-
-
 }

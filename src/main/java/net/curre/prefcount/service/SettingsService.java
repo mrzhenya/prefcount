@@ -34,8 +34,7 @@ import static net.curre.prefcount.bean.Settings.*;
 import static net.curre.prefcount.service.LafThemeService.DEFAULT_LAF_THEME_ID;
 
 /**
- * This is a service bean that assists with
- * handling application settings.
+ * A service to assists with loading and saving application settings.
  * <p/>
  * Created date: Jun 22, 2007
  *
@@ -60,6 +59,9 @@ public class SettingsService {
 
   /**
    * Ctor.
+   * <br>
+   * IMPORTANT: here, the serialized settings will be loaded from disk
+   * and the settings instance will be set.
    * @param settingsFilePath path to the settings file (for test) or null if default should be used
    */
   public SettingsService(@Null String settingsFilePath) {
@@ -169,11 +171,8 @@ public class SettingsService {
     if (settings.getPrefType() == null) {
       settings.setPrefType(DEFAULT_PREF_TYPE);
     }
-    if (settings.getPlayersNumber() == null) {
-      settings.setPlayersNumber(DEFAULT_PLAYERS_NUMBER);
-    }
-    if (settings.getDivisibleBy() == null) {
-      settings.setDivisibleBy(DEFAULT_DIVISIBLE_BY);
+    if (settings.getNumberOfPlayers() != 3 && settings.getNumberOfPlayers() != 4) {
+      settings.setNumberOfPlayers(DEFAULT_PLAYERS_NUMBER);
     }
   }
 }
